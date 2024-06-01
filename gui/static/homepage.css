@@ -1,0 +1,155 @@
+/* Header Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/* Other Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins&display=swap');
+
+
+/*
+
+#
+#
+#   NAVBAR CODE
+#
+#
+
+ */
+
+html, body { margin: 0; padding: 0; }
+
+
+/* Style the navbar */
+#navbar {
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  font-size: large;
+  color: #ffffff;
+  background-color: #18181b;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 25px;
+  width: 100%;
+
+}
+
+/* Navbar links */
+#navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/*
+#
+#
+#   SIDEBAR CSS
+#
+#
+*/
+
+.sidebar {
+  margin-top: 75px;
+  padding-top: 30px;
+  color: white;
+  /*background-color: black;*/
+  background-color: #09090b;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100% - 75px);
+  width: 220px;
+}
+
+/* List containing all sidebar boxes */
+.sidebar ul {
+  margin-top: -5px;
+}
+
+/* Each Sidebar Box */
+.sidebar ul li {
+  position: relative;
+  list-style-type: none;
+  height: 50px;
+  width: 110%;
+  line-height: 40px;
+  font-family: "Inter", sans-serif;
+  margin-left: -25px;
+  margin-top: -5px;
+}
+
+/* Sidebar Image */
+.sidebar svg {
+  padding-right: 12px;
+  padding-left: 10px;
+  color: #71717a;
+}
+
+/* 'a' in each sidebar box */
+.sidebar ul li a {
+  margin: 0;
+  padding: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 7px;
+}
+
+/* Sidebar element that is being hovered */
+.sidebar ul li a:hover {
+  background-color: #161617;
+}
+
+/* Sidebar element that is selected */
+.sidebar ul li.selected a {
+  background-color: #161617;
+  color: #62baf3;
+}
+
+/* SVG of the sidebar element that is selected */
+.sidebar ul li.selected svg {
+  color: #62baf3;
+}
+
+
+/*
+#
+#
+#   PAGECONTENT CSS
+#
+#
+*/
+
+#page-content {
+  /* 225px is to account for sidebar*/
+  margin-left: calc(225px + 25px);
+  /* 75px is to account for navbar*/
+  margin-top: calc(75px + 30px);
+  width: 85%;
+}
+
+#page-content.page-path {
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+}
+
+#page-content.page-path svg {
+  font-size: small;
+}
+
+body {
+  background-color: #09090b;
+}
