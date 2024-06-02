@@ -77,15 +77,45 @@
 
 
 <div id="page-content">
-  <!-- body content -->
-  <div class="page-path">
-    Home
-    <svg width='20px' height='20px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-      <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
-    </svg>
-    potato
-  </div>
+    <!-- body content -->
+  <div id="content">
+    <h1>Welcome to Notifier App</h1>
+    <br>
+    <p>You can expand the following sections:</p>
 
+    <!-- Collapsables here-->
+
+    <!-- For unread notifications -->
+    <div class="wrap-collapsible">
+      <input id="unread-notifications" class="toggle" type="checkbox" checked>
+      <label for="unread-notifications" class="lbl-toggle">Unread Notifications</label>
+      <div class="collapsible-content">
+        <div class="content-inner">
+          <p>
+            Ipsum Lorem
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+    <br>
+
+    <!-- For Upcoming Reminders -->
+    <div class="wrap-collapsible">
+      <input id="upcoming-reminders" class="toggle" type="checkbox">
+      <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
+      <div class="collapsible-content">
+        <div class="content-inner">
+          <p>
+            Ipsum Lorem
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
 
 </div>
 
