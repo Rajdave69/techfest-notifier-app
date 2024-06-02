@@ -155,6 +155,120 @@ html, body { margin: 0; padding: 0; }
   font-size: small;
 }
 
+
+#page-content #content {
+  overflow-y: scroll;
+  height: 100%;
+
+  /*Hide Scrollbar */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+#page-content p {
+  font-size: 16px;
+}
+
+#page-content hr {
+  width: 99%;
+  background-color: gray;
+}
+
+
+/*
+#
+#
+#   COLLAPSABLE BOX
+#
+#
+*/
+
+/* Wrap Collapsible */
+#page-content #content .wrap-collapsible {
+  margin-bottom: 1.2rem;
+}
+
+/* Hide the Checkbox */
+#page-content #content input[type='checkbox'] {
+  display: none;
+}
+
+/* Label Toggle */
+#page-content #content .lbl-toggle {
+  display: block;
+  font-weight: bold;
+  padding: 1rem 1rem 1rem 25px;
+  background: #18181b;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: all 0.25s ease-out;
+  position: relative; /* Add relative positioning */
+  height: 40px; /* Set the height */
+  line-height: 40px; /* Center the text vertically */
+
+  border: 1px #222224 solid;
+
+}
+
+#page-content #content .lbl-toggle:hover {
+  /*color: #7C5A0B;*/
+/*  TODO */
+}
+
+/* Arrow */
+.lbl-toggle::before {
+  content: ' ';
+  display: inline-block;
+  border-top: 5px solid currentColor; /* Point down */
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  vertical-align: middle;
+  margin-left: .7rem; /* Change to margin-left */
+  transition: transform .2s ease-out;
+  position: absolute; /* Position absolutely */
+  right: 1rem; /* Move to the right */
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+}
+
+/* Rotate the Arrow When Checked */
+#page-content #content .toggle:checked + .lbl-toggle::before {
+  transform: translateY(-50%) rotate(180deg); /* Point up */
+}
+
+/* Collapsible Content */
+#page-content #content .collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .10s ease-in-out;
+}
+
+#page-content #content .toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 100vh;
+}
+
+#page-content #content .toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#page-content #content .collapsible-content .content-inner {
+  background: #18181b;
+  border-top: 1px #303032 solid;
+  border-right: 1px #222224 solid;
+  border-left: 1px #222224 solid;
+  border-bottom: 1px #222224 solid;
+
+
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: .5rem 1rem;
+}
+
+
+
+
+
 body {
   background-color: #09090b;
   font-family: "Inter", sans-serif;
