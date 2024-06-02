@@ -2,7 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 /* Other Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Poppins&display=swap');
+
+
+:root {
+  --dark-bg-color: #09090b;
+  --dark-navbar-color: #18181b;
+  --dark-sidebar-hover-color: #161617;
+  --dark-sidebar-selected-color: #62baf3;
+  --dark-border-color: #222224;
+  --dark-border-separator-color: #303032;
+}
 
 
 /*
@@ -24,7 +34,7 @@ html, body { margin: 0; padding: 0; }
   font-family: "Inter", sans-serif;
   font-size: 20px;
   color: #ffffff;
-  background-color: #18181b;
+  background-color: var(--dark-navbar-color);
   padding-top: 24px;
   padding-bottom: 24px;
   padding-left: 25px;
@@ -64,11 +74,11 @@ html, body { margin: 0; padding: 0; }
   padding-top: 30px;
   color: white;
   /*background-color: black;*/
-  background-color: #09090b;
+  background-color: var(--dark-bg-color);
 
   position: fixed;
   height: calc(100% - 75px);
-  width: 220px;
+  width: 275px;
 }
 
 /* List containing all sidebar boxes */
@@ -108,18 +118,18 @@ html, body { margin: 0; padding: 0; }
 
 /* Sidebar element that is being hovered */
 .sidebar ul li a:hover {
-  background-color: #161617;
+  background-color: var(--dark-sidebar-hover-color);
 }
 
 /* Sidebar element that is selected */
 .sidebar ul li.selected a {
-  background-color: #161617;
-  color: #62baf3;
+  background-color: var(--dark-sidebar-hover-color);
+  color: var(--dark-sidebar-selected-color);
 }
 
 /* SVG of the sidebar element that is selected */
 .sidebar ul li.selected svg {
-  color: #62baf3;
+  color: var(--dark-sidebar-selected-color);
 }
 
 
@@ -133,7 +143,7 @@ html, body { margin: 0; padding: 0; }
 
 #page-content {
   /* Move box to the left and down (navbar and sidebar) */
-  left: calc(225px + 250px);
+  left: calc(275px + 225px);
   top: 73px;
 
   /*margin-top: 30px;*/
@@ -171,7 +181,9 @@ html, body { margin: 0; padding: 0; }
 
 #page-content hr {
   width: 99%;
-  background-color: gray;
+  border: 1px solid gray;
+  /* Center the line */
+  margin: auto;
 }
 
 
@@ -197,17 +209,16 @@ html, body { margin: 0; padding: 0; }
 #page-content #content .lbl-toggle {
   display: block;
   font-weight: bold;
+  /* Pad the left side a bit more */
   padding: 1rem 1rem 1rem 25px;
-  background: #18181b;
+  background: var(--dark-navbar-color);
   cursor: pointer;
   border-radius: 15px;
   transition: all 0.25s ease-out;
   position: relative; /* Add relative positioning */
   height: 40px; /* Set the height */
   line-height: 40px; /* Center the text vertically */
-
-  border: 1px #222224 solid;
-
+  border: 1px var(--dark-border-color) solid;
 }
 
 #page-content #content .lbl-toggle:hover {
@@ -253,16 +264,14 @@ html, body { margin: 0; padding: 0; }
 }
 
 #page-content #content .collapsible-content .content-inner {
-  background: #18181b;
-  border-top: 1px #303032 solid;
-  border-right: 1px #222224 solid;
-  border-left: 1px #222224 solid;
-  border-bottom: 1px #222224 solid;
-
-
+  background: var(--dark-navbar-color);
+  border-top: 1px var(--dark-border-separator-color) solid;
+  border-right: 1px var(--dark-border-color) solid;
+  border-left: 1px var(--dark-border-color) solid;
+  border-bottom: 1px var(--dark-border-color) solid;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
-  padding: .5rem 1rem;
+  padding: 1rem 1rem;
 }
 
 
@@ -270,7 +279,7 @@ html, body { margin: 0; padding: 0; }
 
 
 body {
-  background-color: #09090b;
+  background-color: var(--dark-bg-color);
   font-family: "Inter", sans-serif;
   color: white;
   overflow-y: hidden;
