@@ -21,8 +21,8 @@ html, body { margin: 0; padding: 0; }
 /* Style the navbar */
 #navbar {
   overflow: hidden;
-  font-family: "Poppins", sans-serif;
-  font-size: large;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
   color: #ffffff;
   background-color: #18181b;
   padding-top: 24px;
@@ -59,15 +59,14 @@ html, body { margin: 0; padding: 0; }
 */
 
 .sidebar {
-  margin-top: 75px;
+  /*margin-top: 75px;*/
+  top: 75px;
   padding-top: 30px;
   color: white;
   /*background-color: black;*/
   background-color: #09090b;
 
   position: fixed;
-  top: 0;
-  left: 0;
   height: calc(100% - 75px);
   width: 220px;
 }
@@ -133,17 +132,23 @@ html, body { margin: 0; padding: 0; }
 */
 
 #page-content {
-  /* 225px is to account for sidebar*/
-  margin-left: calc(225px + 25px);
-  /* 75px is to account for navbar*/
-  margin-top: calc(75px + 30px);
-  width: 85%;
+  /* Move box to the left and down (navbar and sidebar) */
+  left: calc(225px + 250px);
+  top: 73px;
+
+  /*margin-top: 30px;*/
+  width: 60%;
+  height: 90%;
+  position: absolute;
+
+  /*display: flex;*/
+
 }
 
 #page-content.page-path {
   height: 20px;
   width: 20px;
-  line-height: 20px;
+  /*line-height: 20px;*/
 }
 
 #page-content.page-path svg {
@@ -152,4 +157,8 @@ html, body { margin: 0; padding: 0; }
 
 body {
   background-color: #09090b;
+  font-family: "Inter", sans-serif;
+  color: white;
+  overflow-y: hidden;
+
 }
