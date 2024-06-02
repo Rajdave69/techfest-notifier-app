@@ -281,6 +281,75 @@ html, body { margin: 0; padding: 0; }
 
 
 
+/*
+#
+#
+#   Unread notification box CSS
+#
+#
+*/
+
+
+.unread-notification {
+  margin: 0;
+  border: 1px var(--dark-border-separator-color) solid;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #242427;
+  max-height: 100px;
+  min-height: 60px;
+  width: 99%;
+  display: grid;
+  align-items: center; /* Center items vertically */
+}
+
+
+.unread-notification h3 {
+  /* Set top margin to 4px */
+  margin: 4px 2px 2px;
+  padding: 0;
+  font-weight: bold;
+}
+
+.unread-notification p {
+  color: aliceblue;
+  /* Set top margin to 4px */
+  margin: 1px 1px 4px;
+}
+
+.unread-notification hr {
+  width: 99%;
+  border: 1px solid lightgray;
+  /* Center the line */
+  margin-top: 1px;
+
+
+}
+
+/*
+#
+#
+#   Number Box CSS
+#
+#
+*/
+
+.number-box {
+  border: 1px solid #324c6b;
+  background-color: #1e252e;
+  color: #60a5f4;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: bolder;
+  margin-left: auto; /* Align to the right */
+  margin-right: 10px; /* Add some space to the right */
+  justify-content: center;
+}
 
 
 body {
