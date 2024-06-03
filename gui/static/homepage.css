@@ -12,6 +12,12 @@
   --dark-sidebar-selected-color: #62baf3;
   --dark-border-color: #222224;
   --dark-border-separator-color: #303032;
+  --dark-numberbox-border: #324c6b;
+  --dark-numberbox-background: #1e252e;
+  --dark-numberbox-color: #60a5fa;
+
+  --dark-secondary-color: white;
+
 }
 
 
@@ -33,7 +39,7 @@ html, body { margin: 0; padding: 0; }
   overflow: hidden;
   font-family: "Inter", sans-serif;
   font-size: 20px;
-  color: #ffffff;
+  color: var(--dark-secondary-color);
   background-color: var(--dark-navbar-color);
   padding-top: 24px;
   padding-bottom: 24px;
@@ -72,7 +78,7 @@ html, body { margin: 0; padding: 0; }
   /*margin-top: 75px;*/
   top: 75px;
   padding-top: 30px;
-  color: white;
+  color: var(--dark-secondary-color);
   /*background-color: black;*/
   background-color: var(--dark-bg-color);
 
@@ -109,7 +115,7 @@ html, body { margin: 0; padding: 0; }
 .sidebar ul li a {
   margin: 0;
   padding: 0;
-  color: white;
+  color: var(--dark-secondary-color);
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -306,7 +312,7 @@ html, body { margin: 0; padding: 0; }
 
 .unread-notification h3 {
   /* Set top margin to 4px */
-  margin: 4px 2px 2px;
+  margin: 4px 7px 2px;
   padding: 0;
   font-weight: bold;
 }
@@ -314,7 +320,7 @@ html, body { margin: 0; padding: 0; }
 .unread-notification p {
   color: aliceblue;
   /* Set top margin to 4px */
-  margin: 1px 1px 4px;
+  margin: 1px 6px 4px;
 }
 
 .unread-notification hr {
@@ -335,22 +341,27 @@ html, body { margin: 0; padding: 0; }
 */
 
 .number-box {
-  border: 1px solid #324c6b;
-  background-color: #1e252e;
-  color: #60a5f4;
+  border: 1px solid var(--dark-numberbox-border);
+  background-color: var(--dark-numberbox-background);
+  color: var(--dark-numberbox-color);
   height: 24px;
   width: 24px;
   display: flex;
   text-align: center;
   align-items: center;
   border-radius: 7px;
-  font-size: 15px;
+  font-size: 14px;
+  text-shadow: var(--dark-numberbox-border);
   font-weight: bolder;
   margin-left: auto; /* Align to the right */
   margin-right: 10px; /* Add some space to the right */
   justify-content: center;
 }
 
+.wrap-collapsible .number-box {
+  margin-top: -33px;
+  margin-right: 25px;
+}
 
 body {
   background-color: var(--dark-bg-color);
@@ -358,4 +369,8 @@ body {
   color: white;
   overflow-y: hidden;
 
+  /* Prevent Selection */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
