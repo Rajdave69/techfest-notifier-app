@@ -1,133 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="../static/homepage.css">
-  </head>
-  <body>
-	<script src="../static/homepage.js"></script>
-  </body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>HTML 5 Boilerplate</title>
+      <link rel="stylesheet" href="../static/homepage.css">
+   </head>
+   <body>
+      <script src="../static/homepage.js"></script>
+   </body>
 </html>
-
 <body>
-
-<!--Navbar at the top-->
-<div id="navbar" class="sticky">
-  <b>Notifier App</b>
-</div>
-
-<!--Sidebar-->
-<div class="sidebar">
-  <ul>
-
-    <li class="selected">
-      <a href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-          <path d="M4 4h6v8h-6z"></path>
-          <path d="M4 16h6v4h-6z"></path>
-          <path d="M14 12h6v8h-6z"></path>
-          <path d="M14 4h6v4h-6z"></path>
-        </svg>
-        <span class="nav-item">Home</span>
-      </a>
-    </li>
-
-
-    <li>
-      <a href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-          <path d="M4 4h6v8h-6z"></path>
-          <path d="M4 16h6v4h-6z"></path>
-          <path d="M14 12h6v8h-6z"></path>
-          <path d="M14 4h6v4h-6z"></path>
-        </svg>
-        <span class="nav-item">Reminders</span>
-        <span class="number-box">2</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-          <path d="M4 4h6v8h-6z"></path>
-          <path d="M4 16h6v4h-6z"></path>
-          <path d="M14 12h6v8h-6z"></path>
-          <path d="M14 4h6v4h-6z"></path>
-        </svg>
-        <span class="nav-item">Notification History</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-          <path d="M4 4h6v8h-6z"></path>
-          <path d="M4 16h6v4h-6z"></path>
-          <path d="M14 12h6v8h-6z"></path>
-          <path d="M14 4h6v4h-6z"></path>
-        </svg>
-        <span class="nav-item">Settings</span>
-      </a>
-    </li>
-
-  </ul>
-</div>
+   <!--Navbar at the top-->
+   <div id="navbar" class="sticky">
+      <b>Notifier App</b>
+   </div>
+   <!--Sidebar-->
+   <div class="sidebar">
+      <ul id="sidebar-ul">
+         <li class="selected">
+            <a href="#">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+                  <path d="M4 4h6v8h-6z"></path>
+                  <path d="M4 16h6v4h-6z"></path>
+                  <path d="M14 12h6v8h-6z"></path>
+                  <path d="M14 4h6v4h-6z"></path>
+               </svg>
+               <span class="nav-item">Home</span>
+            </a>
+         </li>
+         <li>
+            <a href="#reminders">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+                  <path d="M4 4h6v8h-6z"></path>
+                  <path d="M4 16h6v4h-6z"></path>
+                  <path d="M14 12h6v8h-6z"></path>
+                  <path d="M14 4h6v4h-6z"></path>
+               </svg>
+               <span class="nav-item">Reminders</span>
+               <span class="number-box">2</span>
+            </a>
+         </li>
+         <li>
+            <a href="#notification-history">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+                  <path d="M4 4h6v8h-6z"></path>
+                  <path d="M4 16h6v4h-6z"></path>
+                  <path d="M14 12h6v8h-6z"></path>
+                  <path d="M14 4h6v4h-6z"></path>
+               </svg>
+               <span class="nav-item">Notification History</span>
+            </a>
+         </li>
+         <li>
+            <a href="#settings">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+                  <path d="M4 4h6v8h-6z"></path>
+                  <path d="M4 16h6v4h-6z"></path>
+                  <path d="M14 12h6v8h-6z"></path>
+                  <path d="M14 4h6v4h-6z"></path>
+               </svg>
+               <span class="nav-item">Settings</span>
+            </a>
+         </li>
+      </ul>
+   </div>
+   <div id="page-content">
+      <!-- body content -->
+      <div id="content">
 
 
-<div id="page-content">
-    <!-- body content -->
-  <div id="content">
-    <h1>Welcome to Notifier App!</h1>
-    <br>
-    <p>You can expand the following sections:</p>
-
-    <!-- Collapsables here-->
-
-    <!-- For unread notifications -->
-    <div class="wrap-collapsible">
-      <input id="unread-notifications" class="toggle" type="checkbox" checked>
-
-      <label for="unread-notifications" class="lbl-toggle">Unread Notifications</label>
-      <div class="collapsible-content">
-        <div class="content-inner">
-
-          <div class="unread-notification">
-            <h3>Title</h3>
-            <p>Content</p>
-          </div>
+         <div id="#">
+            <h1>Welcome to Notifier App!</h1>
+            <br>
+            <p>You can expand the following sections:</p>
+            <!-- Collapsables here-->
+            <!-- For unread notifications -->
+            <div class="wrap-collapsible">
+               <input id="unread-notifications" class="toggle" type="checkbox" checked>
+               <label for="unread-notifications" class="lbl-toggle">
+                 Unread Notifications
+                  <span class="number-box">2</span>
+               </label>
 
 
+               <div class="collapsible-content">
+                  <div class="content-inner">
+                      <!-- JS will add boxes here -->
+                     <div class="unread-notification">
+                        <h3>Title</h3>
+                        <p>Content</p>
+                     </div>
 
-          <p>
-            Ipsum Lorem
-          </p>
+                  </div>
+               </div>
+            </div>
+
+            <hr>
+            <br>
+
+            <!-- For Upcoming Reminders -->
+            <div class="wrap-collapsible">
+               <input id="upcoming-reminders" class="toggle" type="checkbox">
+               <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
+               <div class="collapsible-content">
+                  <div class="content-inner">
+                     <p>
+                        Ipsum Lorem
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+         <div id="#reminders">
+            <h1>Welcome to Notifier App!</h1>
+            <br>
+            <p>Reminders Page</p>
+         </div>
+
+
+        <div id="#notification-history">
+            <h1>Welcome to Notifier App!</h1>
+            <br>
+            <p>Notification History Page</p>
         </div>
+
+        <div id="#settings">
+            <h1>Welcome to Notifier App!</h1>
+            <br>
+            <p>Settings Page</p>
+         </div>
+
+
       </div>
-    </div>
-
-    <hr>
-    <br>
-
-    <!-- For Upcoming Reminders -->
-    <div class="wrap-collapsible">
-      <input id="upcoming-reminders" class="toggle" type="checkbox">
-      <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
-      <div class="collapsible-content">
-        <div class="content-inner">
-          <p>
-            Ipsum Lorem
-          </p>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-
-</div>
-
-
+   </div>
 </body>
