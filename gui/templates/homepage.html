@@ -78,20 +78,18 @@
             <!-- Collapsables here-->
             <!-- For unread notifications -->
             <div class="wrap-collapsible">
-               <input id="unread-notifications" class="toggle" type="checkbox" checked>
+               <input id="unread-notifications" class="toggle" type="checkbox">
                <label for="unread-notifications" class="lbl-toggle">
                  Unread Notifications
-                  <span class="number-box">2</span>
+                  <span class="number-box" id="unread-notifs-number-box" style="display: none">0</span>
                </label>
 
-
                <div class="collapsible-content">
-                  <div class="content-inner">
+                  <div class="content-inner" id="unread-notifications-box">
+
+
                       <!-- JS will add boxes here -->
-                     <div class="unread-notification">
-                        <h3>Title</h3>
-                        <p>Content</p>
-                     </div>
+
 
                   </div>
                </div>

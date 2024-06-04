@@ -1,8 +1,4 @@
-function createUnreadNotificationBox(title, description, image_path, timestamp) {
-
-}
-
-
+const API_URL = ""
 
 
 // Wait for window to completely load
@@ -51,10 +47,65 @@ window.addEventListener('DOMContentLoaded', function() {
 
     }
 
-    // Check the hash initially when the page loads
+
+    function homepageLoadUnreadNotifications() {
+        fetch(`API_URL`, {method: 'GET'})
+        .then(r => {
+
+        /*
+        const r = [
+            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+        ]*/
+
+            const unreadNotificationBox = document.getElementById('unread-notifications-box')
+            for (let notification of r) {
+                console.log(notification)
+                const mainDiv = document.createElement('div')
+                mainDiv.setAttribute('class', 'unread-notification');
+
+                const image = document.createElement('img')
+                image.src = notification['image']
+                const h3 = document.createElement('h3')
+                h3.innerText = notification['title']
+                const p = document.createElement('p')
+                p.innerText = notification['content']
+
+                mainDiv.append(image, h3, p)
+                unreadNotificationBox.append(mainDiv)
+            }
+
+            if (r.length === 0) {
+                document.getElementById('unread-notifs-number-box').style.display = 'none';
+                document.getElementById('unread-notifications').checked = false
+            } else if (r.length >= 0) {
+                document.getElementById('unread-notifs-number-box').innerText = r.length.toString()
+                document.getElementById('unread-notifs-number-box').style.display = 'flex';
+                document.getElementById('unread-notifications').checked = true
+
+            } else {
+                console.error("unreadNotificationBox list from API is less than 0 elements long (possible undefined)")
+            }
+        })
+    }
+
     showDivBasedOnHash();
+    pageLoad();
+
+    function pageLoad() {
+        // Check the hash initially when the page loads
+        showDivBasedOnHash();
+
+        //
+        homepageLoadUnreadNotifications();
+
+    }
+
 
     // Listen for hash changes in the URL
-    window.addEventListener("hashchange", showDivBasedOnHash);
+    window.addEventListener("hashchange", pageLoad);
 
 });
