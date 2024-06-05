@@ -474,6 +474,126 @@ table {
 }
 
 
+/*
+#
+#
+#   Create Reminder Page
+#
+#
+ */
+
+.edit-reminder-box {
+  background-color: var(--dark-navbar-color);
+  padding: 24px;
+  display: grid;
+  border-radius: 12px;
+  border: 1px var(--dark-border-color) solid;
+
+
+
+}
+
+.form-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 15% 15% 30% 40%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  display: grid
+}
+
+.name-box {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.time-box {
+  grid-area: 1 / 2 / 2 / 3;
+
+}
+
+.image-box {
+  grid-area: 1 / 3 / 2 / 4;
+
+}
+
+.name-box, .time-box, .image-box {
+  padding-bottom: 8px;
+}
+
+
+.name-input-box input,
+.time-input-box input,
+.image-input-box input,
+.description-input-box input {
+  color: white;
+  background-color: var(--dark-notification-box-background-color);
+  border-radius: 6px;
+  padding: 10px;
+  min-width: 260px;
+  border: 1px solid var(--dark-border-separator-color)
+}
+
+.name-input-box input:focus,
+.time-input-box input:focus,
+.image-input-box input:focus,
+.description-input-box input:focus {
+  /*border: black;*/
+  border: 2px solid var(--dark-blue-button-color);
+  outline: none;
+}
+
+.name-input-box p,
+.time-input-box p,
+.image-input-box p,
+.description-input-box p
+{
+  margin-top: 5px;
+  font-weight: normal;
+  color: grey;
+  letter-spacing: -.025em;
+  font-size: 100px;
+
+
+}
+
+.name-input-box {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.time-input-box {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.image-input-box {
+  grid-area: 2 / 3 / 3 / 4;
+}
+
+.description-box {
+  grid-area: 3 / 1 / 4 / 2;
+  align-self: center;
+  justify-items: center;
+  width: 100%;
+}
+
+.description-input-box {
+  grid-area: 4 / 1 / 5 / 4;
+  padding-bottom: 15px;
+
+}
+.description-input-box input {
+  min-width: 98%;
+  min-height: 85%;
+}
+
+.name-box label::after,
+.time-box label::after
+
+{
+    content: "*";
+    color: red;
+    padding-left: 2px;
+}
+
+
 
 
 
@@ -487,4 +607,11 @@ body {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  letter-spacing: -.025em;
+  font-weight: 500;
 }
+
+h1 {
+  font-weight: 700;
+}
+
