@@ -1,128 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>HTML 5 Boilerplate</title>
-      <link rel="stylesheet" href="../static/homepage.css">
-   </head>
-   <body>
-      <script src="../static/homepage.js"></script>
-   </body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Notifier App</title>
+    <link rel="stylesheet" href="../static/homepage.css">
+  </head>
+  <body>
+    <script src="../static/homepage.js"></script>
+  </body>
 </html>
 <body>
-   <div id="page">
-      <!--Navbar at the top-->
-      <div id="navbar" class="sticky">
-         <b>Notifier App</b>
-      </div>
-      <!--Sidebar-->
-      <div class="sidebar">
-         <ul id="sidebar-ul">
-            <li class="selected">
-               <a href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-                     <path d="M4 4h6v8h-6z"></path>
-                     <path d="M4 16h6v4h-6z"></path>
-                     <path d="M14 12h6v8h-6z"></path>
-                     <path d="M14 4h6v4h-6z"></path>
-                  </svg>
-                  <span class="nav-item">Home</span>
-               </a>
-            </li>
-            <li>
-               <a href="#reminders">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-                     <path d="M4 4h6v8h-6z"></path>
-                     <path d="M4 16h6v4h-6z"></path>
-                     <path d="M14 12h6v8h-6z"></path>
-                     <path d="M14 4h6v4h-6z"></path>
-                  </svg>
-                  <span class="nav-item">Reminders</span>
-                  <span class="number-box">2</span>
-               </a>
-            </li>
-            <li>
-               <a href="#notification-history">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-                     <path d="M4 4h6v8h-6z"></path>
-                     <path d="M4 16h6v4h-6z"></path>
-                     <path d="M14 12h6v8h-6z"></path>
-                     <path d="M14 4h6v4h-6z"></path>
-                  </svg>
-                  <span class="nav-item">Notification History</span>
-               </a>
-            </li>
-            <li>
-               <a href="#settings">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-                     <path d="M4 4h6v8h-6z"></path>
-                     <path d="M4 16h6v4h-6z"></path>
-                     <path d="M14 12h6v8h-6z"></path>
-                     <path d="M14 4h6v4h-6z"></path>
-                  </svg>
-                  <span class="nav-item">Settings</span>
-               </a>
-            </li>
-         </ul>
-      </div>
-      <div id="page-content">
-         <!-- body content -->
-         <div id="#">
-            <h1>Welcome to Notifier App!</h1>
-            <br>
-            <p>You can expand the following sections:</p>
-            <!-- Collapsables here-->
-
-            <!-- For unread notifications -->
-            <div class="wrap-collapsible">
-               <input id="unread-notifications" class="toggle" type="checkbox">
-               <label for="unread-notifications" class="lbl-toggle">
-               Unread Notifications
-               <span class="number-box" id="unread-notifs-number-box" style="display: none">0</span>
-               </label>
-               <div class="collapsible-content">
-                  <div class="content-inner" id="unread-notifications-box">
-                     <!-- JS will add boxes here -->
-
-                     <!-- Template: -->
-                     <!--
-                     <div class="unread-notification">
-                        <img src="../static/placeholder_image.png" alt="">
-                        <h3>Title</h3>
-                        <p>Content</p>
-                     </div>
+  <div id="page">
+    <!--Navbar at the top-->
+    <div id="navbar" class="sticky">
+      <b>Notifier App</b>
+    </div>
+    <!--Sidebar-->
+    <div class="sidebar">
+      <ul id="sidebar-ul">
+        <li class="selected">
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+              <path d="M4 4h6v8h-6z"></path>
+              <path d="M4 16h6v4h-6z"></path>
+              <path d="M14 12h6v8h-6z"></path>
+              <path d="M14 4h6v4h-6z"></path>
+            </svg>
+            <span class="nav-item">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#reminders">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+              <path d="M4 4h6v8h-6z"></path>
+              <path d="M4 16h6v4h-6z"></path>
+              <path d="M14 12h6v8h-6z"></path>
+              <path d="M14 4h6v4h-6z"></path>
+            </svg>
+            <span class="nav-item">Reminders</span>
+            <span class="number-box">2</span>
+          </a>
+        </li>
+        <li>
+          <a href="#notification-history">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+              <path d="M4 4h6v8h-6z"></path>
+              <path d="M4 16h6v4h-6z"></path>
+              <path d="M14 12h6v8h-6z"></path>
+              <path d="M14 4h6v4h-6z"></path>
+            </svg>
+            <span class="nav-item">Notification History</span>
+          </a>
+        </li>
+        <li>
+          <a href="#settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+              <path d="M4 4h6v8h-6z"></path>
+              <path d="M4 16h6v4h-6z"></path>
+              <path d="M14 12h6v8h-6z"></path>
+              <path d="M14 4h6v4h-6z"></path>
+            </svg>
+            <span class="nav-item">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div id="page-content">
+      <!-- body content -->
+      <div id="#">
+        <h1>Welcome to Notifier App!</h1>
+        <br>
+        <p>You can expand the following sections:</p>
+        <!-- Collapsables here-->
+        <!-- For unread notifications -->
+        <div class="wrap-collapsible">
+          <input id="unread-notifications" class="toggle" type="checkbox">
+          <label for="unread-notifications" class="lbl-toggle"> Unread Notifications <span class="number-box" id="unread-notifs-number-box" style="display: none">0</span>
+          </label>
+          <div class="collapsible-content">
+            <div class="content-inner" id="unread-notifications-box">
+              <!-- JS will add boxes here -->
+              <!-- Template: -->
+              <!--
+                     <div class="unread-notification"><img src="../static/placeholder_image.png" alt=""><h3>Title</h3><p>Content</p></div>
                      -->
-                  </div>
-               </div>
             </div>
-            <hr>
-            <br>
-
-            <!-- For Upcoming Reminders -->
-            <div class="wrap-collapsible">
-               <input id="upcoming-reminders" class="toggle" type="checkbox">
-               <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
-               <div class="collapsible-content">
-                  <div class="content-inner">
-                     <p>
-                        Ipsum Lorem
-                     </p>
-                  </div>
-               </div>
+          </div>
+        </div>
+        <hr>
+        <br>
+        <!-- For Upcoming Reminders -->
+        <div class="wrap-collapsible">
+          <input id="upcoming-reminders" class="toggle" type="checkbox">
+          <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
+          <div class="collapsible-content">
+            <div class="content-inner">
+              <p> Ipsum Lorem </p>
             </div>
-         </div>
-         <div id="#reminders">
-            <div id="reminders-grid">
-            <h1>Reminders</h1>
-            <button id="create-reminder-button" onclick="location.href = '#create-reminder'">Create Reminder</button>
-            <br>
-            <p>Reminders:</p>
-
-            <div class="table-wrapper">
+          </div>
+        </div>
+      </div>
+      <div id="#reminders">
+        <div id="reminders-grid">
+          <h1>Reminders</h1>
+          <button id="create-reminder-button" onclick="location.href = '#create-reminder'">Create Reminder</button>
+          <br>
+          <p>Reminders:</p>
+          <div class="table-wrapper">
             <table id="reminders-table">
-               <tr>
+              <tr>
                 <th>Title</th>
                 <th>Description</th>
                 <th>At</th>
@@ -132,91 +120,69 @@
                 <td>Alfreds Futterkiste</td>
                 <td>Maria Anders</td>
                 <td>Germany</td>
-                 <td class="table-edit-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                 <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z"></path>
-                 <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z"></path>
-               </svg>
-                    Edit</td>
+                <td class="table-edit-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z"></path>
+                    <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z"></path>
+                  </svg> Edit
+                </td>
               </tr>
-
-
-
-
             </table>
-               </div>
-               </div>
-
-         </div>
-         <div id="#notification-history">
-            <h1>Welcome to Notifier App!</h1>
-            <br>
-            <p>Notification History Page</p>
-         </div>
-         <div id="#settings">
-            <h1>Welcome to Notifier App!</h1>
-            <br>
-            <p>Settings Page</p>
-         </div>
-
-
-
-         <div id="#create-reminder">
-            <h1>Create Reminder</h1>
-            <br>
-            <form  >
-            <div class="edit-reminder-box">
-                  <div class="form-wrapper">
-
-
-
-
-                  <div class="name-box">
-                     <label for="get-reminder-name">Name</label>
-                  </div>
-                  <div class="time-box">
-                     <label for="get-reminder-time">Time</label>
-                  </div>
-                  <div class="image-box">
-                     <label for="get-reminder-image">Image</label>
-                  </div>
-
-                  <div class="name-input-box">
-                     <input type="text" id="get-reminder-name" required> <br>
-                     <p>A simple and short name for this <br>reminder</p>
-                  </div>
-
-                  <div class="time-input-box">
-                     <input type="datetime-local" id="get-reminder-time" required>
-                     <p>The time at which the reminder will <br>remind</p>
-                  </div>
-                  <div class="image-input-box">
-                     <input type="text" id="get-reminder-image">
-                     <p>Optional 100x100 image.</p>
-                  </div>
-
-                     <div class="description-box">
-                        <label for="get-reminder-description">Description</label>
-                     </div>
-
-                  <div class="description-input-box">
-                     <input type="text" id="get-reminder-description">
-                     <p> text</p>
-                  </div>
-
-                     </div>
-
-
-            </div>
-               <br>
-               <input type="submit" value="Create" id="create-reminder-submit-button">
-
-               <button type="button" id="cancel-creating-reminder-button">Cancel</button>
-
-                               </form>
-
-
-         </div>
+          </div>
+        </div>
       </div>
-   </div>
+      <div id="#notification-history">
+        <h1>Welcome to Notifier App!</h1>
+        <br>
+        <p>Notification History Page</p>
+      </div>
+      <div id="#settings">
+        <h1>Welcome to Notifier App!</h1>
+        <br>
+        <p>Settings Page</p>
+      </div>
+      <div id="#create-reminder">
+        <h1>Create Reminder</h1>
+        <br>
+        <form>
+          <div class="edit-reminder-box">
+            <div class="form-wrapper">
+              <div class="name-box">
+                <label for="get-reminder-name">Name</label>
+              </div>
+              <div class="time-box">
+                <label for="get-reminder-time">Time</label>
+              </div>
+              <div class="image-box">
+                <label for="get-reminder-image">Image</label>
+              </div>
+              <div class="name-input-box">
+                <input type="text" id="get-reminder-name" required>
+                <br>
+                <p>A simple and short name for this <br>reminder </p>
+              </div>
+              <div class="time-input-box">
+                <input type="datetime-local" id="get-reminder-time" required>
+                <p>The time at which the reminder will <br>remind </p>
+              </div>
+              <div class="image-input-box">
+                <input type="text" id="get-reminder-image">
+                <p>Optional 100x100 image.</p>
+              </div>
+              <div class="description-box">
+                <label for="get-reminder-description">Description</label>
+              </div>
+              <div class="description-input-box">
+                <input type="text" id="get-reminder-description">
+                <p> text</p>
+              </div>
+            </div>
+          </div>
+          <br>
+          <input type="submit" value="Create" id="create-reminder-submit-button">
+          <button type="button" id="cancel-creating-reminder-button">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
