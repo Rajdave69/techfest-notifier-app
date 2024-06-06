@@ -164,10 +164,12 @@
          <div id="#create-reminder">
             <h1>Create Reminder</h1>
             <br>
+            <form  >
             <div class="edit-reminder-box">
-               <form>
-
                   <div class="form-wrapper">
+
+
+
 
                   <div class="name-box">
                      <label for="get-reminder-name">Name</label>
@@ -189,7 +191,7 @@
                      <p>The time at which the reminder will <br>remind</p>
                   </div>
                   <div class="image-input-box">
-                     <input type="image" id="get-reminder-image">
+                     <input type="text" id="get-reminder-image">
                      <p>Optional 100x100 image.</p>
                   </div>
 
@@ -204,8 +206,15 @@
 
                      </div>
 
-               </form>
+
             </div>
+               <br>
+               <input type="submit" value="Create" id="create-reminder-submit-button">
+
+               <button type="button" id="cancel-creating-reminder-button">Cancel</button>
+
+                               </form>
+
 
          </div>
       </div>
