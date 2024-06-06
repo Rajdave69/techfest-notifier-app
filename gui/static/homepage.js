@@ -6,45 +6,47 @@ function showDivBasedOnHash() {
         window.location.hash = "#"
     }
 
-        // Get the divs
-        const allDivs = {
-            '#': document.getElementById("#"),
-            '#settings': document.getElementById("#settings"),
-            '#reminders': document.getElementById("#reminders"),
-            "#notification-history": document.getElementById("#notification-history"),
-            '#create-reminder': document.getElementById("#create-reminder")
-        }
-
-        function hideAllDivsExcept(except) {
-            for (let divKey in allDivs) {
-
-                allDivs[divKey].hidden = divKey !== except;
-
-            }
-        }
-
-
-        if (window.location.hash in allDivs) {
-            hideAllDivsExcept(window.location.hash)
-            return window.location.hash
-        } else {
-            hideAllDivsExcept('#')
-        }
-
+    // Get the divs
+    const allDivs = {
+        '#': document.getElementById("#"),
+        '#settings': document.getElementById("#settings"),
+        '#reminders': document.getElementById("#reminders"),
+        "#notification-history": document.getElementById("#notification-history"),
+        '#create-reminder': document.getElementById("#create-reminder")
     }
 
+    function hideAllDivsExcept(except) {
+        for (let divKey in allDivs) {
+
+            allDivs[divKey].hidden = divKey !== except;
+
+        }
+    }
+
+
+    if (window.location.hash in allDivs) {
+        hideAllDivsExcept(window.location.hash)
+        return window.location.hash
+    } else {
+        hideAllDivsExcept('#')
+    }
+
+}
+
 function homepageLoadUnreadNotifications() {
-        fetch(`API_URL`, {method: 'GET'})
+    fetch(`API_URL`, {
+            method: 'GET'
+        })
         .then(r => {
 
-        /*
-        const r = [
-            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-        ]*/
+            /*
+            const r = [
+                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            ]*/
 
             const unreadNotificationBox = document.getElementById('unread-notifications-box')
 
@@ -86,17 +88,15 @@ function homepageLoadUnreadNotifications() {
 
 
 
-
-
 function pageLoad() {
-        // Check the hash initially when the page loads
-        const currentPage = showDivBasedOnHash();
+    // Check the hash initially when the page loads
+    const currentPage = showDivBasedOnHash();
 
-        selectSidebarElement(currentPage)
+    selectSidebarElement(currentPage)
 
-        if (currentPage === '#') {
-            homepageLoadUnreadNotifications();
-        }
+    if (currentPage === '#') {
+        homepageLoadUnreadNotifications();
+    }
 
 }
 
@@ -109,16 +109,16 @@ window.addEventListener('DOMContentLoaded', function() {
     const elements = document.getElementById('sidebar-ul')
 
     for (let i = 0; i < elements.children.length; i++) {
-            elements.children[i].onclick = function() {
-                // Remove 'selected' class from all elements
-                for (let j = 0; j < elements.children.length; j++) {
-                    elements.children[j].classList.remove('selected');
-                }
+        elements.children[i].onclick = function() {
+            // Remove 'selected' class from all elements
+            for (let j = 0; j < elements.children.length; j++) {
+                elements.children[j].classList.remove('selected');
+            }
 
-                // Add 'selected' class to the clicked element
-                this.classList.add('selected');
+            // Add 'selected' class to the clicked element
+            this.classList.add('selected');
 
-            };
+        };
     }
 
 
@@ -143,13 +143,13 @@ window.addEventListener('DOMContentLoaded', function() {
 function selectSidebarElement(pageHash) {
     const sidebarElements = document.getElementById('sidebar-ul')
 
-            for (let i = 0; i < sidebarElements.children.length; i++) {
-                console.log(sidebarElements.children[i].children[0].href)
+    for (let i = 0; i < sidebarElements.children.length; i++) {
+        console.log(sidebarElements.children[i].children[0].href)
 
-            if (sidebarElements.children[i].children[0].href.endsWith(pageHash)) {
-                sidebarElements.children[i].children[0].click()
-            }
+        if (sidebarElements.children[i].children[0].href.endsWith(pageHash)) {
+            sidebarElements.children[i].children[0].click()
         }
+    }
 
 }
 
@@ -167,7 +167,7 @@ function createReminderSubmitButton() {
 
         const imageRegex = /(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|png)/
 
-        if ( !(imageRegex.test(imageElement.value)) && imageElement.value !== "") {
+        if (!(imageRegex.test(imageElement.value)) && imageElement.value !== "") {
             alert('Invalid Image URL. Only JPG and PNG allowed')
             imageElement.value = ''
             return
@@ -181,15 +181,15 @@ function createReminderSubmitButton() {
         }
 
         fetch(`${API_URL}`, {
-            method: 'POST',
-            body: {
-                'name': nameElement.value,
-                'time': Date.parse(timeElement.value),
-                'image': imageElement.value,
-                'description': descriptionElement.value
-            }
-        })
-            .then( (r) => {
+                method: 'POST',
+                body: {
+                    'name': nameElement.value,
+                    'time': Date.parse(timeElement.value),
+                    'image': imageElement.value,
+                    'description': descriptionElement.value
+                }
+            })
+            .then((r) => {
                 nameElement.value = ""
                 timeElement.value = ""
                 imageElement.value = ""
@@ -201,4 +201,5 @@ function createReminderSubmitButton() {
 
 
 
-}}
+    }
+}
