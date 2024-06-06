@@ -1,4 +1,5 @@
 const API_URL = ""
+PAGES = ['#', '#settings', '#reminders', '#notification-history', '#create-reminder']
 
 function showDivBasedOnHash() {
     if (window.location.hash === "") {
@@ -80,18 +81,24 @@ function homepageLoadUnreadNotifications() {
                 console.error("unreadNotificationBox list from API is less than 0 elements long (possible undefined)")
             }
         })
-    }
+}
+
+
+
+
 
 
 function pageLoad() {
         // Check the hash initially when the page loads
         const currentPage = showDivBasedOnHash();
 
+        selectSidebarElement(currentPage)
+
         if (currentPage === '#') {
             homepageLoadUnreadNotifications();
         }
 
-    }
+}
 
 
 
@@ -112,7 +119,17 @@ window.addEventListener('DOMContentLoaded', function() {
                 this.classList.add('selected');
 
             };
-        }
+    }
+
+
+    // Create reminder cancel button
+    document.getElementById('cancel-creating-reminder-button').onclick = () => {
+        window.location.hash = '#reminders'
+    }
+
+    // Create reminder submit button
+    createReminderSubmitButton()
+
 
     // Run it once on page load
     pageLoad();
@@ -121,3 +138,67 @@ window.addEventListener('DOMContentLoaded', function() {
     window.addEventListener("hashchange", pageLoad);
 
 });
+
+
+function selectSidebarElement(pageHash) {
+    const sidebarElements = document.getElementById('sidebar-ul')
+
+            for (let i = 0; i < sidebarElements.children.length; i++) {
+                console.log(sidebarElements.children[i].children[0].href)
+
+            if (sidebarElements.children[i].children[0].href.endsWith(pageHash)) {
+                sidebarElements.children[i].children[0].click()
+            }
+        }
+
+}
+
+function createReminderSubmitButton() {
+    document.getElementById('create-reminder-submit-button').onclick = () => {
+        const nameElement = document.getElementById('get-reminder-name')
+        const timeElement = document.getElementById('get-reminder-time')
+        const imageElement = document.getElementById('get-reminder-image')
+        const descriptionElement = document.getElementById('get-reminder-description')
+
+        if (nameElement.value === '' || timeElement.value === '') {
+            console.log("undefined things")
+            return
+        }
+
+        const imageRegex = /(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|png)/
+
+        if ( !(imageRegex.test(imageElement.value)) && imageElement.value !== "") {
+            alert('Invalid Image URL. Only JPG and PNG allowed')
+            imageElement.value = ''
+            return
+        }
+
+        // Check if epoch given is smaller than current epoch
+        if (Date.parse(timeElement.value) <= Date.parse(new Date().toString())) {
+            alert("Time cannot be earlier than current time")
+            timeElement.value = ''
+            return
+        }
+
+        fetch(`${API_URL}`, {
+            method: 'POST',
+            body: {
+                'name': nameElement.value,
+                'time': Date.parse(timeElement.value),
+                'image': imageElement.value,
+                'description': descriptionElement.value
+            }
+        })
+            .then( (r) => {
+                nameElement.value = ""
+                timeElement.value = ""
+                imageElement.value = ""
+                descriptionElement.value = ""
+
+                window.location.hash = '#reminders'
+                alert("Reminder Successfully created")
+            })
+
+
+
+}}
