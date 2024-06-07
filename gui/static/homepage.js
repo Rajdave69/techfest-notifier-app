@@ -44,6 +44,7 @@ function homepageLoadUnreadNotifications() {
     fetch(`${API_URL}`, {
             method: 'GET'
         })
+                .then(response => response.json())
         .then(r => {
 
 
@@ -99,14 +100,16 @@ function remindersPageLoadReminders() {
 }
 
 
-        fetch(`${API_URL}`, {
+        fetch(`${API_URL}/api/reminders/`, {
             method: 'GET'
         })
+        .then(response => response.json())
         .then(r => {
+            console.log(r)
     // const r = [
     //     {'title': 'test', 'description': 'also eeetest', 'time': '1717701680', 'id': '123'}
     // ]
-            for (let element of r) {
+            for (let element of r['data']) {
                 // Create a table row
                 let tr = document.createElement('tr');
 
@@ -189,6 +192,9 @@ function pageLoad() {
     } else {
         console.warn(currentPage)
     }
+
+    setSidebarReminderCount()
+
 
 }
 
@@ -289,4 +295,26 @@ function createReminderSubmitButton() {
 
 
     }
+}
+
+function setSidebarReminderCount() {
+            const reminderNumberBox = document.getElementById('reminder-number-box');
+
+    fetch(`${API_URL}/api/reminders/`, {
+
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(r => {
+            console.log(r)
+            if (r['data'].length === 0) {
+                reminderNumberBox.style.display = 'none';
+
+            } else {
+                                reminderNumberBox.style.display = 'flex';
+
+                reminderNumberBox.innerText = r['data'].length.toString()
+            }
+
+        })
 }
