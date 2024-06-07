@@ -490,7 +490,7 @@ table {
 .edit-reminder-box {
   background-color: var(--dark-navbar-color);
   padding: 24px;
-  display: grid;
+  display: block;
   border-radius: 12px;
   border: 1px var(--dark-border-color) solid;
 
@@ -534,7 +534,8 @@ table {
   border-radius: 6px;
   padding: 10px;
   min-width: 260px;
-  border: 1px solid var(--dark-border-separator-color)
+  border: 1px solid var(--dark-border-separator-color);
+  height: 16px;
 }
 
 .name-input-box input:focus,
@@ -544,6 +545,7 @@ table {
   /*border: black;*/
   border: 2px solid var(--dark-blue-button-color);
   outline: none;
+  height: 14px;
 }
 
 .name-input-box p,
@@ -556,8 +558,7 @@ table {
   color: grey;
   letter-spacing: -.025em;
   font-size: 100px;
-
-
+  display: block;
 }
 
 .name-input-box {
@@ -598,8 +599,41 @@ table {
     padding-left: 2px;
 }
 
+#create-reminder-submit-button {
+    height: 36px;
+  width: 67px;
+  justify-self: right;
+  align-self: center;
+  font-weight: bolder;
+  border: 0px;
+  color: var(--dark-secondary-color);
+  background-color: var(--dark-blue-button-color);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+#create-reminder-submit-button:hover{
+    background-color: var(--dark-numberbox-color);
+}
 
 
+#cancel-creating-reminder-button {
+      height: 36px;
+  width: 67px;
+  justify-self: right;
+  align-self: center;
+  font-weight: bolder;
+  color: var(--dark-secondary-color);
+  background-color: var(--dark-sidebar-hover-color);
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid #2e2e30;
+  margin-left: 6px;
+}
+
+#cancel-creating-reminder-button:hover {
+  background-color: #222224;
+}
 
 
 body {
