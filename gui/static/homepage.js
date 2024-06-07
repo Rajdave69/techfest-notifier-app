@@ -1,10 +1,9 @@
 const API_URL = ""
-PAGES = ['#', '#settings', '#reminders', '#notification-history', '#create-reminder']
+PAGES = ['', '#settings', '#reminders', '#notification-history', '#create-reminder']
 
 function showDivBasedOnHash() {
-    if (window.location.hash === "") {
-        window.location.hash = "#"
-    }
+    let currentLocation = window.location.hash || "#"
+
 
     // Get the divs
     const allDivs = {
@@ -15,39 +14,47 @@ function showDivBasedOnHash() {
         '#create-reminder': document.getElementById("#create-reminder")
     }
 
-    function hideAllDivsExcept(except) {
+    function hideAllDivsExcept(key) {
         for (let divKey in allDivs) {
+            console.log(divKey, key, divKey !== key)
 
-            allDivs[divKey].hidden = divKey !== except;
+            allDivs[divKey].hidden = divKey !== key;
 
         }
     }
 
-    if (window.location.hash in allDivs) {
-        hideAllDivsExcept(window.location.hash)
-        return window.location.hash
+    if (currentLocation in allDivs) {
+        console.log("test", currentLocation)
+        hideAllDivsExcept(currentLocation)
+        return currentLocation
     } else {
-        hideAllDivsExcept('#')
+        hideAllDivsExcept('')
+        console.warn(currentLocation)
     }
 
 }
 
 function homepageLoadUnreadNotifications() {
-    fetch(`API_URL`, {
+    console.log('test')
+    const unreadNotificationBox = document.getElementById('unread-notifications-box')
+    unreadNotificationBox.replaceChildren();
+
+
+
+    fetch(`${API_URL}`, {
             method: 'GET'
         })
         .then(r => {
 
-            /*
-            const r = [
-                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-                {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            ]*/
 
-            const unreadNotificationBox = document.getElementById('unread-notifications-box')
+            // const r = [
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            // ]
+
 
             for (let notification of r) {
                 console.log(notification)
@@ -122,6 +129,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // Create reminder submit button
     createReminderSubmitButton()
+
 
 
     // Run it once on page load
