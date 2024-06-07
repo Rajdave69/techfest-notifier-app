@@ -23,7 +23,6 @@ function showDivBasedOnHash() {
         }
     }
 
-
     if (window.location.hash in allDivs) {
         hideAllDivsExcept(window.location.hash)
         return window.location.hash
@@ -119,12 +118,6 @@ window.addEventListener('DOMContentLoaded', function() {
             this.classList.add('selected');
 
         };
-    }
-
-
-    // Create reminder cancel button
-    document.getElementById('cancel-creating-reminder-button').onclick = () => {
-        window.location.hash = '#reminders'
     }
 
     // Create reminder submit button
