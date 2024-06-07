@@ -411,17 +411,22 @@ table {
   width: 100%;
 }
 
-.table-edit-button {
+.table-delete-button {
   color: var(--dark-sidebar-selected-color);
   font-weight: bold;
   text-align: end;
   padding-right: 3%;
 }
 
-.table-edit-button svg {
+.table-delete-button svg {
   width: 1em;
   height: 1em;
   vertical-align: middle; /* Align the icon with the text */
+  /*display: inline;*/
+}
+
+#reminders-table tr:last-child {
+  border-bottom: 0px;
 }
 
 
