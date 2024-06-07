@@ -92,16 +92,102 @@ function homepageLoadUnreadNotifications() {
 }
 
 
+function remindersPageLoadReminders() {
+    const remindersTableBody = document.getElementById('reminders-table').children[0];
+        while (remindersTableBody.rows.length > 1) {
+  remindersTableBody.deleteRow(1);
+}
+
+
+        fetch(`${API_URL}`, {
+            method: 'GET'
+        })
+        .then(r => {
+    // const r = [
+    //     {'title': 'test', 'description': 'also eeetest', 'time': '1717701680', 'id': '123'}
+    // ]
+            for (let element of r) {
+                // Create a table row
+                let tr = document.createElement('tr');
+
+                // Create table data cells for title, description, and time
+                let title = document.createElement('td');
+                let description = document.createElement('td');
+                let time = document.createElement('td');
+                const deleteButton = document.createElement('td');
+
+                // Set the text content for the cells
+                title.innerText = element['title'];
+                description.innerText = element['description'];
+                const dateObj = new Date(element['time']*1000)
+                time.innerText = `${dateObj.toLocaleDateString()}  ${dateObj.toLocaleTimeString()}`
+
+                // Set class for the delete button
+                deleteButton.setAttribute('class', 'table-delete-button');
+                deleteButton.setAttribute('id', `reminder-${element['id']}`);
+
+                // Create an SVG element with the appropriate namespace
+                const deleteButtonSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+                // Set necessary attributes for the SVG element
+                deleteButtonSVG.setAttribute('viewBox', "0 0 20 20");
+                deleteButtonSVG.setAttribute('fill', "currentColor");
+                deleteButtonSVG.setAttribute('aria-hidden', "true");
+                deleteButtonSVG.setAttribute('height', '1em');
+                deleteButtonSVG.setAttribute('width', '1em');
+
+                // Create path elements with the correct namespace
+                const svgPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                svgPath1.setAttribute('d', "M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z");
+                svgPath1.setAttribute('fill-rule', 'evenodd')
+                svgPath1.setAttribute('clip-rule', 'evenodd')
+
+                deleteButtonSVG.append(svgPath1)
+                deleteButton.append(deleteButtonSVG)
+                // Add the text "Delete" after the SVG
+                deleteButton.append(' Delete');
+
+                // Add a click event listener to the delete button cell
+                deleteButton.addEventListener('click', remindersDeleteButtonHandler);
+
+                tr.append(title, description, time, deleteButton)
+                remindersTableBody.append(tr)
+
+            }
+
+        })
+}
+
+function remindersDeleteButtonHandler(item) {
+    const id =  item.target.id.replace('reminder-', '')
+
+    fetch(`${API_URL}`,
+        {
+            method: 'post', body: {'id': id}
+        })
+        .then( (r) => {
+            console.log(r)
+            location.reload() // TODO TEST
+        })
+
+
+}
 
 
 function pageLoad() {
+    console.log("pageload")
     // Check the hash initially when the page loads
     const currentPage = showDivBasedOnHash();
 
-    selectSidebarElement(currentPage)
+    selectSidebarElement(currentPage);
 
     if (currentPage === '#') {
+        console.log('uwu')
         homepageLoadUnreadNotifications();
+    } else if (currentPage === '#reminders') {
+        remindersPageLoadReminders();
+    } else {
+        console.warn(currentPage)
     }
 
 }
