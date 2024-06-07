@@ -36,20 +36,22 @@ function homepageLoadUnreadNotifications() {
     const unreadNotificationBox = document.getElementById("unread-notifications-box");
     unreadNotificationBox.replaceChildren();
 
-    fetch(`${API_URL}`, {
+    fetch(`${API_URL}/api/notifications/unread/`, {
         method: "GET",
     })
         .then((response) => response.json())
-        .then((r) => {
+        .then((response) => response['data'])
+        .then((response) => {
+            console.log(response)
             // const r = [
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
+            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'timestamp': '123'},
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
             // ]
 
-            for (let notification of r) {
+            for (let notification of response) {
                 console.log(notification);
                 // Create the unread-notification div
                 const mainDiv = document.createElement("div");
@@ -70,11 +72,11 @@ function homepageLoadUnreadNotifications() {
                 unreadNotificationBox.append(mainDiv);
             }
 
-            if (r.length === 0) {
+            if (response.length === 0) {
                 document.getElementById("unread-notifs-number-box").style.display = "none";
                 document.getElementById("unread-notifications").checked = false;
-            } else if (r.length >= 0) {
-                document.getElementById("unread-notifs-number-box").innerText = r.length.toString();
+            } else if (response.length >= 0) {
+                document.getElementById("unread-notifs-number-box").innerText = response.length.toString();
                 document.getElementById("unread-notifs-number-box").style.display = "flex";
                 document.getElementById("unread-notifications").checked = true;
             } else {
@@ -93,12 +95,12 @@ function remindersPageLoadReminders() {
         method: "GET",
     })
         .then((response) => response.json())
-        .then((r) => {
-            console.log(r);
+        .then((response) => {
+            console.log(response);
             // const r = [
             //     {'title': 'test', 'description': 'also eeetest', 'time': '1717701680', 'id': '123'}
             // ]
-            for (let element of r["data"]) {
+            for (let element of response["data"]) {
                 // Create a table row
                 let tr = document.createElement("tr");
 
@@ -111,7 +113,7 @@ function remindersPageLoadReminders() {
                 // Set the text content for the cells
                 title.innerText = element["title"];
                 description.innerText = element["description"];
-                const dateObj = new Date(element["time"] * 1000);
+                const dateObj = new Date(element["timestamp"] * 1000);
                 time.innerText = `${dateObj.toLocaleDateString()}  ${dateObj.toLocaleTimeString()}`;
 
                 // Set class for the delete button
@@ -173,6 +175,8 @@ function pageLoad() {
         homepageLoadUnreadNotifications();
     } else if (currentPage === "#reminders") {
         remindersPageLoadReminders();
+    } else if (currentPage === "#notification-history") {
+        notificationHistoryPageLoad();
     } else {
         console.warn(currentPage);
     }
@@ -248,7 +252,7 @@ function createReminderSubmitButton() {
             method: "POST",
             body: {
                 name: nameElement.value,
-                time: Date.parse(timeElement.value),
+                timestamp: Date.parse(timeElement.value),
                 image: imageElement.value,
                 description: descriptionElement.value,
             },
@@ -279,4 +283,31 @@ function setSidebarReminderCount() {
                 reminderNumberBox.innerText = response["data"].length.toString();
             }
         });
+}
+
+
+function notificationHistoryPageLoad() {
+    const page = document.getElementById('#notification-history')
+
+    fetch(`${API_URL}/api/notifications/`, {method: 'GET'})
+        .then((response) => response.json())
+        .then((response) => response['data'])
+        .then((response) => {
+            const emptyNotificationHistoryDiv = document.getElementById('notification-history-empty')
+
+            console.log(response)
+            console.log(response.length)
+            if (response.length === 0) {
+                emptyNotificationHistoryDiv.style.display = 'grid'
+            } else {
+                emptyNotificationHistoryDiv.style.display = 'none'
+
+                // Create boxes and append
+
+
+            }
+
+        })
+
+
 }

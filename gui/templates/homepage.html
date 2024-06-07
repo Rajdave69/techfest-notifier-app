@@ -67,8 +67,10 @@
         </li>
       </ul>
     </div>
+
     <div id="page-content">
       <!-- body content -->
+
       <div id="#">
         <h1>Welcome to Notifier App!</h1>
         <br>
@@ -102,6 +104,7 @@
           </div>
         </div>
       </div>
+
       <div id="#reminders">
         <div id="reminders-grid">
           <h1>Reminders</h1>
@@ -110,7 +113,6 @@
           <p>Reminders:</p>
           <div class="table-wrapper">
             <table id="reminders-table">
-              <!-- JS will add code here -->
               <tr>
                 <th>Title</th>
                 <th>Description</th>
@@ -118,32 +120,41 @@
                 <th></th>
               </tr>
 
-              <tr>
-                <td>Alfreds Futterkiste</td>
-                <td>Maria Anders</td>
-                <td>Germany</td>
-                <td class="table-delete-button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                    <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z"></path>
-                    <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z"></path>
-                  </svg> Edit
-                </td>
-              </tr>
+              <!-- JS will add code here -->
 
             </table>
           </div>
         </div>
       </div>
+
+
       <div id="#notification-history">
-        <h1>Welcome to Notifier App!</h1>
+        <h1>Notification History</h1>
         <br>
-        <p>Notification History Page</p>
+<!--        <p>Notification History Page</p>-->
+
+        <div class="empty-category" id="notification-history-empty" >
+          <div class="empty-category-svg-box">
+            <svg class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+              <path d="M19 8.268a2 2 0 0 1 1 1.732v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h3"></path>
+              <path d="M5 15.734a2 2 0 0 1 -1 -1.734v-8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-3"></path>
+            </svg>
+          </div>
+          <br>
+          <div class="empty-category-text">
+          No Notification History
+            </div>
+        </div>
       </div>
+
+
       <div id="#settings">
         <h1>Welcome to Notifier App!</h1>
         <br>
         <p>Settings Page</p>
       </div>
+
+
       <div id="#create-reminder">
         <h1>Create Reminder</h1>
         <br>
@@ -176,7 +187,7 @@
                 <label for="get-reminder-description">Description</label>
               </div>
               <div class="description-input-box">
-                <input type="text" id="get-reminder-description">
+                <textarea id="get-reminder-description" rows="5" cols="10"></textarea>
                 <p> text</p>
               </div>
             </div>
@@ -187,5 +198,7 @@
         </form>
       </div>
     </div>
+
+
   </div>
 </body>
