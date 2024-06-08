@@ -1,5 +1,11 @@
 const API_URL = "";
-PAGES = ["", "#settings", "#reminders", "#notification-history", "#create-reminder"];
+PAGES = [
+    "",
+    "#settings",
+    "#reminders",
+    "#notification-history",
+    "#create-reminder",
+];
 
 function showDivBasedOnHash() {
     let currentLocation = window.location.hash || "#";
@@ -9,7 +15,9 @@ function showDivBasedOnHash() {
         "#": document.getElementById("#"),
         "#settings": document.getElementById("#settings"),
         "#reminders": document.getElementById("#reminders"),
-        "#notification-history": document.getElementById("#notification-history"),
+        "#notification-history": document.getElementById(
+            "#notification-history",
+        ),
         "#create-reminder": document.getElementById("#create-reminder"),
     };
 
@@ -33,16 +41,19 @@ function showDivBasedOnHash() {
 
 function homepageLoadUnreadNotifications() {
     console.log("test");
-    const unreadNotificationBox = document.getElementById("unread-notifications-box");
+    const unreadNotificationBox = document.getElementById(
+        "unread-notifications-box",
+    );
+    // Empty the box everytime new items are added
     unreadNotificationBox.replaceChildren();
 
     fetch(`${API_URL}/api/notifications/unread/`, {
         method: "GET",
     })
         .then((response) => response.json())
-        .then((response) => response['data'])
+        .then((response) => response["data"])
         .then((response) => {
-            console.log(response)
+            console.log(response);
             // const r = [
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
@@ -51,42 +62,35 @@ function homepageLoadUnreadNotifications() {
             //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
             // ]
 
-            for (let notification of response) {
-                console.log(notification);
-                // Create the unread-notification div
-                const mainDiv = document.createElement("div");
-
-                // Create the required items to be put in the div
-                const image = document.createElement("img");
-                const h3 = document.createElement("h3");
-                const p = document.createElement("p");
-
-                // Assign values to the divs
-                mainDiv.setAttribute("class", "notification-box");
-                image.src = notification["image"];
-                h3.innerText = notification["title"];
-                p.innerText = notification["content"];
-
-                // Add all the new items to the main div, then add the main div to the page
-                mainDiv.append(image, h3, p);
-                unreadNotificationBox.append(mainDiv);
+            for (let box of createNotificationBoxes(response)) {
+                unreadNotificationBox.append(box);
             }
 
             if (response.length === 0) {
-                document.getElementById("unread-notifs-number-box").style.display = "none";
+                document.getElementById(
+                    "unread-notifs-number-box",
+                ).style.display = "none";
                 document.getElementById("unread-notifications").checked = false;
             } else if (response.length >= 0) {
-                document.getElementById("unread-notifs-number-box").innerText = response.length.toString();
-                document.getElementById("unread-notifs-number-box").style.display = "flex";
+                document.getElementById("unread-notifs-number-box").innerText =
+                    response.length.toString();
+                document.getElementById(
+                    "unread-notifs-number-box",
+                ).style.display = "flex";
                 document.getElementById("unread-notifications").checked = true;
             } else {
-                console.error("unreadNotificationBox list from API is less than 0 elements long (possible undefined)");
+                console.error(
+                    "unreadNotificationBox list from API is less than 0 elements long (possible undefined)",
+                );
             }
         });
 }
 
 function remindersPageLoadReminders() {
-    const remindersTableBody = document.getElementById("reminders-table").children[0];
+    const remindersTableBody =
+        document.getElementById("reminders-table").children[0];
+    const emptyRemindersDiv = document.getElementById("reminders-empty");
+    const tableWrapper = document.getElementById("reminders-table");
     while (remindersTableBody.rows.length > 1) {
         remindersTableBody.deleteRow(1);
     }
@@ -95,57 +99,80 @@ function remindersPageLoadReminders() {
         method: "GET",
     })
         .then((response) => response.json())
+        .then((response) => response["data"])
         .then((response) => {
             console.log(response);
-            // const r = [
-            //     {'title': 'test', 'description': 'also eeetest', 'time': '1717701680', 'id': '123'}
-            // ]
-            for (let element of response["data"]) {
-                // Create a table row
-                let tr = document.createElement("tr");
+            console.log(response.length);
 
-                // Create table data cells for title, description, and time
-                let title = document.createElement("td");
-                let description = document.createElement("td");
-                let time = document.createElement("td");
-                const deleteButton = document.createElement("td");
+            if (response.length === 0) {
+                emptyRemindersDiv.style.display = "grid";
+                tableWrapper.hidden = true;
+            } else {
+                emptyRemindersDiv.style.display = "none";
+                tableWrapper.hidden = false;
 
-                // Set the text content for the cells
-                title.innerText = element["title"];
-                description.innerText = element["description"];
-                const dateObj = new Date(element["timestamp"] * 1000);
-                time.innerText = `${dateObj.toLocaleDateString()}  ${dateObj.toLocaleTimeString()}`;
+                for (let element of response) {
+                    // Create a table row
+                    let tr = document.createElement("tr");
 
-                // Set class for the delete button
-                deleteButton.setAttribute("class", "table-delete-button");
-                deleteButton.setAttribute("id", `reminder-${element["id"]}`);
+                    // Create table data cells for title, description, and time
+                    let title = document.createElement("td");
+                    let description = document.createElement("td");
+                    let time = document.createElement("td");
+                    const deleteButton = document.createElement("td");
 
-                // Create an SVG element with the appropriate namespace
-                const deleteButtonSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    // Set the text content for the cells
+                    title.innerText = element["title"];
+                    description.innerText = element["description"];
+                    const dateObj = new Date(element["timestamp"] * 1000);
+                    time.innerText = `${dateObj.toLocaleDateString()}  ${dateObj.toLocaleTimeString()}`;
 
-                // Set necessary attributes for the SVG element
-                deleteButtonSVG.setAttribute("viewBox", "0 0 20 20");
-                deleteButtonSVG.setAttribute("fill", "currentColor");
-                deleteButtonSVG.setAttribute("aria-hidden", "true");
-                deleteButtonSVG.setAttribute("height", "1em");
-                deleteButtonSVG.setAttribute("width", "1em");
+                    // Set class for the delete button
+                    deleteButton.setAttribute("class", "table-delete-button");
+                    deleteButton.setAttribute(
+                        "id",
+                        `reminder-${element["id"]}`,
+                    );
 
-                // Create path elements with the correct namespace
-                const svgPath1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                svgPath1.setAttribute("d", "M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z");
-                svgPath1.setAttribute("fill-rule", "evenodd");
-                svgPath1.setAttribute("clip-rule", "evenodd");
+                    // Create an SVG element with the appropriate namespace
+                    const deleteButtonSVG = document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "svg",
+                    );
 
-                deleteButtonSVG.append(svgPath1);
-                deleteButton.append(deleteButtonSVG);
-                // Add the text "Delete" after the SVG
-                deleteButton.append(" Delete");
+                    // Set necessary attributes for the SVG element
+                    deleteButtonSVG.setAttribute("viewBox", "0 0 20 20");
+                    deleteButtonSVG.setAttribute("fill", "currentColor");
+                    deleteButtonSVG.setAttribute("aria-hidden", "true");
+                    deleteButtonSVG.setAttribute("height", "1em");
+                    deleteButtonSVG.setAttribute("width", "1em");
 
-                // Add a click event listener to the delete button cell
-                deleteButton.addEventListener("click", remindersDeleteButtonHandler);
+                    // Create path elements with the correct namespace
+                    const svgPath1 = document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "path",
+                    );
+                    svgPath1.setAttribute(
+                        "d",
+                        "M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z",
+                    );
+                    svgPath1.setAttribute("fill-rule", "evenodd");
+                    svgPath1.setAttribute("clip-rule", "evenodd");
 
-                tr.append(title, description, time, deleteButton);
-                remindersTableBody.append(tr);
+                    deleteButtonSVG.append(svgPath1);
+                    deleteButton.append(deleteButtonSVG);
+                    // Add the text "Delete" after the SVG
+                    deleteButton.append(" Delete");
+
+                    // Add a click event listener to the delete button cell
+                    deleteButton.addEventListener(
+                        "click",
+                        remindersDeleteButtonHandler,
+                    );
+
+                    tr.append(title, description, time, deleteButton);
+                    remindersTableBody.append(tr);
+                }
             }
         });
 }
@@ -226,7 +253,9 @@ function createReminderSubmitButton() {
         const nameElement = document.getElementById("get-reminder-name");
         const timeElement = document.getElementById("get-reminder-time");
         const imageElement = document.getElementById("get-reminder-image");
-        const descriptionElement = document.getElementById("get-reminder-description");
+        const descriptionElement = document.getElementById(
+            "get-reminder-description",
+        );
 
         if (nameElement.value === "" || timeElement.value === "") {
             console.log("undefined things");
@@ -242,7 +271,9 @@ function createReminderSubmitButton() {
         }
 
         // Check if epoch given is smaller than current epoch
-        if (Date.parse(timeElement.value) <= Date.parse(new Date().toString())) {
+        if (
+            Date.parse(timeElement.value) <= Date.parse(new Date().toString())
+        ) {
             alert("Time cannot be earlier than current time");
             timeElement.value = "";
             return;
@@ -280,34 +311,70 @@ function setSidebarReminderCount() {
                 reminderNumberBox.style.display = "none";
             } else {
                 reminderNumberBox.style.display = "flex";
-                reminderNumberBox.innerText = response["data"].length.toString();
+                reminderNumberBox.innerText =
+                    response["data"].length.toString();
             }
         });
 }
 
-
 function notificationHistoryPageLoad() {
-    const page = document.getElementById('#notification-history')
+    const page = document.getElementById("#notification-history");
+    const emptyNotificationHistoryDiv = document.getElementById(
+        "notification-history-empty",
+    );
+    const notificationHistoryDiv = document.getElementById(
+        "notification-history-boxes",
+    );
 
-    fetch(`${API_URL}/api/notifications/`, {method: 'GET'})
+    // Empty the box everytime new items are added
+    notificationHistoryDiv.replaceChildren();
+
+    fetch(`${API_URL}/api/notifications/`, { method: "GET" })
         .then((response) => response.json())
-        .then((response) => response['data'])
+        .then((response) => response["data"])
         .then((response) => {
-            const emptyNotificationHistoryDiv = document.getElementById('notification-history-empty')
-
-            console.log(response)
-            console.log(response.length)
+            console.log(response);
+            console.log(response.length);
             if (response.length === 0) {
-                emptyNotificationHistoryDiv.style.display = 'grid'
+                emptyNotificationHistoryDiv.style.display = "grid";
+                notificationHistoryDiv.hidden = true;
             } else {
-                emptyNotificationHistoryDiv.style.display = 'none'
+                emptyNotificationHistoryDiv.style.display = "none";
+                notificationHistoryDiv.hidden = false;
 
-                // Create boxes and append
-
-
+                for (let box of createNotificationBoxes(response)) {
+                    notificationHistoryDiv.append(box);
+                }
             }
+        });
+}
 
-        })
+function createNotificationBoxes(data) {
+    let finalList = [];
 
+    for (let notification of data) {
+        // Create the unread-notification div
+        const mainDiv = document.createElement("div");
 
+        // Create the required items to be put in the div
+        const image = document.createElement("img");
+        const h3 = document.createElement("h3");
+        const timestamp = document.createElement("h3");
+        const p = document.createElement("p");
+
+        // Assign values to the divs
+        mainDiv.setAttribute("class", "notification-box");
+        image.src = notification["image"];
+        h3.innerText = notification["title"];
+
+        const datetime = new Date(notification["timestamp"] * 1000);
+
+        timestamp.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`;
+        p.innerText = notification["content"];
+
+        // Add all the new items to the main div, then add the main div to the page
+        mainDiv.append(image, h3, timestamp, p);
+        finalList.push(mainDiv);
+    }
+    return finalList;
 }
