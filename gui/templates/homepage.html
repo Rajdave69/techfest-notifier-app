@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Notifier App</title>
-    <link rel="stylesheet" href="../static/homepage.css">
+    <link rel="stylesheet" href="../static/homepage.css" />
   </head>
   <body>
     <script src="../static/homepage.js"></script>
@@ -22,7 +22,19 @@
       <ul id="sidebar-ul">
         <li class="selected">
           <a href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: currentColor"
+            >
               <path d="M4 4h6v8h-6z"></path>
               <path d="M4 16h6v4h-6z"></path>
               <path d="M14 12h6v8h-6z"></path>
@@ -33,7 +45,19 @@
         </li>
         <li>
           <a href="#reminders">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: currentColor"
+            >
               <path d="M4 4h6v8h-6z"></path>
               <path d="M4 16h6v4h-6z"></path>
               <path d="M14 12h6v8h-6z"></path>
@@ -45,7 +69,19 @@
         </li>
         <li>
           <a href="#notification-history">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: currentColor"
+            >
               <path d="M4 4h6v8h-6z"></path>
               <path d="M4 16h6v4h-6z"></path>
               <path d="M14 12h6v8h-6z"></path>
@@ -56,7 +92,19 @@
         </li>
         <li>
           <a href="#settings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              data-darkreader-inline-stroke=""
+              style="--darkreader-inline-stroke: currentColor"
+            >
               <path d="M4 4h6v8h-6z"></path>
               <path d="M4 16h6v4h-6z"></path>
               <path d="M14 12h6v8h-6z"></path>
@@ -73,13 +121,20 @@
 
       <div id="#">
         <h1>Welcome to Notifier App!</h1>
-        <br>
+        <br />
         <p>You can expand the following sections:</p>
         <!-- Collapsables here-->
         <!-- For unread notifications -->
         <div class="wrap-collapsible">
-          <input id="unread-notifications" class="toggle" type="checkbox">
-          <label for="unread-notifications" class="lbl-toggle"> Unread Notifications <span class="number-box" id="unread-notifs-number-box" style="display: none">0</span>
+          <input id="unread-notifications" class="toggle" type="checkbox" />
+          <label for="unread-notifications" class="lbl-toggle">
+            Unread Notifications
+            <span
+              class="number-box"
+              id="unread-notifs-number-box"
+              style="display: none"
+              >0</span
+            >
           </label>
           <div class="collapsible-content">
             <div class="content-inner" id="unread-notifications-box">
@@ -91,15 +146,17 @@
             </div>
           </div>
         </div>
-        <hr>
-        <br>
+        <hr />
+        <br />
         <!-- For Upcoming Reminders -->
         <div class="wrap-collapsible">
-          <input id="upcoming-reminders" class="toggle" type="checkbox">
-          <label for="upcoming-reminders" class="lbl-toggle">Upcoming Reminders</label>
+          <input id="upcoming-reminders" class="toggle" type="checkbox" />
+          <label for="upcoming-reminders" class="lbl-toggle"
+            >Upcoming Reminders</label
+          >
           <div class="collapsible-content">
             <div class="content-inner">
-              <p> Ipsum Lorem </p>
+              <p>Ipsum Lorem</p>
             </div>
           </div>
         </div>
@@ -108,9 +165,38 @@
       <div id="#reminders">
         <div id="reminders-grid">
           <h1>Reminders</h1>
-          <button id="create-reminder-button" onclick="location.href = '#create-reminder'">Create Reminder</button>
-          <br>
-          <p>Reminders:</p>
+          <button
+            id="create-reminder-button"
+            onclick="location.href = '#create-reminder'"
+          >
+            Create Reminder
+          </button>
+          <br />
+          <!--          <p>Reminders:</p>-->
+
+          <div class="empty-category" id="reminders-empty">
+            <div class="empty-category-svg-box">
+              <svg
+                class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </div>
+            <br />
+            <div class="empty-category-text">No Reminders</div>
+          </div>
+
           <div class="table-wrapper">
             <table id="reminders-table">
               <tr>
@@ -121,43 +207,52 @@
               </tr>
 
               <!-- JS will add code here -->
-
             </table>
           </div>
         </div>
       </div>
 
-
       <div id="#notification-history">
         <h1>Notification History</h1>
-        <br>
-<!--        <p>Notification History Page</p>-->
+        <br />
+        <!--        <p>Notification History Page</p>-->
 
-        <div class="empty-category" id="notification-history-empty" >
+        <div class="empty-category" id="notification-history-empty">
           <div class="empty-category-svg-box">
-            <svg class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: currentColor;">
-              <path d="M19 8.268a2 2 0 0 1 1 1.732v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h3"></path>
-              <path d="M5 15.734a2 2 0 0 1 -1 -1.734v-8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-3"></path>
+            <svg
+              class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+              data-slot="icon"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              ></path>
             </svg>
           </div>
-          <br>
-          <div class="empty-category-text">
-          No Notification History
-            </div>
+          <br />
+          <div class="empty-category-text">No Notification History</div>
+        </div>
+        <div id="notification-history-boxes">
+          <!--              Js will add code here -->
         </div>
       </div>
 
-
       <div id="#settings">
         <h1>Welcome to Notifier App!</h1>
-        <br>
+        <br />
         <p>Settings Page</p>
       </div>
 
-
       <div id="#create-reminder">
         <h1>Create Reminder</h1>
-        <br>
+        <br />
         <form>
           <div class="edit-reminder-box">
             <div class="form-wrapper">
@@ -171,34 +266,46 @@
                 <label for="get-reminder-image">Image</label>
               </div>
               <div class="name-input-box">
-                <input type="text" id="get-reminder-name" required>
-                <br>
-                <p>A simple and short name for this <br>reminder </p>
+                <input type="text" id="get-reminder-name" required />
+                <br />
+                <p>A simple and short name for this <br />reminder</p>
               </div>
               <div class="time-input-box">
-                <input type="datetime-local" id="get-reminder-time" required>
-                <p>The time at which the reminder will <br>remind </p>
+                <input type="datetime-local" id="get-reminder-time" required />
+                <p>The time at which the reminder will <br />remind</p>
               </div>
               <div class="image-input-box">
-                <input type="text" id="get-reminder-image">
+                <input type="text" id="get-reminder-image" />
                 <p>Optional 100x100 image.</p>
               </div>
               <div class="description-box">
                 <label for="get-reminder-description">Description</label>
               </div>
               <div class="description-input-box">
-                <textarea id="get-reminder-description" rows="5" cols="10"></textarea>
-                <p> text</p>
+                <textarea
+                  id="get-reminder-description"
+                  rows="5"
+                  cols="10"
+                ></textarea>
+                <p>text</p>
               </div>
             </div>
           </div>
-          <br>
-          <input type="submit" value="Create" id="create-reminder-submit-button">
-          <button type="button" id="cancel-creating-reminder-button"  onclick="location.href = '#reminders'">Cancel</button>
+          <br />
+          <input
+            type="submit"
+            value="Create"
+            id="create-reminder-submit-button"
+          />
+          <button
+            type="button"
+            id="cancel-creating-reminder-button"
+            onclick="location.href = '#reminders'"
+          >
+            Cancel
+          </button>
         </form>
       </div>
     </div>
-
-
   </div>
 </body>
