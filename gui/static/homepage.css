@@ -761,6 +761,41 @@ tr:last-child {
 }
 
 
+
+/*
+#
+#
+#   VIEW REMINDER PAGE
+#
+#
+ */
+
+#reminder-box {
+    background-color: var(--dark-navbar-color);
+    border: 1px solid var(--dark-border-color);
+    border-radius: 10px;
+    height: 246px;
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 130px 100px;
+    grid-column-gap: 0px;
+    /*grid-row-gap: 10px;*/
+    font-size: 1.025em;
+}
+
+#reminder-box p {
+
+}
+
+
+
+
+
+
+
 body {
     background-color: var(--dark-bg-color);
     font-family: "Inter", sans-serif;
