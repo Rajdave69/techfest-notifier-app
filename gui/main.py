@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask
 from flask import render_template, request
 import webview
@@ -31,7 +33,9 @@ def reminders():
     c = db.cursor()
 
     c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
-    reminders_ = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    reminders_ = c.fetchall()
+    print(reminders_)
+    reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=True)
 
     db.close()
 
@@ -48,7 +52,7 @@ def unread_notifications():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0')
+    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
@@ -113,7 +117,7 @@ def create_reminder():
 
 webview.create_window('Notifier App', app, width=1920, height=1080)
 
-webview.start(debug=True)  # gui='mshtml'notifications WHERE  if it doesn't normally work
+webview.start(debug=True)  # gui='mshtml'  if it doesn't normally work
 # webview.resize()
 
 # if __name__ == '__main__':
@@ -123,10 +127,10 @@ webview.start(debug=True)  # gui='mshtml'notifications WHERE  if it doesn't norm
 """
 rajs todo list
 
-fix size of pagecontent
 lightmode darkmode conversion
+url breadcrumb
+
 settings page
 view email page
-view notification page
-url breadcrumb
+view reminder page
 """

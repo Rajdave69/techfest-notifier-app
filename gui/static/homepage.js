@@ -19,7 +19,8 @@ function showDivBasedOnHash() {
             "#notification-history",
         ),
         "#create-reminder": document.getElementById("#create-reminder"),
-        "#view-email": document.getElementById("#view-email")
+        "#view-email": document.getElementById("#view-email"),
+        "#view-reminder": document.getElementById("#view-reminder")
     };
 
     function hideAllDivsExcept(key) {
@@ -240,7 +241,7 @@ window.addEventListener("DOMContentLoaded", function () {
     pageLoad();
 
     // Listen for hash changes in the URL
-    window.addEventListener("hashchange", pageLoad);
+    window.addEventListener("hashchange", () => {location.reload()});
 });
 
 function selectSidebarElement(pageHash) {
@@ -305,7 +306,6 @@ function createReminderSubmitButton() {
             descriptionElement.value = "";
 
             window.location.hash = "#reminders";
-            alert("Reminder Successfully created");
         });
     };
 }
