@@ -19,11 +19,13 @@ function showDivBasedOnHash() {
             "#notification-history",
         ),
         "#create-reminder": document.getElementById("#create-reminder"),
+        "#view-email": document.getElementById("#view-email")
     };
 
     function hideAllDivsExcept(key) {
         for (let divKey in allDivs) {
             console.log(divKey, key, divKey !== key);
+            console.log(allDivs[divKey])
 
             allDivs[divKey].hidden = divKey !== key;
         }
@@ -180,7 +182,7 @@ function remindersPageLoadReminders() {
 function remindersDeleteButtonHandler(item) {
     const id = item.target.id.replace("reminder-", "");
 
-    fetch(`${API_URL}`, {
+    fetch(`${API_URL}/api/reminders/delete/`, {
         method: "post",
         body: { id: id },
     }).then((r) => {
@@ -275,18 +277,22 @@ function createReminderSubmitButton() {
             Date.parse(timeElement.value) <= Date.parse(new Date().toString())
         ) {
             alert("Time cannot be earlier than current time");
-            timeElement.value = "";
+            timeElement. value = "";
             return;
         }
 
-        fetch(`${API_URL}`, {
+        fetch(`${API_URL}/api/reminders/create/`, {
             method: "POST",
-            body: {
+            body: JSON.stringify({
                 name: nameElement.value,
                 timestamp: Date.parse(timeElement.value),
-                image: imageElement.value,
+                image_url: imageElement.value,
                 description: descriptionElement.value,
-            },
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            ,
         }).then((r) => {
             nameElement.value = "";
             timeElement.value = "";
