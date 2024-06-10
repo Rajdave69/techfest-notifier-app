@@ -180,11 +180,16 @@ function remindersPageLoadReminders() {
 }
 
 function remindersDeleteButtonHandler(item) {
-    const id = item.target.id.replace("reminder-", "");
+    console.log(item.target.id)
+    const id_ = item.target.id.replace("reminder-", "");
+    console.debug(id_)
 
     fetch(`${API_URL}/api/reminders/delete/`, {
         method: "post",
-        body: { id: id },
+        body: JSON.stringify({ id: id_ }),
+        headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
     }).then((r) => {
         console.log(r);
         location.reload(); // TODO TEST
@@ -285,7 +290,7 @@ function createReminderSubmitButton() {
             method: "POST",
             body: JSON.stringify({
                 name: nameElement.value,
-                timestamp: Date.parse(timeElement.value),
+                timestamp: Date.parse(timeElement.value) / 1000,
                 image_url: imageElement.value,
                 description: descriptionElement.value,
             }),

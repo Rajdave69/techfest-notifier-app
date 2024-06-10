@@ -135,7 +135,7 @@ body {
     width: 80%; /* TODO */
     grid-area: 2 / 2 / 3 / 3;
     overflow-y: scroll;
-    height: 60%;
+    height: calc(100% - 170px);
 
     /*Hide Scrollbar */
     /* -ms-overflow-style: none;  Internet Explorer 10+
@@ -449,8 +449,8 @@ tr:last-child {
 
 #reminders-grid {
     display: grid;
-    grid-template-columns: 15% 75%;
-    grid-template-rows: 20% 80%;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 80px 74vh;
     grid-column-gap: 0px;
     grid-row-gap: 30px;
 }
@@ -461,8 +461,6 @@ tr:last-child {
     width: 140px;
     justify-self: right;
     align-self: center;
-    align-items: center;
-    justify-content: center;
     font-weight: bold;
     border: 0px;
     color: var(--dark-secondary-color);
