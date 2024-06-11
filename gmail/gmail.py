@@ -18,7 +18,7 @@ from mimetypes import guess_type as guess_mime_type
 import email
 import base64
 
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 our_email = 'muhammedrayan.official@gmail.com'
 
 def gmail_authenticate():
@@ -77,10 +77,14 @@ def search_messages(service):
             
         return final_list
 
-def mark_read(abc):
-    pass
+def mark_read(service, msg_id):
+    
+    try:
+        service.users().messages().modify(userId='me', id=msg_id, body={'removeLabelIds':'UNREAD'}).execute()
+        print("success")
+    except HttpError as error:
+        print(error, "could not mark as READ")
 
 service = gmail_authenticate()
 
-print('')
-print(search_messages(service))
+#print(search_messages(service))
