@@ -8,7 +8,8 @@ PAGES = [
 ];
 
 function displayPageBasedOnHash() {
-    let currentLocation = window.location.hash || "#";
+    const currentLocation = window.location.hash.split('?')[0] || "#";
+    const currentParams = window.location.hash.split('?')[1] || ''
 
     // Get the divs
     const allDivs = {
@@ -25,17 +26,13 @@ function displayPageBasedOnHash() {
 
     function hideAllDivsExcept(key) {
         for (let divKey in allDivs) {
-            console.log(divKey, key, divKey !== key);
-            console.log(allDivs[divKey]);
-
             allDivs[divKey].hidden = divKey !== key;
         }
     }
 
     if (currentLocation in allDivs) {
-        console.log("test", currentLocation);
         hideAllDivsExcept(currentLocation);
-        return currentLocation;
+        return [currentLocation, currentParams];
     } else {
         hideAllDivsExcept("");
         console.warn(currentLocation);
@@ -45,20 +42,26 @@ function displayPageBasedOnHash() {
 function pageLoad() {
     console.log("pageload");
     // Check the hash initially when the page loads
-    const currentPage = displayPageBasedOnHash();
+    const currentPageAndParams = displayPageBasedOnHash();
 
-    selectSidebarElement(currentPage);
+    if (currentPageAndParams === undefined) return
+
+    selectSidebarElement(currentPageAndParams[0]);
     setSidebarReminderCount();
 
-    if (currentPage === "#") {
+    if (currentPageAndParams[0] === "#") {
         console.log("uwu");
         homepageLoadUnreadNotifications();
-    } else if (currentPage === "#reminders") {
+    } else if (currentPageAndParams[0] === "#reminders") {
         remindersPageLoadReminders();
-    } else if (currentPage === "#notification-history") {
+    } else if (currentPageAndParams[0] === "#notification-history") {
         notificationHistoryPageLoad();
+    } else if (currentPageAndParams[0] === "#view-reminder") {
+        console.log(currentPageAndParams)
+        loadViewReminderPage(currentPageAndParams[1]);
+
     } else {
-        console.warn(currentPage);
+        console.warn(currentPageAndParams);
     }
 }
 
