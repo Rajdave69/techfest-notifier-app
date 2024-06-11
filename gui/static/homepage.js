@@ -119,6 +119,81 @@ function selectSidebarElement(pageHash) {
     }
 }
 
+
+function setBreadcrumbPath(pageHash, subPath) {
+    // ##page > .breadcrumb > .breadcrumb-subpath
+    const breadcrumb = document.getElementById(pageHash).children[0].children[2]
+
+    breadcrumb.innerText = subPath
+}
+
+/*
+
+    VIEW EMAIL PAGE
+
+ */
+
+function loadViewEmailPage(params) {
+    const email_id = params.split("&id=")[1]
+    console.log(email_id)
+
+    const titleBox = document.getElementById("email-title").children[0]
+    const bodyBox = document.getElementById("email-body")
+    const timeBox = document.getElementById("email-timestamp")
+    const senderBox = document.getElementById("email-sender")
+
+    fetch(`${API_URL}/api/emails/${email_id}`, {
+        method: "GET",
+    })
+        .then((response) => response.json())
+        .then((response) => response["data"])
+        .then((response) => {
+
+            const datetime = new Date(response["timestamp"] * 1000);
+
+            titleBox.innerText = response['title']
+            bodyBox.innerText = response['body']
+            timeBox.InnerHtml = `<b>At:</b> <br>${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
+            senderBox.InnerHtml = `<b>From:</b> <br>${response['body']}`
+
+            setBreadcrumbPath("#view-reminder", `View #${email_id}`)
+
+
+        })
+
+}
+
+
+
+
+/*
+
+    VIEW REMINDERS PAGE
+
+ */
+
+function loadViewReminderPage(params) {
+    const reminder_id = params.split("id=")[1]
+    const titleBox = document.getElementById("reminder-title").children[0]
+    const descriptionBox = document.getElementById("reminder-body")
+    const timeBox = document.getElementById("reminder-timestamp")
+
+    fetch(`${API_URL}/api/reminders/${reminder_id}`, {
+        method: "GET",
+    })
+        .then((response) => response.json())
+        .then((response) => response["data"])
+        .then((response) => {
+            const datetime = new Date(response["timestamp"] * 1000);
+
+            titleBox.innerText = response['title'] // Don't worry, this doesn't get rid of H2
+            descriptionBox.innerText = response['body']
+            timeBox.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
+
+            setBreadcrumbPath("#view-reminder", `View #${reminder_id}`)
+        })
+}
+
 /*
 
     HOME PAGE
