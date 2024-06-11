@@ -7,7 +7,7 @@ PAGES = [
     "#create-reminder",
 ];
 
-function showDivBasedOnHash() {
+function displayPageBasedOnHash() {
     let currentLocation = window.location.hash || "#";
 
     // Get the divs
@@ -20,13 +20,13 @@ function showDivBasedOnHash() {
         ),
         "#create-reminder": document.getElementById("#create-reminder"),
         "#view-email": document.getElementById("#view-email"),
-        "#view-reminder": document.getElementById("#view-reminder")
+        "#view-reminder": document.getElementById("#view-reminder"),
     };
 
     function hideAllDivsExcept(key) {
         for (let divKey in allDivs) {
             console.log(divKey, key, divKey !== key);
-            console.log(allDivs[divKey])
+            console.log(allDivs[divKey]);
 
             allDivs[divKey].hidden = divKey !== key;
         }
@@ -41,6 +41,86 @@ function showDivBasedOnHash() {
         console.warn(currentLocation);
     }
 }
+
+function pageLoad() {
+    console.log("pageload");
+    // Check the hash initially when the page loads
+    const currentPage = displayPageBasedOnHash();
+
+    selectSidebarElement(currentPage);
+    setSidebarReminderCount();
+
+    if (currentPage === "#") {
+        console.log("uwu");
+        homepageLoadUnreadNotifications();
+    } else if (currentPage === "#reminders") {
+        remindersPageLoadReminders();
+    } else if (currentPage === "#notification-history") {
+        notificationHistoryPageLoad();
+    } else {
+        console.warn(currentPage);
+    }
+}
+
+// Wait for window to completely load
+window.addEventListener("DOMContentLoaded", function () {
+    // Sidebar handler
+    const elements = document.getElementById("sidebar-ul");
+
+    for (let i = 0; i < elements.children.length; i++) {
+        elements.children[i].onclick = function () {
+            // Remove 'selected' class from all elements
+            for (let j = 0; j < elements.children.length; j++) {
+                elements.children[j].classList.remove("selected");
+            }
+
+            // Add 'selected' class to the clicked element
+            this.classList.add("selected");
+        };
+    }
+
+    // Create reminder submit button
+    remindersCreateButtonHandler();
+
+    // Run it once on page load
+    pageLoad();
+
+    // Listen for hash changes in the URL
+    window.addEventListener("hashchange", () => {
+        location.reload();
+    });
+});
+
+function selectSidebarElement(pageHash) {
+    const sidebarElements = document.getElementById("sidebar-ul").children;
+
+    // Format: { "page-hash": "sidebar-element" }
+    const sidebarPages = {
+        "#": "#",
+        "#reminders": "#reminders",
+        "#create-reminder": "#reminders",
+        "#notification-history": "#notification-history",
+        "#settings": "#settings",
+    };
+
+    // For each element of the list,
+    for (let i = 0; i < sidebarElements.length; i++) {
+        if (
+            (sidebarPages[pageHash] || undefined) ===
+            sidebarElements[i].children[0].href.split("/").at(-1)
+        ) {
+            sidebarElements[i].classList.add("selected");
+        } else {
+            sidebarElements[i].classList.remove("selected");
+        }
+    }
+}
+
+/*
+
+    HOME PAGE
+
+ */
 
 function homepageLoadUnreadNotifications() {
     console.log("test");
@@ -57,13 +137,6 @@ function homepageLoadUnreadNotifications() {
         .then((response) => response["data"])
         .then((response) => {
             console.log(response);
-            // const r = [
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'timestamp': '123'},
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            //     {'title': 'Title', 'content': 'Content', 'image': './static/placeholder_image.png', 'epoch': '123'},
-            // ]
 
             for (let box of createNotificationBoxes(response)) {
                 unreadNotificationBox.append(box);
@@ -85,6 +158,30 @@ function homepageLoadUnreadNotifications() {
                 console.error(
                     "unreadNotificationBox list from API is less than 0 elements long (possible undefined)",
                 );
+            }
+        });
+}
+
+/*
+
+    REMINDERS PAGE
+
+ */
+
+function setSidebarReminderCount() {
+    const reminderNumberBox = document.getElementById("reminder-number-box");
+
+    fetch(`${API_URL}/api/reminders/`, {
+        method: "GET",
+    })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response["data"].length === 0) {
+                reminderNumberBox.style.display = "none";
+            } else {
+                reminderNumberBox.style.display = "flex";
+                reminderNumberBox.innerText =
+                    response["data"].length.toString();
             }
         });
 }
@@ -181,94 +278,21 @@ function remindersPageLoadReminders() {
 }
 
 function remindersDeleteButtonHandler(item) {
-    console.log(item.target.id)
     const id_ = item.target.id.replace("reminder-", "");
-    console.debug(id_)
 
     fetch(`${API_URL}/api/reminders/delete/`, {
         method: "post",
         body: JSON.stringify({ id: id_ }),
         headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
+            "Content-type": "application/json; charset=UTF-8",
+        },
     }).then((r) => {
         console.log(r);
         location.reload(); // TODO TEST
     });
 }
 
-function pageLoad() {
-    console.log("pageload");
-    // Check the hash initially when the page loads
-    const currentPage = showDivBasedOnHash();
-
-    selectSidebarElement(currentPage);
-    setSidebarReminderCount();
-
-    if (currentPage === "#") {
-        console.log("uwu");
-        homepageLoadUnreadNotifications();
-    } else if (currentPage === "#reminders") {
-        remindersPageLoadReminders();
-    } else if (currentPage === "#notification-history") {
-        notificationHistoryPageLoad();
-    } else {
-        console.warn(currentPage);
-    }
-}
-
-// Wait for window to completely load
-window.addEventListener("DOMContentLoaded", function () {
-    // Sidebar handler
-    const elements = document.getElementById("sidebar-ul");
-
-    for (let i = 0; i < elements.children.length; i++) {
-        elements.children[i].onclick = function () {
-            // Remove 'selected' class from all elements
-            for (let j = 0; j < elements.children.length; j++) {
-                elements.children[j].classList.remove("selected");
-            }
-
-            // Add 'selected' class to the clicked element
-            this.classList.add("selected");
-        };
-    }
-
-    // Create reminder submit button
-    createReminderSubmitButton();
-
-    // Run it once on page load
-    pageLoad();
-
-    // Listen for hash changes in the URL
-    window.addEventListener("hashchange", () => {location.reload()});
-});
-
-function selectSidebarElement(pageHash) {
-    const sidebarElements = document.getElementById("sidebar-ul").children;
-
-    // Format: { "page-hash": "sidebar-element" }
-    const sidebarPages = {
-        '#': "#",
-        '#reminders': "#reminders",
-        '#create-reminder': "#reminders",
-        "#notification-history": "#notification-history",
-        "#settings": "#settings"
-    }
-
-    // For each element of the list,
-    for (let i = 0; i < sidebarElements.length; i++) {
-        console.log(sidebarPages[pageHash].includes(sidebarElements[i].children[0].href.split('/').at(-1)))
-        console.log(sidebarElements[i].children[0].href.split('/').at(-1))
-        if (sidebarPages[pageHash] === sidebarElements[i].children[0].href.split('/').at(-1)) {
-            sidebarElements[i].classList.add('selected')
-        } else {
-            sidebarElements[i].classList.remove('selected')
-        }
-    }
-}
-
-function createReminderSubmitButton() {
+function remindersCreateButtonHandler() {
     document.getElementById("create-reminder-submit-button").onclick = () => {
         const nameElement = document.getElementById("get-reminder-name");
         const timeElement = document.getElementById("get-reminder-time");
@@ -295,7 +319,7 @@ function createReminderSubmitButton() {
             Date.parse(timeElement.value) <= Date.parse(new Date().toString())
         ) {
             alert("Time cannot be earlier than current time");
-            timeElement. value = "";
+            timeElement.value = "";
             return;
         }
 
@@ -308,9 +332,8 @@ function createReminderSubmitButton() {
                 description: descriptionElement.value,
             }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            ,
+                "Content-type": "application/json; charset=UTF-8",
+            },
         }).then((r) => {
             nameElement.value = "";
             timeElement.value = "";
@@ -322,23 +345,11 @@ function createReminderSubmitButton() {
     };
 }
 
-function setSidebarReminderCount() {
-    const reminderNumberBox = document.getElementById("reminder-number-box");
+/*
 
-    fetch(`${API_URL}/api/reminders/`, {
-        method: "GET",
-    })
-        .then((response) => response.json())
-        .then((response) => {
-            if (response["data"].length === 0) {
-                reminderNumberBox.style.display = "none";
-            } else {
-                reminderNumberBox.style.display = "flex";
-                reminderNumberBox.innerText =
-                    response["data"].length.toString();
-            }
-        });
-}
+    NOTIFICATION HISTORY PAGE
+
+ */
 
 function notificationHistoryPageLoad() {
     const page = document.getElementById("#notification-history");
