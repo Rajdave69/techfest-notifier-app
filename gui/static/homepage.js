@@ -245,13 +245,25 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 function selectSidebarElement(pageHash) {
-    const sidebarElements = document.getElementById("sidebar-ul");
+    const sidebarElements = document.getElementById("sidebar-ul").children;
 
-    for (let i = 0; i < sidebarElements.children.length; i++) {
-        console.log(sidebarElements.children[i].children[0].href);
+    // Format: { "page-hash": "sidebar-element" }
+    const sidebarPages = {
+        '#': "#",
+        '#reminders': "#reminders",
+        '#create-reminder': "#reminders",
+        "#notification-history": "#notification-history",
+        "#settings": "#settings"
+    }
 
-        if (sidebarElements.children[i].children[0].href.endsWith(pageHash)) {
-            sidebarElements.children[i].children[0].click();
+    // For each element of the list,
+    for (let i = 0; i < sidebarElements.length; i++) {
+        console.log(sidebarPages[pageHash].includes(sidebarElements[i].children[0].href.split('/').at(-1)))
+        console.log(sidebarElements[i].children[0].href.split('/').at(-1))
+        if (sidebarPages[pageHash] === sidebarElements[i].children[0].href.split('/').at(-1)) {
+            sidebarElements[i].classList.add('selected')
+        } else {
+            sidebarElements[i].classList.remove('selected')
         }
     }
 }
