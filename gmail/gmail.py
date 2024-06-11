@@ -18,73 +18,77 @@ from mimetypes import guess_type as guess_mime_type
 import email
 import base64
 
+
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
-our_email = 'muhammedrayan.official@gmail.com'
 
-def gmail_authenticate():
-    creds = None
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
-            creds = pickle.load(token)
+class GMAIL:
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('./gmail/credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # save the credentials for the next run
-        with open("token.pickle", "wb") as token:
-            pickle.dump(creds, token)
-    return build('gmail', 'v1', credentials=creds)
+    def __init__(self):
+        self.service = self.gmail_authenticate()
 
-def get_message(service, msg_id):
+    def gmail_authenticate(self):
+        creds = None
+        if os.path.exists("token.pickle"):
+            with open("token.pickle", "rb") as token:
+                creds = pickle.load(token)
 
-    try:
-        message_list=service.users().messages().get(userId='me', id=msg_id, format='raw').execute()
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file('./gmail/credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+            # save the credentials for the next run
+            with open("token.pickle", "wb") as token:
+                pickle.dump(creds, token)
+        return build('gmail', 'v1', credentials=creds)
 
-        msg_raw = base64.urlsafe_b64decode(message_list['raw'].encode('ASCII'))
-        msg_str = email.message_from_bytes(msg_raw)
-        
-        content_type = msg_str.get_content_maintype()
+    def get_message(self, msg_id):
 
-        if content_type == 'multipart':
-            for part in msg_str.get_payload():
-                if part.get_content_maintype() == 'text':
-                    body = part.get_payload(decode=True).decode('utf-8')
-                    break
-        else:
-            body = msg_str.get_payload(decode=True).decode('utf-8')
+        try:
+            message_list = self.service.users().messages().get(userId='me', id=msg_id, format='raw').execute()
 
-        return {'subject':msg_str['subject'], 'sender':msg_str['from'], 'body':body, 'timestamp':msg_str['Date']}
-
-
-    except HttpError as error:
-        print(f'An error occurred: {error}')
-
-def search_messages(service):
-    result = service.users().messages().list(userId='me', labelIds="UNREAD").execute()
-    number_result = result['resultSizeEstimate']
-
-    final_list = []
-
-    if number_result>0:
-        message_ids = result['messages']
-
-        for ids in message_ids:
-            final_list.append(ids['id'])
-            get_message(service, ids['id'] )
+            msg_raw = base64.urlsafe_b64decode(message_list['raw'].encode('ASCII'))
+            msg_str = email.message_from_bytes(msg_raw)
             
-        return final_list
+            content_type = msg_str.get_content_maintype()
 
-def mark_read(service, msg_id):
-    
-    try:
-        service.users().messages().modify(userId='me', id=msg_id, body={'removeLabelIds':'UNREAD'}).execute()
-        print("success")
-    except HttpError as error:
-        print(error, "could not mark as READ")
+            if content_type == 'multipart':
+                for part in msg_str.get_payload():
+                    if part.get_content_maintype() == 'text':
+                        body = part.get_payload(decode=True).decode('utf-8')
+                        break
+            else:
+                body = msg_str.get_payload(decode=True).decode('utf-8')
 
-service = gmail_authenticate()
+            return {'subject':msg_str['subject'], 'sender':msg_str['from'], 'body':body, 'timestamp':msg_str['Date'], 'id':msg_id}
+
+
+        except HttpError as error:
+            print(f'An error occurred: {error}')
+
+    def search_messages(self):
+        result = self.service.users().messages().list(userId='me', labelIds="UNREAD").execute()
+        number_result = result['resultSizeEstimate']
+
+        final_list = []
+
+        if number_result>0:
+            message_ids = result['messages']
+
+            for ids in message_ids:
+                final_list.append(ids['id'])
+                self.get_message(self.service, ids['id'] )
+                
+            return final_list
+
+    def mark_read(self, msg_id):
+        
+        try:
+            self.service.users().messages().modify(userId='me', id=msg_id, body={'removeLabelIds':'UNREAD'}).execute()
+            print("success")
+        except HttpError as error:
+            print(error, "could not mark as READ")
+
 
 #print(search_messages(service))
