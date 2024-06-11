@@ -265,10 +265,11 @@ function setSidebarReminderCount() {
 }
 
 function remindersPageLoadReminders() {
-    const remindersTableBody =
-        document.getElementById("reminders-table").children[0];
+    const remindersTableBody = document.getElementById("reminders-table").children[0];
     const emptyRemindersDiv = document.getElementById("reminders-empty");
     const tableWrapper = document.getElementById("reminders-table");
+
+    // Clear existing rows except for the header
     while (remindersTableBody.rows.length > 1) {
         remindersTableBody.deleteRow(1);
     }
@@ -297,58 +298,70 @@ function remindersPageLoadReminders() {
                     let title = document.createElement("td");
                     let description = document.createElement("td");
                     let time = document.createElement("td");
-                    const deleteButton = document.createElement("td");
+                    const viewButtonCell = document.createElement("td");
+                    const deleteButtonCell = document.createElement("td");
 
                     // Set the text content for the cells
                     title.innerText = element["title"];
                     description.innerText = element["description"];
                     const dateObj = new Date(element["timestamp"] * 1000);
-                    time.innerText = `${dateObj.toLocaleDateString()}  ${dateObj.toLocaleTimeString()}`;
+                    time.innerText = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
 
-                    // Set class for the delete button
-                    deleteButton.setAttribute("class", "table-delete-button");
-                    deleteButton.setAttribute(
-                        "id",
-                        `reminder-${element["id"]}`,
-                    );
+                    /*
+                    !!! SVG ONE - View Icon with Class!!!
+                    */
+                    // Create an SVG element for the View icon
+                    const viewButtonSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    viewButtonSVG.setAttribute("width", "1em");
+                    viewButtonSVG.setAttribute("height", "1em");
+                    viewButtonSVG.setAttribute("viewBox", "0 0 24 24");
+                    viewButtonSVG.setAttribute("fill", "currentColor");
 
-                    // Create an SVG element with the appropriate namespace
-                    const deleteButtonSVG = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "svg",
-                    );
+                    // Create path elements for the View SVG
+                    const viewSVGPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    viewSVGPath.setAttribute("d", "M12 4.5C7 4.5 3.28 7.36 1.5 12C3.28 16.64 7 19.5 12 19.5C17 19.5 20.72 16.64 22.5 12C20.72 7.36 17 4.5 12 4.5ZM12 17.5C9.5 17.5 7.5 15.5 7.5 13C7.5 10.5 9.5 8.5 12 8.5C14.5 8.5 16.5 10.5 16.5 13C16.5 15.5 14.5 17.5 12 17.5ZM12 6.5C8.41 6.5 5.5 9.41 5.5 13C5.5 16.59 8.41 19.5 12 19.5C15.59 19.5 18.5 16.59 18.5 13C18.5 9.41 15.59 6.5 12 6.5ZM12 10.5C10.62 10.5 9.5 11.62 9.5 13C9.5 14.38 10.62 15.5 12 15.5C13.38 15.5 14.5 14.38 14.5 13C14.5 11.62 13.38 10.5 12 10.5Z");
+                    viewSVGPath.setAttribute("fill-rule", "evenodd");
+                    viewSVGPath.setAttribute("clip-rule", "evenodd");
+                    viewButtonSVG.append(viewSVGPath);
 
-                    // Set necessary attributes for the SVG element
+                    // Add the SVG and text to the viewButtonCell
+                    viewButtonCell.setAttribute("class", "table-view-button");
+                    viewButtonCell.append(viewButtonSVG);
+                    viewButtonCell.append(" View");
+
+                    // Add a click event listener to the delete button cell
+                    viewButtonCell.addEventListener("click", remindersViewButtonHandler);
+
+                    /*
+                    !!! SVG TWO - Delete Icon !!!
+                    */
+                    // Create an SVG element for the Delete icon
+                    const deleteButtonSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     deleteButtonSVG.setAttribute("viewBox", "0 0 20 20");
                     deleteButtonSVG.setAttribute("fill", "currentColor");
                     deleteButtonSVG.setAttribute("aria-hidden", "true");
                     deleteButtonSVG.setAttribute("height", "1em");
                     deleteButtonSVG.setAttribute("width", "1em");
 
-                    // Create path elements with the correct namespace
-                    const svgPath1 = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "path",
-                    );
-                    svgPath1.setAttribute(
-                        "d",
-                        "M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z",
-                    );
-                    svgPath1.setAttribute("fill-rule", "evenodd");
-                    svgPath1.setAttribute("clip-rule", "evenodd");
+                    // Create path elements for the Delete SVG
+                    const deleteSVGPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    deleteSVGPath.setAttribute("d",
+                        "M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z",);
+                    deleteSVGPath.setAttribute("fill-rule", "evenodd");
+                    deleteSVGPath.setAttribute("clip-rule", "evenodd");
+                    deleteButtonSVG.append(deleteSVGPath);
 
-                    deleteButtonSVG.append(svgPath1);
-                    deleteButton.append(deleteButtonSVG);
-                    // Add the text "Delete" after the SVG
-                    deleteButton.append(" Delete");
+                    // Add the SVG and text to the deleteButtonCell
+                    deleteButtonCell.setAttribute("class", "table-delete-button");
+                    deleteButtonCell.setAttribute("id", `reminder-${element["id"]}`);
+                    deleteButtonCell.append(deleteButtonSVG);
+                    deleteButtonCell.append(" Delete");
 
                     // Add a click event listener to the delete button cell
-                    deleteButton.addEventListener(
-                        "click",
-                        remindersDeleteButtonHandler,
-                    );
+                    deleteButtonCell.addEventListener("click", remindersDeleteButtonHandler);
 
-                    tr.append(title, description, time, deleteButton);
+                    // Append the cells to the row
+                    tr.append(title, time, description, viewButtonCell, deleteButtonCell);
                     remindersTableBody.append(tr);
                 }
             }
@@ -368,6 +381,12 @@ function remindersDeleteButtonHandler(item) {
         console.log(r);
         location.reload(); // TODO TEST
     });
+}
+
+function remindersViewButtonHandler(item) {
+    const id_ = item.target.id.replace("reminder-", "");
+
+    document.location.hash = `#view-reminder?id=${id_}`
 }
 
 function remindersCreateButtonHandler() {

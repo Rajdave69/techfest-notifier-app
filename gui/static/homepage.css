@@ -436,10 +436,52 @@ table {
     /*display: inline;*/
 }
 
+.table-view-button {
+    color: var(--dark-numberbox-color);
+    font-weight: bold;
+    text-align: end;
+    padding-right: 3%;
+    /*   TODO move it a bit up*/
+    cursor: pointer;
+}
+
+.table-view-button svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle; /* Align the icon with the text */
+    /*display: inline;*/
+}
+
 
 tr:last-child {
     border-bottom: 0px;
 }
+
+/*title*/
+#reminders-table tbody tr th {
+    width: 150px;
+}
+
+/*at*/
+#reminders-table tbody tr th + th {
+    width: 200px;
+}
+
+/*description*/
+#reminders-table tbody tr th + th + th {
+    width: 400px;
+}
+
+/*view button*/
+#reminders-table tbody tr th + th + th + th {
+    width: 75px;
+}
+
+/*delete button*/
+#reminders-table tbody tr th + th + th + th +th {
+    width: 75px;
+}
+
 
 
 /*
