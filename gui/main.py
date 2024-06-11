@@ -1,11 +1,86 @@
+import asyncio
+import sqlite3
+import threading
 import time
-
+import webview
 from flask import Flask
 from flask import render_template, request
-import webview
-import sqlite3
 
 app = Flask(__name__, template_folder="./templates")
+window = webview.create_window('Notifier App', app, width=1920, height=1080)
+
+BASE_URL = 'http://127.0.0.1:35505'
+
+
+#
+#   NOTIFICATIONS PART
+#
+
+
+def notification_toast_handler(notification_id, notif_output: dict):
+
+    if notif_output['arguments'] == "http:Mark as Read":
+        mark_notification_as_read(notification_id)
+    elif notif_output['arguments'] == "http:Open":
+        window.evaluate_js(f"window.location.hash = 'view-reminder?id={notification_id}'")
+
+
+def email_toast_handler(email_id, notif_output: dict):
+
+    if notif_output['arguments'] == "http:Mark as Read":
+        mark_email_as_read(email_id)
+    elif notif_output['arguments'] == "http:Open":
+        window.evaluate_js(f"window.location.hash = 'view-email?id={email_id}'")
+
+
+def mark_notification_as_read(notification_id):
+    pass  # TODO RAYAN
+
+
+def mark_email_as_read(email_id):
+    pass  # TODO RAYAN
+
+
+def send_reminder_notification(title, description, id_, image_url):
+    from win11toast import toast
+
+    buttons = [
+        'Mark as Read',
+        'Open'
+    ]
+
+    icon = {
+
+        'src': 'https://unsplash.it/64?image=669',
+        'placement': 'appLogoOverride'
+    }
+
+    toast(
+        f'Reminder: {title}', description, icon=icon, buttons=buttons,
+        on_click=lambda notif_output: notification_toast_handler(id_, notif_output),
+        on_dismissed=lambda X: X
+    )
+
+
+def send_email_notification(title, description, id_, image_url):
+    from win11toast import toast
+
+    buttons = [
+        'Mark as Read',
+        'Open'
+    ]
+
+    icon = {
+
+        'src': 'https://unsplash.it/64?image=669',
+        'placement': 'appLogoOverride'
+    }
+
+    toast(
+        f'Reminder: {title}', description, icon=icon, buttons=buttons,
+        on_click=lambda notif_output: notification_toast_handler(id_, notif_output),
+        on_dismissed=lambda X: X
+    )
 
 
 def setup_db():
@@ -34,7 +109,6 @@ def reminders():
 
     c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
     reminders_ = c.fetchall()
-    print(reminders_)
     reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=True)
 
     db.close()
@@ -115,10 +189,23 @@ def create_reminder():
     return {'http_code': 200}
 
 
-webview.create_window('Notifier App', app, width=1920, height=1080)
-
-webview.start(debug=True)  # gui='mshtml'  if it doesn't normally work
 # webview.resize()
+
+
+def check_for_notifications():
+    while True:
+        # TODO RAYAN
+        time.sleep(1)
+
+
+
+notification_checker_thread = threading.Thread(target=check_for_notifications)
+notification_checker_thread.start()
+
+# send_notification_thread = threading.Thread(target=send_notification)
+# send_notification_thread.start()
+
+webview.start(debug=True)
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
@@ -128,9 +215,5 @@ webview.start(debug=True)  # gui='mshtml'  if it doesn't normally work
 rajs todo list
 
 lightmode darkmode conversion
-url breadcrumb
-
 settings page
-view email page
-view reminder page
 """
