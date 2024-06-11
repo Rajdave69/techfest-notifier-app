@@ -44,26 +44,22 @@ def get_message(service, msg_id):
         message_list=service.users().messages().get(userId='me', id=msg_id, format='raw').execute()
 
         msg_raw = base64.urlsafe_b64decode(message_list['raw'].encode('ASCII'))
-
         msg_str = email.message_from_bytes(msg_raw)
-
-        content_types = msg_str.get_content_maintype()
         
-        #how it will work when is a multipart or plain text
+        content_type = msg_str.get_content_maintype()
 
-        if content_types == 'multipart':
-            part1, part2 = msg_str.get_payload()
-            print("This is the message body, html:")
-            print(part1.get_payload())
-            return part1.get_payload()
+        if content_type == 'multipart':
+            for part in msg_str.get_payload():
+                if part.get_content_maintype() == 'text':
+                    body = part.get_payload(decode=True).decode('utf-8')
+                    break
         else:
-            print("This is the message body plain text:")
-            print(msg_str.get_payload())
-            return msg_str.get_payload()
+            body = msg_str.get_payload(decode=True).decode('utf-8')
+
+        return {'subject':msg_str['subject'], 'sender':msg_str['from'], 'body':body, 'timestamp':msg_str['Date']}
 
 
     except HttpError as error:
-        # TODO(developer) - Handle errors from gmail API.
         print(f'An error occurred: {error}')
 
 def search_messages(service):
@@ -77,7 +73,6 @@ def search_messages(service):
 
         for ids in message_ids:
             final_list.append(ids['id'])
-            # call the function that will call the body of the message
             get_message(service, ids['id'] )
             
         return final_list
