@@ -14,6 +14,9 @@
     --dark-secondary-color: white;
     --dark-notification-box-background-color: #242427;
     --dark-blue-button-color: #3b82f6;
+    --dark-breadcrumb-color: #A1A1AA;
+    --dark-breadcrumb-hover-color: #e4e4e7;
+    --dark-breadcrumb-arrow-color: #71717A;
 }
 
 #page {
@@ -450,9 +453,15 @@ tr:last-child {
 #reminders-grid {
     display: grid;
     grid-template-columns: 15% 85%;
-    grid-template-rows: 80px 74vh;
+    grid-template-rows: 60px 74vh;
     grid-column-gap: 0px;
-    grid-row-gap: 30px;
+    grid-row-gap: 20px;
+}
+
+#reminders-grid h1 {
+    margin-bottom: 10px;
+    align-self: center;
+
 }
 
 #reminders-grid #create-reminder-button {
@@ -466,7 +475,6 @@ tr:last-child {
     color: var(--dark-secondary-color);
     background-color: var(--dark-blue-button-color);
     border-radius: 8px;
-    margin-top: 5px;
 }
 
 #reminders-grid #create-reminder-button:hover {
@@ -791,8 +799,45 @@ tr:last-child {
 }
 
 
+/*
+#
+#
+#   Breadcrumb
+#
+#
+ */
 
+.breadcrumb {
+    display: flex;
+    margin-top: 35px;
+}
 
+.breadcrumb .breadcrumb-parent,
+.breadcrumb .breadcrumb-child
+{
+    color: var(--dark-breadcrumb-color);
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.breadcrumb .breadcrumb-parent:hover,
+.breadcrumb .breadcrumb-child:hover
+{
+    color: var(--dark-breadcrumb-hover-color),
+}
+
+.breadcrumb .breadcrumb-parent {
+    padding-right: 10px;
+
+}
+
+.breadcrumb .breadcrumb-svg {
+    color: var(--dark-breadcrumb-arrow-color);
+}
+
+.breadcrumb .breadcrumb-child {
+padding-left: 10px;
+}
 
 
 
@@ -812,4 +857,5 @@ body {
 
 h1 {
     font-weight: 700;
+    margin-top: 10px;
 }
