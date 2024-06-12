@@ -211,13 +211,13 @@ def notifications():
         'data': [{req[i]: u[i] for i in range(len(req))} for u in notif]
     }
 
-@app.route("/api/reminders/delete/", methods=['POST'])
-def delete_reminder():
-    _id = request.json['id']
+
+@app.route("/api/reminders/delete/<id_>", methods=['DELETE'])
+def delete_reminder(id_):
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
-    c.execute(f"DELETE FROM notifications WHERE id={_id}")
+    c.execute(f"DELETE FROM notifications WHERE id={id_}")
     db.commit()
 
     db.close()

@@ -16,6 +16,7 @@ function displayPageBasedOnHash() {
         "#": document.getElementById("#"),
         "#settings": document.getElementById("#settings"),
         "#reminders": document.getElementById("#reminders"),
+        "#emails": document.getElementById("#emails"),
         "#notification-history": document.getElementById(
             "#notification-history",
         ),
@@ -48,20 +49,17 @@ function pageLoad() {
 
     selectSidebarElement(currentPageAndParams[0]);
     setSidebarReminderCount();
+    setSidebarEmailCount();
 
-    if (currentPageAndParams[0] === "#") {
-        console.log("uwu");
-        homepageLoadUnreadNotifications();
-    } else if (currentPageAndParams[0] === "#reminders") {
-        remindersPageLoadReminders();
-    } else if (currentPageAndParams[0] === "#notification-history") {
-        notificationHistoryPageLoad();
-    } else if (currentPageAndParams[0] === "#view-reminder") {
-        console.log(currentPageAndParams)
-        loadViewReminderPage(currentPageAndParams[1]);
+    switch (currentPageAndParams[0]) {
+        case "#": homepageLoadUnreadNotifications(); break;
+        case "#reminders": remindersPageLoadReminders(); break;
+        case "#emails": emailsPageLoadEmails(); break;
+        case "#notification-history": notificationHistoryPageLoad(); break;
+        case "#view-reminder": loadViewReminderPage(currentPageAndParams[1]); break;
+        case "#view-email": loadViewEmailPage(currentPageAndParams[1]); break;
+        // case _:         console.warn(currentPageAndParams);
 
-    } else {
-        console.warn(currentPageAndParams);
     }
 }
 
@@ -102,6 +100,9 @@ function selectSidebarElement(pageHash) {
         "#": "#",
         "#reminders": "#reminders",
         "#create-reminder": "#reminders",
+        "#view-reminder": "#reminders",
+        "#emails": "#emails",
+        "#view-email": "emails",
         "#notification-history": "#notification-history",
         "#settings": "#settings",
     };
@@ -157,8 +158,6 @@ function loadViewEmailPage(params) {
             senderBox.InnerHtml = `<b>From:</b> <br>${response['body']}`
 
             setBreadcrumbPath("#view-reminder", `View #${email_id}`)
-
-
         })
 
 }
@@ -249,7 +248,7 @@ function homepageLoadUnreadNotifications() {
 function setSidebarReminderCount() {
     const reminderNumberBox = document.getElementById("reminder-number-box");
 
-    fetch(`${API_URL}/api/reminders/`, {
+    fetch(`${API_URL}/api/reminders/unread/`, {
         method: "GET",
     })
         .then((response) => response.json())
@@ -260,6 +259,23 @@ function setSidebarReminderCount() {
                 reminderNumberBox.style.display = "flex";
                 reminderNumberBox.innerText =
                     response["data"].length.toString();
+            }
+        });
+}
+
+function setSidebarEmailCount() {
+    const emailNumberBox = document.getElementById("email-number-box");
+
+    fetch(`${API_URL}/api/emails/unread/`, {
+        method: "GET",
+    })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response["data"].length === 0) {
+                emailNumberBox.style.display = "none";
+            } else {
+                emailNumberBox.style.display = "flex";
+                emailNumberBox.innerText = response["data"].length.toString();
             }
         });
 }
@@ -368,12 +384,89 @@ function remindersPageLoadReminders() {
         });
 }
 
+
+function emailsPageLoadEmails() {
+    const emailsTableBody = document.getElementById("emails-table").children[0];
+    const emptyEmailsDiv = document.getElementById("emails-empty");
+    const tableWrapper = document.getElementById("emails-table");
+
+    // Clear existing rows except for the header
+    while (emailsTableBody.rows.length > 1) {
+        emailsTableBody.deleteRow(1);
+    }
+
+    fetch(`${API_URL}/api/emails/`, {
+        method: "GET",
+    })
+        .then((response) => response.json())
+        .then((response) => response["data"])
+        .then((response) => {
+            console.log(response);
+            console.log(response.length);
+
+            if (response.length === 0) {
+                emptyEmailsDiv.style.display = "grid";
+                tableWrapper.hidden = true;
+            } else {
+                emptyEmailsDiv.style.display = "none";
+                tableWrapper.hidden = false;
+
+                for (let element of response) {
+                    // Create a table row
+                    let tr = document.createElement("tr");
+
+                    // Create table data cells for title, description, and time
+                    let title = document.createElement("td");
+                    let description = document.createElement("td");
+                    let time = document.createElement("td");
+                    const viewButtonCell = document.createElement("td");
+
+                    // Set the text content for the cells
+                    title.innerText = element["title"];
+                    description.innerText = element["description"];
+                    const dateObj = new Date(element["timestamp"] * 1000);
+                    time.innerText = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+
+                    /*
+                    !!! SVG ONE - View Icon with Class!!!
+                    */
+                    // Create an SVG element for the View icon
+                    const viewButtonSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    viewButtonSVG.setAttribute("width", "1em");
+                    viewButtonSVG.setAttribute("height", "1em");
+                    viewButtonSVG.setAttribute("viewBox", "0 0 24 24");
+                    viewButtonSVG.setAttribute("fill", "currentColor");
+
+                    // Create path elements for the View SVG
+                    const viewSVGPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    viewSVGPath.setAttribute("d", "M12 4.5C7 4.5 3.28 7.36 1.5 12C3.28 16.64 7 19.5 12 19.5C17 19.5 20.72 16.64 22.5 12C20.72 7.36 17 4.5 12 4.5ZM12 17.5C9.5 17.5 7.5 15.5 7.5 13C7.5 10.5 9.5 8.5 12 8.5C14.5 8.5 16.5 10.5 16.5 13C16.5 15.5 14.5 17.5 12 17.5ZM12 6.5C8.41 6.5 5.5 9.41 5.5 13C5.5 16.59 8.41 19.5 12 19.5C15.59 19.5 18.5 16.59 18.5 13C18.5 9.41 15.59 6.5 12 6.5ZM12 10.5C10.62 10.5 9.5 11.62 9.5 13C9.5 14.38 10.62 15.5 12 15.5C13.38 15.5 14.5 14.38 14.5 13C14.5 11.62 13.38 10.5 12 10.5Z");
+                    viewSVGPath.setAttribute("fill-rule", "evenodd");
+                    viewSVGPath.setAttribute("clip-rule", "evenodd");
+                    viewButtonSVG.append(viewSVGPath);
+
+                    // Add the SVG and text to the viewButtonCell
+                    viewButtonCell.setAttribute("class", "table-view-button");
+                    viewButtonCell.append(viewButtonSVG);
+                    viewButtonCell.append(" View");
+
+                    // Add a click event listener to the delete button cell
+                    viewButtonCell.addEventListener("click", emailsViewButtonHandler);
+
+                    // Append the cells to the row
+                    tr.append(title, time, description, viewButtonCell);
+                    emailsTableBody.append(tr);
+                }
+            }
+        });
+}
+
+
+
 function remindersDeleteButtonHandler(item) {
     const id_ = item.target.id.replace("reminder-", "");
 
-    fetch(`${API_URL}/api/reminders/delete/`, {
-        method: "post",
-        body: JSON.stringify({ id: id_ }),
+    fetch(`${API_URL}/api/reminders/delete/${id_}`, {
+        method: "DELETE",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
@@ -388,6 +481,14 @@ function remindersViewButtonHandler(item) {
 
     document.location.hash = `#view-reminder?id=${id_}`
 }
+
+function emailsViewButtonHandler(item) {
+    const id_ = item.target.id.replace("email-", "");
+
+    document.location.hash = `#view-email?id=${id_}`
+}
+
+
 
 function remindersCreateButtonHandler() {
     document.getElementById("create-reminder-submit-button").onclick = () => {
