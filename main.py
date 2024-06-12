@@ -1,3 +1,4 @@
+import random
 import sqlite3
 import threading
 import time
@@ -26,6 +27,7 @@ c = db.cursor()
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
+        return
         if notif_output['arguments'] == "http:Mark as Read":
             mark_email_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
@@ -142,7 +144,7 @@ def send_notification_():
     try:
         lock.acquire(True)
         c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
-                (str('0'), 'api', 0, title, body, 0, image_url, int(time.time())))
+                  (str(random.random()), 'api', 0, title, body, 0, image_url, int(time.time())))
         db.commit()
     finally:
         lock.release()
@@ -212,7 +214,7 @@ def unread_notifications():
     try:
         lock.acquire(True)
         c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
-        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=False)
+        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
     finally:
         lock.release()
 
@@ -276,7 +278,7 @@ def notifications():
     try:
         lock.acquire(True)
         c.execute(f'SELECT {", ".join(req)} FROM notifications')
-        notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=False)
+        notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
     finally:
         lock.release()
 
@@ -306,7 +308,8 @@ def create_reminder():
     image_url = request.json["image_url"]
     desc = request.json['body']
 
-    if not image_url: image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
+    if not image_url:
+        image_url = "https://img.icons8.com/?size=100&id=113847&format=png"
 
     with open('reminder.json', 'r') as f:
         count = json.load(f)['count']

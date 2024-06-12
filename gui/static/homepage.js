@@ -548,6 +548,7 @@ function remindersCreateButtonHandler() {
             descriptionElement.value = "";
 
             window.location.hash = "#reminders";
+            location.reload()
         });
     };
 }

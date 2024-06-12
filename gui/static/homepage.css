@@ -147,7 +147,7 @@ body {
     justify-self: center;
 }
 
-#page-content::-webkit-scrollbar { 
+#page-content::-webkit-scrollbar {
     display: none;  /* Safari and Chrome */
 }
 
@@ -481,6 +481,33 @@ tr:last-child {
 #reminders-table tbody tr th + th + th + th +th {
     width: 75px;
 }
+
+
+
+
+
+/*title*/
+#emails-table tbody tr th {
+    width: 150px;
+}
+
+/*at*/
+#emails-table tbody tr th + th {
+    width: 125px;
+}
+
+/*description*/
+#emails-table tbody tr th + th + th {
+    width: 400px;
+    text-overflow: ellipsis;
+}
+
+/*view button*/
+#emails-table tbody tr th + th + th + th {
+    width: 50px;
+}
+
+
 
 
 
