@@ -20,6 +20,8 @@ import threading
 
 MAIL = gmail.GMAIL()
 
+db = sqlite3.connect("database.db")
+c = db.cursor()
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
@@ -41,14 +43,9 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
 
 
 def mark_notification_as_read(notification_id):
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
+    
     c.execute("UPDATE notifications SET read=1 WHERE id=?", (notification_id,))
     db.commit()
-
-    db.close()
-
 
 def mark_reminder_as_read(notification_id):
     mark_notification_as_read(notification_id)
@@ -57,13 +54,9 @@ def mark_reminder_as_read(notification_id):
 def mark_email_as_read(email_id):
     MAIL.mark_read(email_id)
 
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     c.execute(f'UPDATE notifications SET read=1 WHERE id="{email_id}"')
     db.commit()
 
-    db.close()
 
 
 def send_reminder_notification(title, description, id_, image_url):
@@ -124,13 +117,9 @@ def send_email_notification(id_, sender, title, description, timestamp, image_ur
 
 
 def setup_db():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     c.execute(
         "CREATE TABLE IF NOT EXISTS notifications (id TEXT, type TEXT, read INT, title TEXT, body TEXT, sender TEXT, image_url TEXT, timestamp INT)")
     db.commit()
-    db.close()
 
 
 setup_db()
@@ -147,9 +136,6 @@ def send_notification_():
     description = request.json['body']
     image_url = request.json['image_url']
 
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     with open('reminder.json', 'r') as f:
         count = json.load(f)['count']
 
@@ -160,21 +146,15 @@ def send_notification_():
               (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
     db.commit()
 
-    db.close()
-
     send_notification(title, description, '', image_url)
 
 
 @app.route('/api/reminders/')
 def reminders():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
     reminders_ = c.fetchall()
     reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=False)
-
-    db.close()
 
     return {
         'http_code': 200,
@@ -184,15 +164,9 @@ def reminders():
 
 @app.route('/api/reminders/<id_>')
 def reminders_by_id(id_):
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     c.execute(f'SELECT id, title, body, timestamp FROM notifications WHERE type="reminder" AND id="{id_}"')
     reminders_ = c.fetchone()
-
-    db.close()
-
-    print(reminders_)
 
     return {
         'http_code': 200,
@@ -203,15 +177,11 @@ def reminders_by_id(id_):
 
 @app.route('/api/reminders/unread/')
 def unread_reminders():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
     c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type='reminder'")
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
-    db.close()
 
     return {
         "http_code": 200,
@@ -220,15 +190,11 @@ def unread_reminders():
 
 @app.route('/api/notifications/unread/')
 def unread_notifications():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
     c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
-
-    db.close()
 
     return {
         "http_code": 200,
@@ -238,12 +204,9 @@ def unread_notifications():
 
 @app.route('/api/emails/')
 def get_emails():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     c.execute('SELECT * FROM notifications WHERE type="email"')
     data = c.fetchall()
-    db.close()
 
     return {
         "http_code": 200,
@@ -253,12 +216,9 @@ def get_emails():
 
 @app.route('/api/emails/unread/')
 def get_unread_emails():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     c.execute('SELECT * FROM notifications WHERE type="email" AND read=0')
     data = c.fetchall()
-    db.close()
 
     return {
         "http_code": 200,
@@ -268,15 +228,11 @@ def get_unread_emails():
 
 @app.route("/api/notifications/")
 def notifications():
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     req = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
     c.execute(f'SELECT {", ".join(req)} FROM notifications')
     notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
-
-    db.close()
 
     return {
         "http_code": 200,
@@ -286,13 +242,9 @@ def notifications():
 
 @app.route("/api/reminders/delete/<id_>", methods=['DELETE'])
 def delete_reminder(id_):
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
 
     c.execute(f"DELETE FROM notifications WHERE id={id_}")
     db.commit()
-
-    db.close()
 
     return {"http_code": 200}
 
@@ -306,9 +258,6 @@ def create_reminder():
 
     if not image_url: image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
 
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     with open('reminder.json', 'r') as f:
         count = json.load(f)['count']
 
@@ -319,15 +268,10 @@ def create_reminder():
               (str(count + 1), 'reminder', 0, name, desc, 0, image_url, timestamp))
     db.commit()
 
-    db.close()
-
     return {'http_code': 200}
 
 
 def add_emails(emails):
-    db = sqlite3.connect("database.db")
-    c = db.cursor()
-
     c.execute('SELECT id FROM notifications WHERE type="email"')
     old = [i[0] for i in c.fetchall()]
 
@@ -342,7 +286,6 @@ def add_emails(emails):
                 image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
 
     db.commit()
-    db.close()
 
 
 def check_for_notifications():
