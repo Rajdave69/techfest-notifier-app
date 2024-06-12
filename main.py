@@ -304,6 +304,8 @@ def create_reminder():
     image_url = request.json["image_url"]
     desc = request.json['description']
 
+    if not image_url: image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
+
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
