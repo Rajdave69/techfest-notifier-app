@@ -13,10 +13,6 @@ window = webview.create_window('Notifier App', app, width=1920, height=1080)
 BASE_URL = 'http://127.0.0.1:35505'
 LI = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-#
-#   GMAIL PART
-#
-
 
 from gmail import gmail
 import json
@@ -97,7 +93,7 @@ def send_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
-def send_email_notification(title, description, id_, image_url):
+def send_email_notification(title, sender, description, id_, image_url, timestamp):
     from win11toast import toast
 
     buttons = [
@@ -134,7 +130,7 @@ def root():
     return render_template('homepage.html')
 
 @app.route('/api/send-notification/', methods=['POST'])
-def send_notification():
+def send_notification_():
     title = request.json['title']
     description = request.json['body']
     image_url = request.json['image_url']
@@ -142,7 +138,17 @@ def send_notification():
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
-    c.execute('INSERT INTO notifications ')  # TODO RAYAN ADD SQL
+    with open('reminder.json', 'r') as f:
+        count = json.load(f)['count']
+
+    with open('reminder.json', 'w') as f:
+        json.dump({'count': count+1}, f)
+
+    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)', (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
+    db.commit()
+
+    db.close()
+
     send_notification(title, description, '', image_url)
 
 @app.route('/api/reminders/')
@@ -271,6 +277,9 @@ def add_emails(emails):
         c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
                 (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url", mail['timestamp']))
         
+        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], 
+                                image_url=mail['image_url'], timestamp=mail['timestamp'])
+        
     db.commit()
     db.close()
 
@@ -283,7 +292,7 @@ def check_for_notifications():
             if len(emails[0]):
                 pass
             else:
-                add_emails(emails)
+                add_emails(emails[1])
 
             reminders = reminders()
 
