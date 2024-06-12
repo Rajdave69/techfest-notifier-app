@@ -23,6 +23,7 @@ lock = threading.Lock()
 db = sqlite3.connect("database.db", check_same_thread=False)
 c = db.cursor()
 
+
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
         if notif_output['arguments'] == "http:Mark as Read":
@@ -51,6 +52,7 @@ def mark_notification_as_read(notification_id):
     finally:
         lock.release()
 
+
 def mark_reminder_as_read(notification_id):
     mark_notification_as_read(notification_id)
 
@@ -64,7 +66,6 @@ def mark_email_as_read(email_id):
         db.commit()
     finally:
         lock.release()
-
 
 
 def send_reminder_notification(title, body, id_, image_url):
@@ -103,22 +104,16 @@ def send_notification(title, body, id_, image_url):
     )
 
 
-def send_email_notification(id_, sender, title, body, timestamp, image_url):
-    from win11toast import toast
+def send_email_notification(id_, sender, title, body, timestamp):
+    print(sender)
 
     buttons = [
         'Mark as Read',
         'Open'
     ]
 
-    icon = {
-
-        'src': image_url,
-        'placement': 'appLogoOverride'
-    }
-
     toast(
-        f'Email: {title}', body, icon=icon, buttons=buttons,
+        f'Email: {title}', body, buttons=buttons,
         on_click=lambda notif_output: notification_toast_handler(id_, "email", notif_output),
         on_dismissed=lambda X: X
     )
@@ -213,9 +208,9 @@ def unread_reminders():
         'data': [{req[i]: u[i] for i in range(len(req))} for u in unread]
     }
 
+
 @app.route('/api/notifications/unread/')
 def unread_notifications():
-
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
     try:
@@ -265,7 +260,6 @@ def get_unread_emails():
 
 @app.route("/api/notifications/")
 def notifications():
-
     req = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
     try:
@@ -349,10 +343,9 @@ def check_for_notifications():
         while True:
 
             emails = MAIL.unread_messages()
-            print(emails, '\n'*5)
+            print(emails, '\n' * 5)
 
-
-            if not emails: 
+            if not emails:
                 pass
             else:
                 add_emails(emails[1])
