@@ -180,6 +180,23 @@ def reminders():
     }
 
 
+@app.route('/api/reminders/unread/')
+def unread_reminders():
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
+
+    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type="reminders"')
+    unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+
+    db.close()
+
+    return {
+        "http_code": 200,
+        'data': [{req[i]: u[i] for i in range(len(req))} for u in unread]
+    }
+
 @app.route('/api/notifications/unread/')
 def unread_notifications():
     db = sqlite3.connect("database.db")
@@ -296,7 +313,8 @@ def add_emails(emails):
 
     for mail in emails:
         c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url", mail['timestamp']))
+                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
+                "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
         
         send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], 
                                 image_url=mail['image_url'], timestamp=mail['timestamp'])
