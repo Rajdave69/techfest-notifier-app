@@ -23,7 +23,7 @@ import json
 
 import threading
 
-MAIL = gmail.GMAIL
+MAIL = gmail.GMAIL()
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
@@ -54,6 +54,14 @@ def mark_reminder_as_read(notification_id):
 
 def mark_email_as_read(email_id):
     MAIL.mark_read(email_id)
+
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute(f'UPDATE notifications SET read=1 WHERE id="{email_id}"')
+    db.commit()
+
+    db.close()
 
 def send_reminder_notification(title, description, id_, image_url):
     buttons = [
