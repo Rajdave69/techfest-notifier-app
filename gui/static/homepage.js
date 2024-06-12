@@ -68,19 +68,19 @@ function pageLoad() {
 // Wait for window to completely load
 window.addEventListener("DOMContentLoaded", function () {
     // Sidebar handler
-    const elements = document.getElementById("sidebar-ul");
+    // const elements = document.getElementById("sidebar-ul");
 
-    for (let i = 0; i < elements.children.length; i++) {
-        elements.children[i].onclick = function () {
-            // Remove 'selected' class from all elements
-            for (let j = 0; j < elements.children.length; j++) {
-                elements.children[j].classList.remove("selected");
-            }
-
-            // Add 'selected' class to the clicked element
-            this.classList.add("selected");
-        };
-    }
+    // for (let i = 0; i < elements.children.length; i++) {
+    //     elements.children[i].onclick = function () {
+    //         // Remove 'selected' class from all elements
+    //         for (let j = 0; j < elements.children.length; j++) {
+    //             elements.children[j].classList.remove("selected");
+    //         }
+    //
+    //         // Add 'selected' class to the clicked element
+    //         this.classList.add("selected");
+    //     };
+    // }
 
     // Create reminder submit button
     remindersCreateButtonHandler();
@@ -110,7 +110,7 @@ function selectSidebarElement(pageHash) {
     for (let i = 0; i < sidebarElements.length; i++) {
         if (
             (sidebarPages[pageHash] || undefined) ===
-            sidebarElements[i].children[0].href.split("/").at(-1)
+            sidebarElements[i].children[0].href.split("/").at(-1).replace("?", "")
         ) {
             sidebarElements[i].classList.add("selected");
         } else {

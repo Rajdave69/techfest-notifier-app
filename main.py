@@ -5,12 +5,12 @@ import time
 import webview
 from flask import Flask
 from flask import render_template, request
+from win11toast import toast
 
 app = Flask(__name__, template_folder="./gui/templates", static_folder="./gui/static")
 window = webview.create_window('Notifier App', app, width=1920, height=1080)
 
 BASE_URL = 'http://127.0.0.1:35505'
-
 
 #
 #   GMAIL PART
@@ -20,6 +20,7 @@ BASE_URL = 'http://127.0.0.1:35505'
 from gmail import gmail
 
 gmail = gmail.GMAIL
+
 
 #
 #   NOTIFICATIONS PART
@@ -32,28 +33,30 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
             mark_email_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
             window.evaluate_js(f"window.location.hash = 'view-email?id={id_}'")
-            
+
     elif notif_type == "reminder":
         if notif_output['arguments'] == "http:Mark as Read":
             mark_reminder_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
             window.evaluate_js(f"window.location.hash = 'view-reminder?id={id_}'")
-            
+
     else:
         mark_notification_as_read(id_)
+
 
 def mark_notification_as_read(notification_id):
     pass  # TODO RAYAN
 
+
 def mark_reminder_as_read(notification_id):
     pass  # TODO RAYAN
+
 
 def mark_email_as_read(email_id):
     pass  # TODO RAYAN
 
 
 def send_reminder_notification(title, description, id_, image_url):
-
     buttons = [
         'Mark as Read',
         'Open'
@@ -70,23 +73,24 @@ def send_reminder_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
-def send_notification(title, description, id_, image_url):
 
+def send_notification(title, description, id_, image_url):
     buttons = [
         'Mark as Read',
         'Open'
     ]
 
-    icon = {    # TODO image_url can be none
+    icon = {  # TODO image_url can be none
         'src': image_url,
         'placement': 'appLogoOverride'
     }
 
     toast(
-        f'{title}', description, buttons=buttons, icon=icon
+        f'{title}', description, buttons=buttons, icon=icon,
         on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
         on_dismissed=lambda X: X
     )
+
 
 def send_email_notification(title, description, id_, image_url):
     from win11toast import toast
@@ -126,6 +130,7 @@ setup_db()
 def root():
     return render_template('homepage.html')
 
+
 @app.route('/api/send-notification/', methods=['POST'])
 def send_notification():
     title = request.json['title']
@@ -135,7 +140,7 @@ def send_notification():
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
-    c.execute('INSERT INTO notifications ') # TODO RAYAN ADD SQL
+    c.execute('INSERT INTO notifications ')  # TODO RAYAN ADD SQL
     send_notification(title, description, '', image_url)
 
 
@@ -232,7 +237,6 @@ def check_for_notifications():
     while True:
         # TODO RAYAN
         time.sleep(1)
-
 
 
 notification_checker_thread = threading.Thread(target=check_for_notifications)
