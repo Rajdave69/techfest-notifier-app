@@ -101,7 +101,7 @@ def send_notification(title, description, id_, image_url):
     )
 
 
-def send_email_notification(title, description, id_, image_url):
+def send_email_notification(id_, sender, title, description, image_url):
     from win11toast import toast
 
     buttons = [
@@ -188,7 +188,7 @@ def unread_notifications():
     }
 
 
-@app.route('/api/emails')
+@app.route('/api/emails/')
 def get_emails():
     db = sqlite3.connect("database.db")
     c = db.cursor()
@@ -197,10 +197,13 @@ def get_emails():
     data = c.fetchall()
     db.close()
 
-    return [{LI[i]: d[i] for i in range(len(d))} for d in data]
+    return {
+        "http_code": 200,
+        "data": [{LI[i]: d[i] for i in range(len(d))} for d in data]
+    }
 
 
-@app.route('/api/emails')
+@app.route('/api/emails/unread/')
 def get_unread_emails():
     db = sqlite3.connect("database.db")
     c = db.cursor()
@@ -209,7 +212,11 @@ def get_unread_emails():
     data = c.fetchall()
     db.close()
 
-    return [{LI[i]: d[i] for i in range(len(d))} for d in data]
+    return {
+        "http_code": 200,
+        "data": [{LI[i]: d[i] for i in range(len(d))} for d in data]
+    }
+
 
 
 @app.route("/api/notifications/")
