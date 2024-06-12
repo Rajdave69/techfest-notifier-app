@@ -1,4 +1,3 @@
-import asyncio
 import sqlite3
 import threading
 import time
@@ -20,7 +19,7 @@ import threading
 
 MAIL = gmail.GMAIL()
 
-db = sqlite3.connect("database.db")
+db = sqlite3.connect("database.db", check_same_thread=False)
 c = db.cursor()
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
