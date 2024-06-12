@@ -246,7 +246,21 @@ def create_reminder():
 # webview.resize()
 
 def add_emails(emails):
-    pass
+    
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute('SELECT id FROM notifications WHERE type="email"')
+    old = [i[0] for i in c.fetchall()]
+
+    emails = [email for email in emails if email['id'] not in old]
+
+    for mail in emails:
+        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
+                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url", mail['timestamp']))
+        
+    db.commit()
+    db.close()
 
 
 def check_for_notifications():
