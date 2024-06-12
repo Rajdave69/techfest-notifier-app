@@ -21,13 +21,13 @@ import threading
 MAIL = gmail.GMAIL()
 lock = threading.Lock()
 
-db = sqlite3.connect("database.db", check_same_thread=False, timeout=20)
+db = sqlite3.connect("database.db", check_same_thread=False, timeout=20, autocommit=True)
 c = db.cursor()
 
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
-        return
+        return  # todo
         if notif_output['arguments'] == "http:Mark as Read":
             mark_email_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
@@ -73,7 +73,6 @@ def mark_email_as_read(email_id):
 def send_reminder_notification(title, body, id_, image_url):
     buttons = [
         'Mark as Read',
-        'Open'
     ]
 
     icon = {
@@ -101,9 +100,11 @@ def send_notification(title, body, id_, image_url):
 
     toast(
         f'{title}', body, buttons=buttons, icon=icon,
-        on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
+        on_click=lambda notif_output: notification_toast_handler(id_, '', notif_output),
         on_dismissed=lambda X: X
     )
+
+
 
 
 def send_email_notification(id_, sender, title, body, timestamp):
@@ -140,18 +141,17 @@ def send_notification_():
     title = request.json['title']
     body = request.json['body']
     image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
+    id_ = str(random.random())
 
     try:
         lock.acquire(True)
         c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
-                  (str(random.random()), 'api', 0, title, body, 0, image_url, int(time.time())))
+                  (id_, 'api', 0, title, body, 0, image_url, int(time.time())))
         db.commit()
     finally:
         lock.release()
 
-    db.close()
-
-    send_notification(title, body, '', image_url)
+    send_notification(title, body, id_, image_url)
 
     return {}
 
