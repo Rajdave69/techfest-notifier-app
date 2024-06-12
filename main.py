@@ -208,7 +208,7 @@ def unread_reminders():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp >= {int(time.time())} AND type="reminder"')
+    c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp >= {int(time.time())} AND type='reminder'")
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
@@ -225,7 +225,7 @@ def unread_notifications():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
+    c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
@@ -273,7 +273,7 @@ def notifications():
 
     req = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {', '.join(req)} FROM notifications')
+    c.execute(f'SELECT {", ".join(req)} FROM notifications')
     notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
