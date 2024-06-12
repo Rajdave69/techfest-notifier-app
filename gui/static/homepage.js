@@ -135,7 +135,8 @@ function setBreadcrumbPath(pageHash, subPath) {
  */
 
 function loadViewEmailPage(params) {
-    const email_id = params.split("&id=")[1]
+    console.log(params)
+    const email_id = params.split("id=")[1]
     console.log(email_id)
 
     const titleBox = document.getElementById("email-title").children[0]
@@ -149,15 +150,16 @@ function loadViewEmailPage(params) {
         .then((response) => response.json())
         .then((response) => response["data"])
         .then((response) => {
+            const sender = response['sender'].replaceAll(">", "").replaceAll("<", "<br>")
 
             const datetime = new Date(response["timestamp"] * 1000);
 
             titleBox.innerText = response['title']
             bodyBox.innerText = response['body']
-            timeBox.InnerHtml = `<b>At:</b> <br>${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
-            senderBox.InnerHtml = `<b>From:</b> <br>${response['body']}`
+            timeBox.innerHTML = `<b>At:</b> <br>${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
+            senderBox.innerHTML = `<b>From:</b> ${sender}`
 
-            setBreadcrumbPath("#view-reminder", `View #${email_id}`)
+            setBreadcrumbPath("#view-reminder", `View #12${email_id}`)
         })
 
 }

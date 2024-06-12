@@ -242,9 +242,24 @@ def get_emails():
     }
 
 
+@app.route('/api/emails/<id_>')
+def get_email_by_id(id_):
+    print(id_)
+    try:
+        lock.acquire(True)
+        c.execute(f'SELECT * FROM notifications WHERE type="email" AND id="{id_}"')
+        data = c.fetchone()
+    finally:
+        lock.release()
+
+    return {
+        "http_code": 200,
+        "data": {'title': data[3], 'body': data[4], 'timestamp': data[-1], 'id': data[0], 'sender': data[5]}
+    }
+
+
 @app.route('/api/emails/unread/')
 def get_unread_emails():
-
     try:
         lock.acquire(True)
         c.execute('SELECT * FROM notifications WHERE type="email" AND read=0')
