@@ -208,7 +208,7 @@ def unread_reminders():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp >= {int(time.time())} AND type='reminder'")
+    c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type='reminder'")
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
@@ -350,7 +350,10 @@ def check_for_notifications():
         while True:
 
             emails = MAIL.unread_messages()
-            if len(emails[0]):
+            print(emails, '\n'*5)
+
+
+            if not emails: 
                 pass
             else:
                 add_emails(emails[1])

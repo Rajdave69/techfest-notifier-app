@@ -71,6 +71,8 @@ class GMAIL:
         result = self.service.users().messages().list(userId='me', labelIds="UNREAD").execute()
         number_result = result['resultSizeEstimate']
 
+        print(result)
+
         all_ids = []
         msgs = []
 
@@ -79,7 +81,7 @@ class GMAIL:
 
             for ids in message_ids:
                 all_ids.append(ids['id'])
-                msgs.append(self.get_message(self.service, ids['id']))
+                msgs.append(self.get_email(ids['id']))
                 
             return all_ids, msgs
 
