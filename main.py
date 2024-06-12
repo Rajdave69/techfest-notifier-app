@@ -13,7 +13,6 @@ window = webview.create_window('Notifier App', app, width=1920, height=1080)
 BASE_URL = 'http://127.0.0.1:35505'
 LI = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-
 from gmail import gmail
 import json
 
@@ -63,6 +62,7 @@ def mark_email_as_read(email_id):
     db.commit()
 
     db.close()
+
 
 def send_reminder_notification(title, description, id_, image_url):
     buttons = [
@@ -152,7 +152,7 @@ def send_notification_():
         count = json.load(f)['count']
 
     with open('reminder.json', 'w') as f:
-        json.dump({'count': count+1}, f)
+        json.dump({'count': count + 1}, f)
 
     c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)', 
               (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
@@ -177,6 +177,25 @@ def reminders():
     return {
         'http_code': 200,
         'data': [{'title': r[1], 'description': r[2], 'timestamp': r[-1], 'id': r[0]} for r in reminders_]
+    }
+
+
+@app.route('/api/reminders/<id_>')
+def reminders_by_id(id_):
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute(f'SELECT id, title, body, timestamp FROM notifications WHERE type="reminder" AND id="{id_}"')
+    reminders_ = c.fetchone()
+
+    db.close()
+
+    print(reminders_)
+
+    return {
+        'http_code': 200,
+        'data':
+            {'title': reminders_[1], 'description': reminders_[2], 'timestamp': reminders_[-1], 'id': reminders_[0]}
     }
 
 
@@ -226,7 +245,6 @@ def get_unread_emails():
         "http_code": 200,
         "data": [{LI[i]: d[i] for i in range(len(d))} for d in data]
     }
-
 
 
 @app.route("/api/notifications/")
@@ -295,12 +313,13 @@ def add_emails(emails):
     emails = [email for email in emails if email['id'] not in old]
 
     for mail in emails:
-        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url", mail['timestamp']))
-        
-        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], 
+        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)",
+                  (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url",
+                   mail['timestamp']))
+
+        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'],
                                 image_url=mail['image_url'], timestamp=mail['timestamp'])
-        
+
     db.commit()
     db.close()
 
