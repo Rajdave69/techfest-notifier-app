@@ -26,12 +26,14 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
         if notif_output['arguments'] == "http:Mark as Read":
             mark_email_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
+            mark_email_as_read(id_)
             window.evaluate_js(f"window.location.hash = 'view-email?id={id_}'")
 
     elif notif_type == "reminder":
         if notif_output['arguments'] == "http:Mark as Read":
             mark_reminder_as_read(id_)
         elif notif_output['arguments'] == "http:Open":
+            mark_reminder_as_read(id_)
             window.evaluate_js(f"window.location.hash = 'view-reminder?id={id_}'")
 
     else:
@@ -170,7 +172,7 @@ def reminders():
 
     c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
     reminders_ = c.fetchall()
-    reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=True)
+    reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=False)
 
     db.close()
 
@@ -206,7 +208,7 @@ def unread_reminders():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type="reminders"')
+    c.execute(f'SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp >= {int(time.time())} AND type="reminder"')
     unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
 
     db.close()
