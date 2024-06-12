@@ -338,7 +338,7 @@ def add_emails(emails):
                 (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
                 "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
         
-        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], 
+        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], id_=mail['id'],
                 image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
 
     db.commit()

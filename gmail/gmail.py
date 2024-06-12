@@ -62,8 +62,8 @@ class GMAIL:
             else:
                 body = msg_str.get_payload(decode=True).decode('utf-8')
 
-            return {'subject': msg_str['subject'], 'sender': msg_str['from'], 'body': body,
-                    'timestamp': datetime.strptime(msg_str['Date'], "%a, %d %b %Y %H:%M:%S %z"), 'id': msg_id}
+            return {'subject': msg_str['subject'], 'sender': msg_str['from'], 'body': body, 'id': msg_id, 
+                    'timestamp': int(datetime.strptime(msg_str['Date'], "%a, %d %b %Y %H:%M:%S %z").timestamp()) }
 
         except HttpError as error:
             print(f'An error occurred: {error}')
