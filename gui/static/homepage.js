@@ -102,7 +102,7 @@ function selectSidebarElement(pageHash) {
         "#create-reminder": "#reminders",
         "#view-reminder": "#reminders",
         "#emails": "#emails",
-        "#view-email": "emails",
+        "#view-email": "#emails",
         "#notification-history": "#notification-history",
         "#settings": "#settings",
     };
@@ -159,7 +159,7 @@ function loadViewEmailPage(params) {
             timeBox.innerHTML = `<b>At:</b> <br>${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
             senderBox.innerHTML = `<b>From:</b> ${sender}`
 
-            setBreadcrumbPath("#view-reminder", `View #12${email_id}`)
+            setBreadcrumbPath("#view-email", `View ${email_id}`)
         })
 
 }

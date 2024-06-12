@@ -139,16 +139,10 @@ def send_notification_():
     body = request.json['body']
     image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
 
-    with open('reminder.json', 'r') as f:
-        count = json.load(f)['count']
-
-    with open('reminder.json', 'w') as f:
-        json.dump({'count': count + 1}, f)
-
     try:
         lock.acquire(True)
         c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
-                (str(count), 'api', 0, title, body, 0, image_url, int(time.time())))
+                (str('0'), 'api', 0, title, body, 0, image_url, int(time.time())))
         db.commit()
     finally:
         lock.release()
