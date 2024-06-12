@@ -26,30 +26,33 @@ gmail = gmail.GMAIL
 #
 
 
-def notification_toast_handler(notification_id, notif_output: dict):
-    if notif_output['arguments'] == "http:Mark as Read":
-        mark_notification_as_read(notification_id)
-    elif notif_output['arguments'] == "http:Open":
-        window.evaluate_js(f"window.location.hash = 'view-reminder?id={notification_id}'")
-
-
-def email_toast_handler(email_id, notif_output: dict):
-    if notif_output['arguments'] == "http:Mark as Read":
-        mark_email_as_read(email_id)
-    elif notif_output['arguments'] == "http:Open":
-        window.evaluate_js(f"window.location.hash = 'view-email?id={email_id}'")
-
+def notification_toast_handler(id_, notif_type, notif_output: dict):
+    if notif_type == "email":
+        if notif_output['arguments'] == "http:Mark as Read":
+            mark_email_as_read(id_)
+        elif notif_output['arguments'] == "http:Open":
+            window.evaluate_js(f"window.location.hash = 'view-email?id={id_}'")
+            
+    elif notif_type == "reminder":
+        if notif_output['arguments'] == "http:Mark as Read":
+            mark_reminder_as_read(id_)
+        elif notif_output['arguments'] == "http:Open":
+            window.evaluate_js(f"window.location.hash = 'view-reminder?id={id_}'")
+            
+    else:
+        mark_notification_as_read(id_)
 
 def mark_notification_as_read(notification_id):
     pass  # TODO RAYAN
 
+def mark_reminder_as_read(notification_id):
+    pass  # TODO RAYAN
 
 def mark_email_as_read(email_id):
     pass  # TODO RAYAN
 
 
 def send_reminder_notification(title, description, id_, image_url):
-    from win11toast import toast
 
     buttons = [
         'Mark as Read',
@@ -57,17 +60,33 @@ def send_reminder_notification(title, description, id_, image_url):
     ]
 
     icon = {
-
-        'src': 'https://unsplash.it/64?image=669',
+        'src': image_url,
         'placement': 'appLogoOverride'
     }
 
     toast(
         f'Reminder: {title}', description, icon=icon, buttons=buttons,
-        on_click=lambda notif_output: notification_toast_handler(id_, notif_output),
+        on_click=lambda notif_output: notification_toast_handler(id_, "reminder", notif_output),
         on_dismissed=lambda X: X
     )
 
+def send_notification(title, description, id_, image_url):
+
+    buttons = [
+        'Mark as Read',
+        'Open'
+    ]
+
+    icon = {    # TODO image_url can be none
+        'src': image_url,
+        'placement': 'appLogoOverride'
+    }
+
+    toast(
+        f'{title}', description, buttons=buttons, icon=icon
+        on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
+        on_dismissed=lambda X: X
+    )
 
 def send_email_notification(title, description, id_, image_url):
     from win11toast import toast
@@ -79,13 +98,13 @@ def send_email_notification(title, description, id_, image_url):
 
     icon = {
 
-        'src': 'https://unsplash.it/64?image=669',
+        'src': image_url,
         'placement': 'appLogoOverride'
     }
 
     toast(
         f'Reminder: {title}', description, icon=icon, buttons=buttons,
-        on_click=lambda notif_output: notification_toast_handler(id_, notif_output),
+        on_click=lambda notif_output: notification_toast_handler(id_, "email", notif_output),
         on_dismissed=lambda X: X
     )
 
@@ -97,7 +116,6 @@ def setup_db():
     c.execute(
         "CREATE TABLE IF NOT EXISTS notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, read INT, title TEXT, body TEXT, sender TEXT, image_url TEXT, timestamp INT)")
     db.commit()
-
     db.close()
 
 
@@ -112,12 +130,14 @@ def root():
 def send_notification():
     title = request.json['title']
     description = request.json['body']
+    image_url = request.json['image_url']
 
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
     c.execute('INSERT INTO notifications ') # TODO RAYAN ADD SQL
-    # with timestamp 2 seconds later so it instantly notifies
+    send_notification(title, description, '', image_url)
+
 
 @app.route('/api/reminders/')
 def reminders():
