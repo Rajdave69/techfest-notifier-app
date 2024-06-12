@@ -252,13 +252,15 @@ function setSidebarReminderCount() {
         method: "GET",
     })
         .then((response) => response.json())
+        .then((response) => response['data'])
         .then((response) => {
-            if (response["data"].length === 0) {
+            console.log(response)
+            if (response.length === 0) {
                 reminderNumberBox.style.display = "none";
             } else {
                 reminderNumberBox.style.display = "flex";
                 reminderNumberBox.innerText =
-                    response["data"].length.toString();
+                    response.length.toString().toString();
             }
         });
 }
@@ -270,12 +272,14 @@ function setSidebarEmailCount() {
         method: "GET",
     })
         .then((response) => response.json())
+        .then((response) => response['data'])
         .then((response) => {
-            if (response["data"].length === 0) {
+            console.log(response)
+            if (response.length === 0) {
                 emailNumberBox.style.display = "none";
             } else {
                 emailNumberBox.style.display = "flex";
-                emailNumberBox.innerText = response["data"].length.toString();
+                emailNumberBox.innerText = response.length.toString();
             }
         });
 }
@@ -599,13 +603,13 @@ function createNotificationBoxes(data) {
 
         // Assign values to the divs
         mainDiv.setAttribute("class", "notification-box");
-        image.src = notification["image"];
+        image.src = notification["image_url"];
         h3.innerText = notification["title"];
 
         const datetime = new Date(notification["timestamp"] * 1000);
 
         timestamp.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`;
-        p.innerText = notification["content"];
+        p.innerText = notification["description"];
 
         // Add all the new items to the main div, then add the main div to the page
         mainDiv.append(image, h3, timestamp, p);
