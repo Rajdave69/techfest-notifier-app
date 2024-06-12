@@ -25,6 +25,7 @@ import threading
 
 MAIL = gmail.GMAIL()
 
+
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
         if notif_output['arguments'] == "http:Mark as Read":
@@ -40,6 +41,7 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
 
     else:
         mark_notification_as_read(id_)
+
 
 def mark_notification_as_read(notification_id):
     db = sqlite3.connect("database.db")
@@ -80,6 +82,7 @@ def send_reminder_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
+
 def send_notification(title, description, id_, image_url):
     buttons = [
         'Mark as Read',
@@ -96,6 +99,7 @@ def send_notification(title, description, id_, image_url):
         on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
         on_dismissed=lambda X: X
     )
+
 
 def send_email_notification(title, description, id_, image_url):
     from win11toast import toast
@@ -117,6 +121,7 @@ def send_email_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
+
 def setup_db():
     db = sqlite3.connect("database.db")
     c = db.cursor()
@@ -126,12 +131,14 @@ def setup_db():
     db.commit()
     db.close()
 
+
 setup_db()
 
 
 @app.route("/")
 def root():
     return render_template('homepage.html')
+
 
 @app.route('/api/send-notification/', methods=['POST'])
 def send_notification():
@@ -144,6 +151,7 @@ def send_notification():
 
     c.execute('INSERT INTO notifications ')  # TODO RAYAN ADD SQL
     send_notification(title, description, '', image_url)
+
 
 @app.route('/api/reminders/')
 def reminders():
@@ -160,6 +168,7 @@ def reminders():
         'http_code': 200,
         'data': [{'title': r[1], 'description': r[2], 'timestamp': r[-1], 'id': r[0]} for r in reminders_]
     }
+
 
 @app.route('/api/notifications/unread/')
 def unread_notifications():
@@ -178,6 +187,7 @@ def unread_notifications():
         'data': [{req[i]: u[i] for i in range(len(req))} for u in unread]
     }
 
+
 @app.route('/api/emails')
 def get_emails():
     db = sqlite3.connect("database.db")
@@ -187,9 +197,8 @@ def get_emails():
     data = c.fetchall()
     db.close()
 
-    return [{LI[i]:d[i] for i in range(len(d))} for d in data]
+    return [{LI[i]: d[i] for i in range(len(d))} for d in data]
 
-    
 
 @app.route('/api/emails')
 def get_unread_emails():
@@ -200,7 +209,8 @@ def get_unread_emails():
     data = c.fetchall()
     db.close()
 
-    return [{LI[i]:d[i] for i in range(len(d))} for d in data]
+    return [{LI[i]: d[i] for i in range(len(d))} for d in data]
+
 
 @app.route("/api/notifications/")
 def notifications():
@@ -232,6 +242,7 @@ def delete_reminder(id_):
 
     return {"http_code": 200}
 
+
 @app.route("/api/reminders/create/", methods=['POST'])
 def create_reminder():
     name = request.json["name"]
@@ -246,19 +257,18 @@ def create_reminder():
         count = json.load(f)['count']
 
     with open('reminder.json', 'w') as f:
-        json.dump({'count': count+1}, f)
+        json.dump({'count': count + 1}, f)
 
-
-    c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-              (str(count+1), 'reminder', 0, name, desc, 0, image_url, timestamp))
+    c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)",
+              (str(count + 1), 'reminder', 0, name, desc, 0, image_url, timestamp))
     db.commit()
 
     db.close()
 
     return {'http_code': 200}
 
+
 def add_emails(emails):
-    
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
@@ -268,14 +278,15 @@ def add_emails(emails):
     emails = [email for email in emails if email['id'] not in old]
 
     for mail in emails:
-        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url", mail['timestamp']))
-        
+        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)",
+                  (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], "placeholder_url",
+                   mail['timestamp']))
+
     db.commit()
     db.close()
 
+
 def check_for_notifications():
-    
     def check():
         while True:
 
@@ -287,12 +298,12 @@ def check_for_notifications():
 
             reminders = reminders()
 
-
             time.sleep(15)
 
     thread = threading.Thread(target=check)
     thread.daemon = True
     thread.start()
+
 
 check_for_notifications()
 
