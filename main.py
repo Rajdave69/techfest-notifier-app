@@ -43,11 +43,14 @@ def mark_notification_as_read(notification_id):
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
-    c.execute("UPDATE ")
+    c.execute("UPDATE notifications SET read=1 WHERE id=?", (notification_id,))
+    db.commit()
+
+    db.close()
 
 
 def mark_reminder_as_read(notification_id):
-    pass  # TODO RAYAN
+    mark_notification_as_read(notification_id)
 
 
 def mark_email_as_read(email_id):
@@ -151,7 +154,8 @@ def send_notification_():
     with open('reminder.json', 'w') as f:
         json.dump({'count': count+1}, f)
 
-    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)', (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
+    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)', 
+              (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
     db.commit()
 
     db.close()
@@ -311,14 +315,18 @@ def check_for_notifications():
             else:
                 add_emails(emails[1])
 
-            reminders = reminders()
+            reminders = unread_notifications()['data']
+            ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
+
+            for r in reminders:
+                if r['type'] != 'email':
+                    send_reminder_notification(title=r['title'], description=r['body'], id_=r['id'], image_url=r['image_url'])
 
             time.sleep(15)
 
     thread = threading.Thread(target=check)
     thread.daemon = True
     thread.start()
-
 
 check_for_notifications()
 
