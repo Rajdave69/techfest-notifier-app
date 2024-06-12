@@ -973,6 +973,63 @@ padding-left: 10px;
 
 
 
+/*
+#
+#
+#   Emails Page
+#
+#
+*/
+
+#emails-grid {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 60px 74vh;
+    grid-column-gap: 0px;
+    grid-row-gap: 20px;
+}
+
+#emails-grid h1 {
+    margin-bottom: 10px;
+    align-self: center;
+
+}
+
+
+#emails-grid p {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#emails-grid h1 {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+#emails-grid .table-wrapper {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#emails-empty {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 body {
     background-color: var(--dark-bg-color);
     font-family: "Inter", sans-serif;
