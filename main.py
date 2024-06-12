@@ -11,6 +11,7 @@ app = Flask(__name__, template_folder="./gui/templates", static_folder="./gui/st
 window = webview.create_window('Notifier App', app, width=1920, height=1080)
 
 BASE_URL = 'http://127.0.0.1:35505'
+LI = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
 #
 #   GMAIL PART
@@ -23,12 +24,6 @@ import json
 import threading
 
 MAIL = gmail.GMAIL
-
-
-#
-#   NOTIFICATIONS PART
-#
-
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
@@ -46,7 +41,6 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
     else:
         mark_notification_as_read(id_)
 
-
 def mark_notification_as_read(notification_id):
     db = sqlite3.connect("database.db")
     c = db.cursor()
@@ -60,7 +54,6 @@ def mark_reminder_as_read(notification_id):
 
 def mark_email_as_read(email_id):
     MAIL.mark_read(email_id)
-
 
 def send_reminder_notification(title, description, id_, image_url):
     buttons = [
@@ -79,7 +72,6 @@ def send_reminder_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
-
 def send_notification(title, description, id_, image_url):
     buttons = [
         'Mark as Read',
@@ -96,7 +88,6 @@ def send_notification(title, description, id_, image_url):
         on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
         on_dismissed=lambda X: X
     )
-
 
 def send_email_notification(title, description, id_, image_url):
     from win11toast import toast
@@ -118,7 +109,6 @@ def send_email_notification(title, description, id_, image_url):
         on_dismissed=lambda X: X
     )
 
-
 def setup_db():
     db = sqlite3.connect("database.db")
     c = db.cursor()
@@ -128,14 +118,12 @@ def setup_db():
     db.commit()
     db.close()
 
-
 setup_db()
 
 
 @app.route("/")
 def root():
     return render_template('homepage.html')
-
 
 @app.route('/api/send-notification/', methods=['POST'])
 def send_notification():
@@ -148,7 +136,6 @@ def send_notification():
 
     c.execute('INSERT INTO notifications ')  # TODO RAYAN ADD SQL
     send_notification(title, description, '', image_url)
-
 
 @app.route('/api/reminders/')
 def reminders():
@@ -165,7 +152,6 @@ def reminders():
         'http_code': 200,
         'data': [{'title': r[1], 'description': r[2], 'timestamp': r[-1], 'id': r[0]} for r in reminders_]
     }
-
 
 @app.route('/api/notifications/unread/')
 def unread_notifications():
@@ -184,6 +170,29 @@ def unread_notifications():
         'data': [{req[i]: u[i] for i in range(len(req))} for u in unread]
     }
 
+@app.route('/api/emails')
+def get_emails():
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute('SELECT * FROM notifications WHERE type="email"')
+    data = c.fetchall()
+    db.close()
+
+    return [{LI[i]:d[i] for i in range(len(d))} for d in data]
+
+    
+
+@app.route('/api/emails')
+def get_unread_emails():
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute('SELECT * FROM notifications WHERE type="email" AND read=0')
+    data = c.fetchall()
+    db.close()
+
+    return [{LI[i]:d[i] for i in range(len(d))} for d in data]
 
 @app.route("/api/notifications/")
 def notifications():
@@ -202,7 +211,6 @@ def notifications():
         'data': [{req[i]: u[i] for i in range(len(req))} for u in notif]
     }
 
-
 @app.route("/api/reminders/delete/", methods=['POST'])
 def delete_reminder():
     _id = request.json['id']
@@ -215,7 +223,6 @@ def delete_reminder():
     db.close()
 
     return {"http_code": 200}
-
 
 @app.route("/api/reminders/create/", methods=['POST'])
 def create_reminder():
@@ -242,9 +249,6 @@ def create_reminder():
 
     return {'http_code': 200}
 
-
-# webview.resize()
-
 def add_emails(emails):
     
     db = sqlite3.connect("database.db")
@@ -261,7 +265,6 @@ def add_emails(emails):
         
     db.commit()
     db.close()
-
 
 def check_for_notifications():
     
@@ -283,14 +286,7 @@ def check_for_notifications():
     thread.daemon = True
     thread.start()
 
-    
-
-
-notification_checker_thread = threading.Thread(target=check_for_notifications)
-notification_checker_thread.start()
-
-# send_notification_thread = threading.Thread(target=send_notification)
-# send_notification_thread.start()
+check_for_notifications()
 
 webview.start(debug=True)
 
