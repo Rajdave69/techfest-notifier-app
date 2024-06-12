@@ -81,7 +81,7 @@ class GMAIL:
                 all_ids.append(ids['id'])
                 msgs.append(self.get_message(self.service, ids['id']))
                 
-            return all_ids, msgs
+            return (all_ids, msgs)
 
     def mark_read(self, msg_id):
 

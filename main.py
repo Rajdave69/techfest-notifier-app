@@ -18,8 +18,11 @@ BASE_URL = 'http://127.0.0.1:35505'
 
 
 from gmail import gmail
+import json
 
-gmail = gmail.GMAIL
+import threading
+
+MAIL = gmail.GMAIL
 
 
 #
@@ -45,7 +48,10 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
 
 
 def mark_notification_as_read(notification_id):
-    pass  # TODO RAYAN
+    db = sqlite3.connect("database.db")
+    c = db.cursor()
+
+    c.execute("UPDATE ")
 
 
 def mark_reminder_as_read(notification_id):
@@ -53,7 +59,7 @@ def mark_reminder_as_read(notification_id):
 
 
 def mark_email_as_read(email_id):
-    pass  # TODO RAYAN
+    MAIL.mark_read(email_id)
 
 
 def send_reminder_notification(title, description, id_, image_url):
@@ -118,7 +124,7 @@ def setup_db():
     c = db.cursor()
 
     c.execute(
-        "CREATE TABLE IF NOT EXISTS notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, read INT, title TEXT, body TEXT, sender TEXT, image_url TEXT, timestamp INT)")
+        "CREATE TABLE IF NOT EXISTS notifications (id TEXT, type TEXT, read INT, title TEXT, body TEXT, sender TEXT, image_url TEXT, timestamp INT)")
     db.commit()
     db.close()
 
@@ -221,8 +227,15 @@ def create_reminder():
     db = sqlite3.connect("database.db")
     c = db.cursor()
 
-    c.execute("INSERT INTO notifications values (NULL,?,?,?,?,?,?,?)", (
-        'reminder', 0, name, desc, 0, image_url, timestamp))
+    with open('reminder.json', 'r') as f:
+        count = json.load(f)['count']
+
+    with open('reminder.json', 'w') as f:
+        json.dump({'count': count+1}, f)
+
+
+    c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
+              (str(count+1), 'reminder', 0, name, desc, 0, image_url, timestamp))
     db.commit()
 
     db.close()
@@ -232,11 +245,31 @@ def create_reminder():
 
 # webview.resize()
 
+def add_emails(emails):
+    pass
+
 
 def check_for_notifications():
-    while True:
-        # TODO RAYAN
-        time.sleep(1)
+    
+    def check():
+        while True:
+
+            emails = MAIL.unread_messages()
+            if len(emails[0]):
+                pass
+            else:
+                add_emails(emails)
+
+            reminders = reminders()
+
+
+            time.sleep(15)
+
+    thread = threading.Thread(target=check)
+    thread.daemon = True
+    thread.start()
+
+    
 
 
 notification_checker_thread = threading.Thread(target=check_for_notifications)
