@@ -18,6 +18,7 @@ import json
 import threading
 
 MAIL = gmail.GMAIL()
+lock = threading.Lock()
 
 db = sqlite3.connect("database.db", check_same_thread=False)
 c = db.cursor()
@@ -43,8 +44,12 @@ def notification_toast_handler(id_, notif_type, notif_output: dict):
 
 def mark_notification_as_read(notification_id):
     
-    c.execute("UPDATE notifications SET read=1 WHERE id=?", (notification_id,))
-    db.commit()
+    try:
+        lock.acquire(True)
+        c.execute("UPDATE notifications SET read=1 WHERE id=?", (notification_id,))
+        db.commit()
+    finally:
+        lock.release()
 
 def mark_reminder_as_read(notification_id):
     mark_notification_as_read(notification_id)
@@ -53,8 +58,12 @@ def mark_reminder_as_read(notification_id):
 def mark_email_as_read(email_id):
     MAIL.mark_read(email_id)
 
-    c.execute(f'UPDATE notifications SET read=1 WHERE id="{email_id}"')
-    db.commit()
+    try:
+        lock.acquire(True)
+        c.execute(f'UPDATE notifications SET read=1 WHERE id="{email_id}"')
+        db.commit()
+    finally:
+        lock.release()
 
 
 
@@ -141,9 +150,13 @@ def send_notification_():
     with open('reminder.json', 'w') as f:
         json.dump({'count': count + 1}, f)
 
-    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
-              (str(count), 'api', 0, title, body, 0, image_url, int(time.time())))
-    db.commit()
+    try:
+        lock.acquire(True)    
+        c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
+                (str(count), 'api', 0, title, body, 0, image_url, int(time.time())))
+        db.commit()
+    finally:
+        lock.release()
 
     db.close()
 
@@ -153,9 +166,13 @@ def send_notification_():
 @app.route('/api/reminders/')
 def reminders():
 
-    c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
-    reminders_ = c.fetchall()
-    reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=False)
+    try:
+        lock.acquire(True)
+        c.execute('SELECT id, title, body, timestamp FROM notifications WHERE type="reminder"')
+        reminders_ = c.fetchall()
+        reminders_ = sorted(reminders_, key=lambda x: x[-1], reverse=False)
+    finally:
+        lock.release()
 
     return {
         'http_code': 200,
@@ -166,8 +183,12 @@ def reminders():
 @app.route('/api/reminders/<id_>')
 def reminders_by_id(id_):
 
-    c.execute(f'SELECT id, title, body, timestamp FROM notifications WHERE type="reminder" AND id="{id_}"')
-    reminders_ = c.fetchone()
+    try:
+        lock.acquire(True)
+        c.execute(f'SELECT id, title, body, timestamp FROM notifications WHERE type="reminder" AND id="{id_}"')
+        reminders_ = c.fetchone()
+    finally:
+        lock.release()
 
     return {
         'http_code': 200,
@@ -180,9 +201,12 @@ def reminders_by_id(id_):
 def unread_reminders():
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type='reminder'")
-    unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
-
+    try:
+        lock.acquire(True)
+        c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type='reminder'")
+        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    finally:
+        lock.release()
 
     return {
         "http_code": 200,
@@ -194,8 +218,12 @@ def unread_notifications():
 
     req = ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
-    unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    try:
+        lock.acquire(True)
+        c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
+        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    finally:
+        lock.release()
 
     return {
         "http_code": 200,
@@ -206,8 +234,12 @@ def unread_notifications():
 @app.route('/api/emails/')
 def get_emails():
 
-    c.execute('SELECT * FROM notifications WHERE type="email"')
-    data = c.fetchall()
+    try:
+        lock.acquire(True)
+        c.execute('SELECT * FROM notifications WHERE type="email"')
+        data = c.fetchall()
+    finally:
+        lock.release()
 
     return {
         "http_code": 200,
@@ -218,8 +250,12 @@ def get_emails():
 @app.route('/api/emails/unread/')
 def get_unread_emails():
 
-    c.execute('SELECT * FROM notifications WHERE type="email" AND read=0')
-    data = c.fetchall()
+    try:
+        lock.acquire(True)
+        c.execute('SELECT * FROM notifications WHERE type="email" AND read=0')
+        data = c.fetchall()
+    finally:
+        lock.release()
 
     return {
         "http_code": 200,
@@ -232,8 +268,12 @@ def notifications():
 
     req = ['id', 'type', 'read', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
-    c.execute(f'SELECT {", ".join(req)} FROM notifications')
-    notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    try:
+        lock.acquire(True)
+        c.execute(f'SELECT {", ".join(req)} FROM notifications')
+        notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+    finally:
+        lock.release()
 
     return {
         "http_code": 200,
@@ -244,8 +284,12 @@ def notifications():
 @app.route("/api/reminders/delete/<id_>", methods=['DELETE'])
 def delete_reminder(id_):
 
-    c.execute(f"DELETE FROM notifications WHERE id={id_}")
-    db.commit()
+    try:
+        lock.acquire(True)
+        c.execute(f"DELETE FROM notifications WHERE id={id_}")
+        db.commit()
+    finally:
+        lock.release()
 
     return {"http_code": 200}
 
@@ -265,29 +309,40 @@ def create_reminder():
     with open('reminder.json', 'w') as f:
         json.dump({'count': count + 1}, f)
 
-    c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)",
-              (str(count + 1), 'reminder', 0, name, desc, 0, image_url, timestamp))
-    db.commit()
+    try:
+        lock.acquire(True)
+        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)",
+                (str(count + 1), 'reminder', 0, name, desc, 0, image_url, timestamp))
+        db.commit()
+    finally:
+        lock.release()
 
     return {'http_code': 200}
 
 
 def add_emails(emails):
-    c.execute('SELECT id FROM notifications WHERE type="email"')
-    old = [i[0] for i in c.fetchall()]
+    try:
+        lock.acquire(True)
+        c.execute('SELECT id FROM notifications WHERE type="email"')
+        old = [i[0] for i in c.fetchall()]
+    finally:
+        lock.release()
 
     emails = [email for email in emails if email['id'] not in old]
 
-    for mail in emails:
-        c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-                (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
-                "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
-        
-        send_email_notification(title=mail['subject'], sender=mail['sender'], body=mail['body'], id_=mail['id'],
-                image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
+    try:
+        lock.acquire(True)
+        for mail in emails:
+            c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
+                    (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
+                    "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
+            
+            send_email_notification(title=mail['subject'], sender=mail['sender'], body=mail['body'], id_=mail['id'],
+                    image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
 
-    db.commit()
-
+        db.commit()
+    finally:
+        lock.release()
 
 def check_for_notifications():
     def check():
