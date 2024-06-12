@@ -137,7 +137,7 @@ def root():
 def send_notification_():
     title = request.json['title']
     body = request.json['body']
-    image_url = request.json['image_url']
+    image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
 
     with open('reminder.json', 'r') as f:
         count = json.load(f)['count']
@@ -146,7 +146,7 @@ def send_notification_():
         json.dump({'count': count + 1}, f)
 
     try:
-        lock.acquire(True)    
+        lock.acquire(True)
         c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
                 (str(count), 'api', 0, title, body, 0, image_url, int(time.time())))
         db.commit()
@@ -156,6 +156,8 @@ def send_notification_():
     db.close()
 
     send_notification(title, body, '', image_url)
+
+    return {}
 
 
 @app.route('/api/reminders/')
