@@ -20,7 +20,7 @@ import threading
 MAIL = gmail.GMAIL()
 lock = threading.Lock()
 
-db = sqlite3.connect("database.db", check_same_thread=False)
+db = sqlite3.connect("database.db", check_same_thread=False, timeout=20)
 c = db.cursor()
 
 
