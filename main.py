@@ -328,11 +328,10 @@ def add_emails(emails):
         lock.acquire(True)
         for mail in emails:
             c.execute("INSERT INTO notifications values (?,?,?,?,?,?,?,?)", 
-                    (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
-                    "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
+                    (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'], mail['timestamp']))
             
-            send_email_notification(title=mail['subject'], sender=mail['sender'], body=mail['body'], id_=mail['id'],
-                    image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
+            send_email_notification(title=mail['subject'], sender=mail['sender'], 
+                                    body=mail['body'], id_=mail['id'], timestamp=mail['timestamp'])
 
         db.commit()
     finally:
