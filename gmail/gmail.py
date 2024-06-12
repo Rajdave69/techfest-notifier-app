@@ -67,20 +67,21 @@ class GMAIL:
         except HttpError as error:
             print(f'An error occurred: {error}')
 
-    def search_emails(self):
+    def unread_messages(self):
         result = self.service.users().messages().list(userId='me', labelIds="UNREAD").execute()
         number_result = result['resultSizeEstimate']
 
-        final_list = []
+        all_ids = []
+        msgs = []
 
         if number_result > 0:
             message_ids = result['messages']
 
             for ids in message_ids:
-                final_list.append(ids['id'])
-                self.get_email(self.service, ids['id'])
-
-            return final_list
+                all_ids.append(ids['id'])
+                msgs.append(self.get_message(self.service, ids['id']))
+                
+            return all_ids, msgs
 
     def mark_read(self, msg_id):
 
@@ -90,4 +91,3 @@ class GMAIL:
         except HttpError as error:
             print(error, "could not mark as READ")
 
-# print(search_messages(service))
