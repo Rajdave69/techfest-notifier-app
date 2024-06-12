@@ -186,7 +186,7 @@ function loadViewReminderPage(params) {
             const datetime = new Date(response["timestamp"] * 1000);
 
             titleBox.innerText = response['title'] // Don't worry, this doesn't get rid of H2
-            descriptionBox.innerText = response['body']
+            descriptionBox.innerText = response['description'] || "No Description present"
             timeBox.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
 
             setBreadcrumbPath("#view-reminder", `View #${reminder_id}`)
@@ -342,6 +342,8 @@ function remindersPageLoadReminders() {
 
                     // Add the SVG and text to the viewButtonCell
                     viewButtonCell.setAttribute("class", "table-view-button");
+                    viewButtonCell.setAttribute("id", `reminder-${element["id"]}`);
+
                     viewButtonCell.append(viewButtonSVG);
                     viewButtonCell.append(" View");
 
@@ -446,6 +448,7 @@ function emailsPageLoadEmails() {
 
                     // Add the SVG and text to the viewButtonCell
                     viewButtonCell.setAttribute("class", "table-view-button");
+                    viewButtonCell.setAttribute("id", `email-${element["id"]}`);
                     viewButtonCell.append(viewButtonSVG);
                     viewButtonCell.append(" View");
 
