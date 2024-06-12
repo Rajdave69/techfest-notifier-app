@@ -14,6 +14,7 @@ from googleapiclient.errors import HttpError
 # from email.mime.audio import MIMEAudio
 # from email.mime.base import MIMEBase
 # from mimetypes import guess_type as guess_mime_type
+from datetime import datetime
 
 import email
 import base64
@@ -62,7 +63,7 @@ class GMAIL:
                 body = msg_str.get_payload(decode=True).decode('utf-8')
 
             return {'subject': msg_str['subject'], 'sender': msg_str['from'], 'body': body,
-                    'timestamp': msg_str['Date'], 'id': msg_id}
+                    'timestamp': datetime.strptime(msg_str['Date'], "%a, %d %b %Y %H:%M:%S %z"), 'id': msg_id}
 
         except HttpError as error:
             print(f'An error occurred: {error}')
@@ -70,8 +71,6 @@ class GMAIL:
     def unread_messages(self):
         result = self.service.users().messages().list(userId='me', labelIds="UNREAD").execute()
         number_result = result['resultSizeEstimate']
-
-        print(result)
 
         all_ids = []
         msgs = []
