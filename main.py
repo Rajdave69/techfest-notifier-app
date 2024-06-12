@@ -66,7 +66,7 @@ def mark_email_as_read(email_id):
     db.close()
 
 
-def send_reminder_notification(title, description, id_, image_url):
+def send_reminder_notification(title, body, id_, image_url):
     buttons = [
         'Mark as Read',
         'Open'
@@ -78,13 +78,13 @@ def send_reminder_notification(title, description, id_, image_url):
     }
 
     toast(
-        f'Reminder: {title}', description, icon=icon, buttons=buttons,
+        f'Reminder: {title}', body, icon=icon, buttons=buttons,
         on_click=lambda notif_output: notification_toast_handler(id_, "reminder", notif_output),
         on_dismissed=lambda X: X
     )
 
 
-def send_notification(title, description, id_, image_url):
+def send_notification(title, body, id_, image_url):
     buttons = [
         'Mark as Read',
         'Open'
@@ -96,13 +96,13 @@ def send_notification(title, description, id_, image_url):
     }
 
     toast(
-        f'{title}', description, buttons=buttons, icon=icon,
+        f'{title}', body, buttons=buttons, icon=icon,
         on_click=lambda notif_output: notification_toast_handler('', '', notif_output),
         on_dismissed=lambda X: X
     )
 
 
-def send_email_notification(id_, sender, title, description, timestamp, image_url):
+def send_email_notification(id_, sender, title, body, timestamp, image_url):
     from win11toast import toast
 
     buttons = [
@@ -117,7 +117,7 @@ def send_email_notification(id_, sender, title, description, timestamp, image_ur
     }
 
     toast(
-        f'Reminder: {title}', description, icon=icon, buttons=buttons,
+        f'Email: {title}', body, icon=icon, buttons=buttons,
         on_click=lambda notif_output: notification_toast_handler(id_, "email", notif_output),
         on_dismissed=lambda X: X
     )
@@ -144,7 +144,7 @@ def root():
 @app.route('/api/send-notification/', methods=['POST'])
 def send_notification_():
     title = request.json['title']
-    description = request.json['body']
+    body = request.json['body']
     image_url = request.json['image_url']
 
     db = sqlite3.connect("database.db")
@@ -157,12 +157,12 @@ def send_notification_():
         json.dump({'count': count + 1}, f)
 
     c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
-              (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
+              (str(count), 'api', 0, title, body, 0, image_url, int(time.time())))
     db.commit()
 
     db.close()
 
-    send_notification(title, description, '', image_url)
+    send_notification(title, body, '', image_url)
 
 
 @app.route('/api/reminders/')
@@ -178,7 +178,7 @@ def reminders():
 
     return {
         'http_code': 200,
-        'data': [{'title': r[1], 'description': r[2], 'timestamp': r[-1], 'id': r[0]} for r in reminders_]
+        'data': [{'title': r[1], 'body': r[2], 'timestamp': r[-1], 'id': r[0]} for r in reminders_]
     }
 
 
@@ -197,7 +197,7 @@ def reminders_by_id(id_):
     return {
         'http_code': 200,
         'data':
-            {'title': reminders_[1], 'description': reminders_[2], 'timestamp': reminders_[-1], 'id': reminders_[0]}
+            {'title': reminders_[1], 'body': reminders_[2], 'timestamp': reminders_[-1], 'id': reminders_[0]}
     }
 
 
@@ -302,7 +302,7 @@ def create_reminder():
     name = request.json["name"]
     timestamp = request.json["timestamp"]
     image_url = request.json["image_url"]
-    desc = request.json['description']
+    desc = request.json['body']
 
     if not image_url: image_url = "https://img.icons8.com/?size=100&id=110472&format=png"
 
@@ -338,7 +338,7 @@ def add_emails(emails):
                 (mail['id'], 'email', 0, mail['subject'], mail['body'], mail['sender'],
                 "https://img.icons8.com/?size=100&id=110231&format=png", mail['timestamp']))
         
-        send_email_notification(title=mail['subject'], sender=mail['sender'], description=mail['body'], id_=mail['id'],
+        send_email_notification(title=mail['subject'], sender=mail['sender'], body=mail['body'], id_=mail['id'],
                 image_url="https://img.icons8.com/?size=100&id=110231&format=png", timestamp=mail['timestamp'])
 
     db.commit()
@@ -362,7 +362,7 @@ def check_for_notifications():
 
             for r in reminders:
                 if r['type'] != 'email':
-                    send_reminder_notification(title=r['title'], description=r['body'], id_=r['id'],
+                    send_reminder_notification(title=r['title'], body=r['body'], id_=r['id'],
                                                image_url=r['image_url'])
 
             time.sleep(15)

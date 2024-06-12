@@ -186,7 +186,7 @@ function loadViewReminderPage(params) {
             const datetime = new Date(response["timestamp"] * 1000);
 
             titleBox.innerText = response['title'] // Don't worry, this doesn't get rid of H2
-            descriptionBox.innerText = response['description'] || "No Description present"
+            descriptionBox.innerText = response['body'] || "No Description present"
             timeBox.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`
 
             setBreadcrumbPath("#view-reminder", `View #${reminder_id}`)
@@ -323,7 +323,7 @@ function remindersPageLoadReminders() {
 
                     // Set the text content for the cells
                     title.innerText = element["title"];
-                    description.innerText = element["description"];
+                    description.innerText = element["body"];
                     const dateObj = new Date(element["timestamp"] * 1000);
                     time.innerText = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
 
@@ -429,7 +429,7 @@ function emailsPageLoadEmails() {
 
                     // Set the text content for the cells
                     title.innerText = element["title"];
-                    description.innerText = element["description"];
+                    description.innerText = element["body"];
                     const dateObj = new Date(element["timestamp"] * 1000);
                     time.innerText = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
 
@@ -534,7 +534,7 @@ function remindersCreateButtonHandler() {
                 name: nameElement.value,
                 timestamp: Date.parse(timeElement.value) / 1000,
                 image_url: imageElement.value,
-                description: descriptionElement.value,
+                body: descriptionElement.value,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -609,7 +609,7 @@ function createNotificationBoxes(data) {
         const datetime = new Date(notification["timestamp"] * 1000);
 
         timestamp.innerText = `${datetime.toLocaleDateString()} ${datetime.toLocaleTimeString()}`;
-        p.innerText = notification["description"];
+        p.innerText = notification["body"];
 
         // Add all the new items to the main div, then add the main div to the page
         mainDiv.append(image, h3, timestamp, p);
