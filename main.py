@@ -199,7 +199,7 @@ def unread_reminders():
     try:
         lock.acquire(True)
         c.execute(f"SELECT {', '.join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())} AND type='reminder'")
-        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=False)
     finally:
         lock.release()
 
@@ -216,7 +216,7 @@ def unread_notifications():
     try:
         lock.acquire(True)
         c.execute(f'SELECT {", ".join(req)} FROM notifications WHERE read=0 AND timestamp <= {int(time.time())}')
-        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+        unread = sorted(c.fetchall(), key=lambda x: x[-1], reverse=False)
     finally:
         lock.release()
 
@@ -265,7 +265,7 @@ def notifications():
     try:
         lock.acquire(True)
         c.execute(f'SELECT {", ".join(req)} FROM notifications')
-        notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=True)
+        notif = sorted(c.fetchall(), key=lambda x: x[-1], reverse=False)
     finally:
         lock.release()
 
