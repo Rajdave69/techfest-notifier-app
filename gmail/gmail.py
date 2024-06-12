@@ -6,14 +6,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.errors import HttpError
 # for encoding/decoding messages in base64
-from base64 import urlsafe_b64decode, urlsafe_b64encode
+# from base64 import urlsafe_b64decode, urlsafe_b64encode
 # for dealing with attachement MIME types
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
-from email.mime.audio import MIMEAudio
-from email.mime.base import MIMEBase
-from mimetypes import guess_type as guess_mime_type
+# from email.mime.text import MIMEText
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.image import MIMEImage
+# from email.mime.audio import MIMEAudio
+# from email.mime.base import MIMEBase
+# from mimetypes import guess_type as guess_mime_type
 
 import email
 import base64
@@ -81,7 +81,7 @@ class GMAIL:
                 all_ids.append(ids['id'])
                 msgs.append(self.get_message(self.service, ids['id']))
                 
-            return (all_ids, msgs)
+            return all_ids, msgs
 
     def mark_read(self, msg_id):
 

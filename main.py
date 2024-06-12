@@ -100,7 +100,7 @@ def send_notification(title, description, id_, image_url):
     )
 
 
-def send_email_notification(id_, sender, title, description, image_url):
+def send_email_notification(id_, sender, title, description, timestamp, image_url):
     from win11toast import toast
 
     buttons = [
@@ -154,7 +154,7 @@ def send_notification_():
     with open('reminder.json', 'w') as f:
         json.dump({'count': count + 1}, f)
 
-    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)', 
+    c.execute('INSERT INTO notifications values(?,?,?,?,?,?,?,?)',
               (str(count), 'api', 0, title, description, 0, image_url, int(time.time())))
     db.commit()
 
@@ -352,17 +352,18 @@ def check_for_notifications():
                 add_emails(emails[1])
 
             reminders = unread_notifications()['data']
-            ['id', 'type', 'title', 'body', 'sender', 'image_url', 'timestamp']
 
             for r in reminders:
                 if r['type'] != 'email':
-                    send_reminder_notification(title=r['title'], description=r['body'], id_=r['id'], image_url=r['image_url'])
+                    send_reminder_notification(title=r['title'], description=r['body'], id_=r['id'],
+                                               image_url=r['image_url'])
 
             time.sleep(15)
 
     thread = threading.Thread(target=check)
     thread.daemon = True
     thread.start()
+
 
 check_for_notifications()
 
