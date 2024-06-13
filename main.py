@@ -27,17 +27,16 @@ c = db.cursor()
 
 def notification_toast_handler(id_, notif_type, notif_output: dict):
     if notif_type == "email":
-        return  # todo
         if notif_output['arguments'] == "http:Mark as Read":
             mark_email_as_read(id_)
-        elif notif_output['arguments'] == "http:Open":
+        elif notif_output['arguments'] == "http:":
             mark_email_as_read(id_)
             window.evaluate_js(f"window.location.hash = 'view-email?id={id_}'")
 
     elif notif_type == "reminder":
         if notif_output['arguments'] == "http:Mark as Read":
             mark_reminder_as_read(id_)
-        elif notif_output['arguments'] == "http:Open":
+        elif notif_output['arguments'] == "http:":
             mark_reminder_as_read(id_)
             window.evaluate_js(f"window.location.hash = 'view-reminder?id={id_}'")
 
@@ -76,7 +75,7 @@ def send_reminder_notification(title, body, id_, image_url):
     ]
 
     icon = {
-        'src': image_url,
+        'src': image_url if image_url else "",
         'placement': 'appLogoOverride'
     }
 
@@ -89,17 +88,16 @@ def send_reminder_notification(title, body, id_, image_url):
 
 def send_notification(title, body, id_, image_url):
     buttons = [
-        'Mark as Read',
-        'Open'
+        'Mark as Read'
     ]
 
-    icon = {  # TODO image_url can be none
-        'src': image_url,
+    icon = {
+        'src': image_url if image_url else "",
         'placement': 'appLogoOverride'
     }
 
     toast(
-        f'{title}', body, buttons=buttons, icon=icon,
+        title, body, buttons=buttons, icon=icon,
         on_click=lambda notif_output: notification_toast_handler(id_, '', notif_output),
         on_dismissed=lambda X: X
     )
@@ -108,11 +106,8 @@ def send_notification(title, body, id_, image_url):
 
 
 def send_email_notification(id_, sender, title, body, timestamp):
-    print(sender)
-
     buttons = [
-        'Mark as Read',
-        'Open'
+        'Mark as Read'
     ]
 
     toast(
@@ -381,10 +376,6 @@ def check_for_notifications():
 check_for_notifications()
 
 webview.start(debug=True)
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
 
 """
 rajs todo list
