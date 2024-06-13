@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Notifier App</title>
+    <link rel="stylesheet" href="../static/homepage.css" />
+  </head>
+  <body>
+    <script src="../static/homepage.js"></script>
+  </body>
+</html>
+<body>
+  <div id="page">
+    <!--Navbar at the top-->
+    <div id="navbar">
+      <b>Notifier App</b>
+    </div>
+    <!--Sidebar-->
+    <div class="sidebar">
+      <ul id="sidebar-ul">
+        <li>
+          <a href="#">
+            <svg class="svg-icon" style="width: 24px; height: 24px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M946.5 505L560.1 118.8l-25.9-25.9c-12.3-12.2-32.1-12.2-44.4 0L77.5 505c-12.3 12.3-18.9 28.6-18.8 46 0.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8 12.1-12.1 18.7-28.2 18.7-45.3 0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204z m217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z"  /></svg>            <span class="nav-item">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#reminders">
+
+            <svg class="svg-icon" style="width: 24px; height: 24px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M875.52 648.96l-76.8-77.226667V381.44a292.693333 292.693333 0 0 0-248.32-293.546667 287.573333 287.573333 0 0 0-325.12 284.586667v199.253333l-76.8 77.226667A69.973333 69.973333 0 0 0 197.973333 768H341.333333v14.506667A163.84 163.84 0 0 0 512 938.666667a163.84 163.84 0 0 0 170.666667-156.16V768h143.36a69.973333 69.973333 0 0 0 49.493333-119.04zM597.333333 782.506667A80.213333 80.213333 0 0 1 512 853.333333a80.213333 80.213333 0 0 1-85.333333-70.826666V768h170.666666zM235.093333 682.666667l50.346667-50.346667a85.333333 85.333333 0 0 0 25.173333-60.586667V372.48A201.813333 201.813333 0 0 1 379.733333 220.586667 199.253333 199.253333 0 0 1 539.306667 170.666667a207.36 207.36 0 0 1 174.08 209.066666v192a85.333333 85.333333 0 0 0 24.746666 60.586667L788.906667 682.666667z"  /></svg>
+
+            <span class="nav-item">Reminders</span>
+            <span class="number-box" id="reminder-number-box">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="#emails">
+
+        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+
+            <span class="nav-item">Emails</span>
+            <span class="number-box" id="email-number-box">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="#notification-history">
+            <svg class="svg-icon" style="width: 24px; height: 24px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M170.666667 213.333333v597.333334a42.666667 42.666667 0 0 0 42.666666 42.666666h597.333334a42.666667 42.666667 0 0 0 42.666666-42.666666v-341.333334h-85.333333v298.666667H256V256h298.666667V170.666667H213.333333a42.666667 42.666667 0 0 0-42.666666 42.666666z" fill="" /><path d="M768 256m-128 0a128 128 0 1 0 256 0 128 128 0 1 0-256 0Z" fill="" /></svg>
+            <span class="nav-item">Notification History</span>
+          </a>
+        </li>
+        <li hidden>
+          <a href="#settings">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px" ><path d="M 9.6660156 2 L 9.1757812 4.5234375 C 8.3516137 4.8342536 7.5947862 5.2699307 6.9316406 5.8144531 L 4.5078125 4.9785156 L 2.171875 9.0214844 L 4.1132812 10.708984 C 4.0386488 11.16721 4 11.591845 4 12 C 4 12.408768 4.0398071 12.832626 4.1132812 13.291016 L 4.1132812 13.292969 L 2.171875 14.980469 L 4.5078125 19.021484 L 6.9296875 18.1875 C 7.5928951 18.732319 8.3514346 19.165567 9.1757812 19.476562 L 9.6660156 22 L 14.333984 22 L 14.824219 19.476562 C 15.648925 19.165543 16.404903 18.73057 17.068359 18.185547 L 19.492188 19.021484 L 21.826172 14.980469 L 19.886719 13.291016 C 19.961351 12.83279 20 12.408155 20 12 C 20 11.592457 19.96113 11.168374 19.886719 10.710938 L 19.886719 10.708984 L 21.828125 9.0195312 L 19.492188 4.9785156 L 17.070312 5.8125 C 16.407106 5.2676813 15.648565 4.8344327 14.824219 4.5234375 L 14.333984 2 L 9.6660156 2 z M 11.314453 4 L 12.685547 4 L 13.074219 6 L 14.117188 6.3945312 C 14.745852 6.63147 15.310672 6.9567546 15.800781 7.359375 L 16.664062 8.0664062 L 18.585938 7.40625 L 19.271484 8.5917969 L 17.736328 9.9277344 L 17.912109 11.027344 L 17.912109 11.029297 C 17.973258 11.404235 18 11.718768 18 12 C 18 12.281232 17.973259 12.595718 17.912109 12.970703 L 17.734375 14.070312 L 19.269531 15.40625 L 18.583984 16.59375 L 16.664062 15.931641 L 15.798828 16.640625 C 15.308719 17.043245 14.745852 17.36853 14.117188 17.605469 L 14.115234 17.605469 L 13.072266 18 L 12.683594 20 L 11.314453 20 L 10.925781 18 L 9.8828125 17.605469 C 9.2541467 17.36853 8.6893282 17.043245 8.1992188 16.640625 L 7.3359375 15.933594 L 5.4140625 16.59375 L 4.7285156 15.408203 L 6.265625 14.070312 L 6.0878906 12.974609 L 6.0878906 12.972656 C 6.0276183 12.596088 6 12.280673 6 12 C 6 11.718768 6.026742 11.404282 6.0878906 11.029297 L 6.265625 9.9296875 L 4.7285156 8.59375 L 5.4140625 7.40625 L 7.3359375 8.0683594 L 8.1992188 7.359375 C 8.6893282 6.9567546 9.2541467 6.6314701 9.8828125 6.3945312 L 10.925781 6 L 11.314453 4 z M 12 8 C 9.8034768 8 8 9.8034768 8 12 C 8 14.196523 9.8034768 16 12 16 C 14.196523 16 16 14.196523 16 12 C 16 9.8034768 14.196523 8 12 8 z M 12 10 C 13.111477 10 14 10.888523 14 12 C 14 13.111477 13.111477 14 12 14 C 10.888523 14 10 13.111477 10 12 C 10 10.888523 10.888523 10 12 10 z " fill="currentColor"/></svg>
+
+            <span class="nav-item">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div id="page-content">
+      <!-- body content -->
+
+      <div id="#">
+        <nav class="breadcrumb">
+          <a href="#" class="breadcrumb-path">Home</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#" class="breadcrumb-subpath">View</a>
+
+        </nav>
+        <h1>Welcome to Notifier App!</h1>
+
+
+        <p>You can expand the following sections:</p>
+        <br>
+        <!-- Collapsables here-->
+        <!-- For unread notifications -->
+        <div class="wrap-collapsible">
+          <input id="unread-notifications" class="toggle" type="checkbox" />
+          <label for="unread-notifications" class="lbl-toggle">
+            Unread Notifications
+            <span
+              class="number-box"
+              id="unread-notifs-number-box"
+              style="display: none"
+              >0</span
+            >
+          </label>
+          <div class="collapsible-content">
+            <div class="content-inner" id="unread-notifications-box">
+              <!-- JS will add boxes here -->
+              <!-- Template: -->
+              <!--
+                     <div class="unread-notification"><img src="../static/placeholder_image.png" alt=""><h3>Title</h3><p>Content</p></div>
+                     -->
+            </div>
+          </div>
+          <br>
+
+
+        </div>
+<!--        <hr />-->
+        <br />
+        <!-- For Upcoming Reminders -->
+<!--        <div class="wrap-collapsible">-->
+<!--          <input id="upcoming-reminders" class="toggle" type="checkbox" />-->
+<!--          <label for="upcoming-reminders" class="lbl-toggle"-->
+<!--            >Upcoming Reminders</label-->
+<!--          >-->
+<!--          <div class="collapsible-content">-->
+<!--            <div class="content-inner">-->
+<!--              <p>Ipsum Lorem</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+
+      <div id="#reminders">
+
+<!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="#reminders" class="breadcrumb-path">Reminders</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#reminders" class="breadcrumb-subpath">List</a>
+
+        </nav>
+
+        <div id="reminders-grid">
+          <h1>Reminders</h1>
+          <button
+            id="create-reminder-button"
+            onclick="location.href = '#create-reminder'"
+          >
+            Create Reminder
+          </button>
+          <br />
+          <!--          <p>Reminders:</p>-->
+
+          <div class="empty-category" id="reminders-empty">
+            <div class="empty-category-svg-box">
+              <svg
+                class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </div>
+            <br />
+            <div class="empty-category-text">No Reminders</div>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="reminders-table">
+              <tr>
+                <th>Title</th>
+                <th>At</th>
+                <th>Description</th>
+                <th></th>
+                <th></th>
+              </tr>
+
+              <!-- JS will add code here -->
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="#emails">
+
+<!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="#emails" class="breadcrumb-path">Emails</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#emails" class="breadcrumb-subpath">List</a>
+
+        </nav>
+
+        <div id="emails-grid">
+          <h1>Emails</h1>
+
+          <br />
+          <!--          <p>Reminders:</p>-->
+
+          <div class="empty-category" id="emails-empty">
+            <div class="empty-category-svg-box">
+              <svg
+                class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </div>
+            <br />
+            <div class="empty-category-text">No Emails</div>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="emails-table">
+              <tr>
+                <th>Title</th>
+                <th>At</th>
+                <th>Description</th>
+                <th></th>
+              </tr>
+
+              <!-- JS will add code here -->
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div id="#notification-history">
+
+        <nav class="breadcrumb">
+          <a href="#notification-history" class="breadcrumb-path">Notifications</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#notification-history" class="breadcrumb-subpath">History</a>
+
+        </nav>
+
+        <h1>Notification History</h1>
+        <!--        <p>Notification History Page</p>-->
+
+        <div class="empty-category" id="notification-history-empty">
+          <div class="empty-category-svg-box">
+            <svg
+              class="fi-ta-empty-state-icon h-6 w-6 text-gray-500 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+              data-slot="icon"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </div>
+          <br />
+          <div class="empty-category-text">No Notification History</div>
+        </div>
+        <div id="notification-history-boxes">
+          <!--              Js will add code here -->
+        </div>
+      </div>
+
+      <div id="#create-reminder">
+        <nav class="breadcrumb">
+          <a href="#reminders" class="breadcrumb-path">Reminders</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#create-reminder" class="breadcrumb-subpath">Create</a>
+
+        </nav>
+        <h1>Create Reminder</h1>
+        <br />
+        <form>
+          <div class="edit-reminder-box">
+            <div class="form-wrapper">
+              <div class="name-box">
+                <label for="get-reminder-name">Name</label>
+              </div>
+              <div class="time-box">
+                <label for="get-reminder-time">Time</label>
+              </div>
+              <div class="image-box">
+                <label for="get-reminder-image">Image</label>
+              </div>
+              <div class="name-input-box">
+                <input type="text" id="get-reminder-name" required />
+                <br />
+                <p>A simple and short name for this <br />reminder</p>
+              </div>
+              <div class="time-input-box">
+                <input type="datetime-local" id="get-reminder-time" required />
+                <p>The time at which the reminder will <br />remind</p>
+              </div>
+              <div class="image-input-box">
+                <input type="text" id="get-reminder-image" />
+                <p>Optional 100x100 image.</p>
+              </div>
+              <div class="description-box">
+                <label for="get-reminder-description">Description</label>
+              </div>
+              <div class="description-input-box">
+                <textarea
+                  id="get-reminder-description"
+                  rows="5"
+                  cols="10"
+                ></textarea>
+                <p>An optional longer description</p>
+              </div>
+            </div>
+          </div>
+          <br />
+          <input
+            type="submit"
+            value="Create"
+            id="create-reminder-submit-button"
+          />
+          <button
+            type="button"
+            id="cancel-creating-reminder-button"
+            onclick="location.href = '#reminders'"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+
+      <div id="#settings">
+        <nav class="breadcrumb">
+          <a href="#notification-history" class="breadcrumb-path">Settings</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#notification-history" class="breadcrumb-subpath">Settings</a>
+
+        </nav>
+
+        <h1>Settings</h1>
+        <br />
+        General Settings
+        <br>
+      <div class="general-settings-box" id="general-settings-box">
+          <br />
+          <div class="general-settings-box-text">Do not disturb mode</div>
+        <div id="settings-dnd-button-box">
+        <button id="settings-dnd-enable"></button>
+          <button id="settings-dnd-disable"></button>
+        </div>
+        </div>
+
+
+    </div>
+
+
+    <div id="#view-email">
+
+      <nav class="breadcrumb">
+          <a href="#view-email" class="breadcrumb-path">Emails</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#view-email" class="breadcrumb-subpath">View</a>
+
+        </nav>
+
+      <h1>Email Viewer</h1>
+      <div id="email-box">
+        <div id="email-sender">
+          <b>From:</b> <br> rajdave8002@gmail.com
+
+        </div>
+        <div id="email-timestamp">
+          <b>Sent At:</b> <br> 1234
+        </div>
+        <div id="email-title">
+          <h2>Email Title Here Email Title Here Email Title Here Email Title Email Title  Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here Email Title Here</h2>
+        </div>
+        <div id="email-body">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at eros volutpat, ultricies libero lacinia, pretium nunc. Sed neque est, vulputate et suscipit vel, viverra sed ante. Maecenas at rutrum elit. Quisque dui nisi, tristique porta pharetra a, porta a metus. Vivamus blandit arcu quis egestas porttitor. Morbi ac facilisis turpis. Nullam aliquam malesuada risus. Sed a nulla at sapien feugiat mollis non sit amet lacus. Sed ornare tellus nisi, sed consectetur urna facilisis non. Cras vel sem metus. Nunc porttitor ligula sed augue cursus, eu pharetra sem rhoncus. Suspendisse pellentesque turpis eu urna aliquet auctor ut eget magna. Nulla ultrices, sapien ac laoreet malesuada, dui est hendrerit sem, sed eleifend eros ipsum eget quam. Sed sed facilisis sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at eros volutpat, ultricies libero lacinia, pretium nunc. Sed neque est, vulputate et suscipit vel, viverra sed ante. Maecenas at rutrum elit. Quisque dui nisi, tristique porta pharetra a, porta a metus. Vivamus blandit arcu quis egestas porttitor. Morbi ac facilisis turpis. Nullam aliquam malesuada risus. Sed a nulla at sapien feugiat mollis non sit amet lacus. Sed ornare tellus nisi, sed consectetur urna facilisis non. Cras vel sem metus. Nunc porttitor ligula sed augue cursus, eu pharetra sem rhoncus. Suspendisse pellentesque turpis eu urna aliquet auctor ut eget magna. Nulla ultrices, sapien ac laoreet malesuada, dui est hendrerit sem, sed eleifend eros ipsum eget quam. Sed sed facilisis sem.
+
+        </div>
+      </div>
+            </div>
+
+
+
+      <div id="#view-reminder">
+        <nav class="breadcrumb">
+          <a href="#view-reminder" class="breadcrumb-path">Reminders</a>
+
+          <svg class="breadcrumb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false" data-slot="icon" width="20" height="20">
+            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="#view-reminder" class="breadcrumb-subpath">View</a>
+
+        </nav>
+      <h1>View Reminder</h1>
+      <div id="reminder-box">
+        <div id="reminder-timestamp">
+          123456
+        </div>
+        <div id="reminder-title">
+          <h2>Default Title</h2>
+        </div>
+        <div id="reminder-body">
+          Default Text
+        </div>
+        <div id="reminder-image">
+      </div>
+      </div>
+      </div>
+
+
+  </div>
+  </div>
+</body>

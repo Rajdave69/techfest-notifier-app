@@ -1,0 +1,9 @@
+click==8.1.7
+requests==2.32.3
+win11toast==0.35
+flask==3.0.3
+pywebview==5.1
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+win11toast

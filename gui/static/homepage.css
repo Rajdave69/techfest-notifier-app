@@ -1,0 +1,1095 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+:root {
+    --dark-bg-color: #09090b;
+    --dark-navbar-color: #18181b;
+    --dark-sidebar-hover-color: #161617;
+    --dark-sidebar-selected-color: #62baf3;
+    --dark-border-color: #222224;
+    --dark-border-separator-color: #303032;
+    --dark-numberbox-border: #324c6b;
+    --dark-numberbox-background: #1e252e;
+    --dark-numberbox-color: #60a5fa;
+    --dark-secondary-color: white;
+    --dark-notification-box-background-color: #242427;
+    --dark-blue-button-color: #3b82f6;
+    --dark-breadcrumb-color: #A1A1AA;
+    --dark-breadcrumb-hover-color: #e4e4e7;
+    --dark-breadcrumb-arrow-color: #71717A;
+}
+
+#page {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 70px 1080px;
+    grid-column-gap: 0px;
+    grid-row-gap: 10px;
+}
+
+/*
+
+#
+#
+#   NAVBAR CODE
+#
+#
+
+ */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the navbar */
+#navbar {
+    overflow: hidden;
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    color: var(--dark-secondary-color);
+    background-color: var(--dark-navbar-color);
+    padding-top: 24px;
+    padding-bottom: 24px;
+    padding-left: 50px;
+    grid-area: 1 / 1 / 2 / 3;
+    width: 100%;
+    align-self: center;
+    justify-self: center;
+}
+
+/*
+#
+#
+#   SIDEBAR CSS
+#
+#
+*/
+
+.sidebar {
+    color: var(--dark-secondary-color);
+    background-color: var(--dark-bg-color);
+    grid-area: 2 / 1 / 3 / 2;
+    align-items: start;
+    padding-top: 25px;
+}
+
+/* List containing all sidebar boxes */
+.sidebar ul {
+    margin-top: -5px;
+}
+
+/* Each Sidebar Box */
+.sidebar ul li {
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 110%;
+    line-height: 40px;
+    font-family: "Inter", sans-serif;
+    margin-left: -25px;
+    margin-top: -5px;
+}
+
+/* Sidebar Image */
+.sidebar svg {
+    padding-right: 12px;
+    padding-left: 10px;
+    color: #71717a;
+}
+
+/* 'a' in each sidebar box */
+.sidebar ul li a {
+    margin: 0;
+    padding: 0;
+    color: var(--dark-secondary-color);
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 7px;
+}
+
+/* Sidebar element that is being hovered */
+.sidebar ul li a:hover {
+    background-color: var(--dark-sidebar-hover-color);
+}
+
+/* Sidebar element that is selected */
+.sidebar ul li.selected a {
+    background-color: var(--dark-sidebar-hover-color);
+    color: var(--dark-sidebar-selected-color);
+}
+
+/* SVG of the sidebar element that is selected */
+.sidebar ul li.selected svg {
+    color: var(--dark-sidebar-selected-color);
+}
+
+/*
+#
+#
+#   PAGECONTENT CSS
+#
+#
+*/
+
+#page-content {
+    width: 80%; /* TODO */
+    grid-area: 2 / 2 / 3 / 3;
+    overflow-y: scroll;
+    height: calc(100vh - 85px);
+
+    /*Hide Scrollbar */
+    /* -ms-overflow-style: none;  Internet Explorer 10+
+    scrollbar-width: none;  /*Firefox */
+
+    justify-self: center;
+}
+
+#page-content::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+#page-content.page-path {
+    height: 20px;
+    width: 20px;
+    /*line-height: 20px;*/
+}
+
+#page-content.page-path svg {
+    font-size: small;
+}
+
+#page-content p {
+    font-size: 16px;
+}
+
+#page-content hr {
+    width: 99%;
+    border: 1px solid gray;
+    /* Center the line */
+    margin: auto;
+}
+
+/*
+#
+#
+#   COLLAPSABLE BOX
+#
+#
+*/
+/* Wrap Collapsible */
+#page-content .wrap-collapsible {
+    margin-bottom: 1.2rem;
+}
+
+/* Hide the Checkbox */
+#page-content input[type="checkbox"] {
+    display: none;
+}
+
+/* Label Toggle */
+#page-content .lbl-toggle {
+    display: block;
+    font-weight: bold;
+    /* Pad the left side a bit more */
+    padding: 1rem 1rem 1rem 25px;
+    background: var(--dark-navbar-color);
+    cursor: pointer;
+    border-radius: 15px;
+    transition: all 0.25s ease-out;
+    position: relative; /* Add relative positioning */
+    height: 40px; /* Set the height */
+    line-height: 40px; /* Center the text vertically */
+    border: 1px var(--dark-border-color) solid;
+}
+
+#page-content .lbl-toggle:hover {
+    /* Slightly lighter arrow color on hover */
+    --arrow-color: lightgray;
+}
+
+/* Default arrow color */
+.lbl-toggle::after {
+    content: "";
+    display: inline-block;
+    width: 20px; /* Set appropriate width */
+    height: 20px; /* Set appropriate height */
+    background: url('data:image/svg+xml;utf8,<svg class="fi-icon-btn-icon h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray" aria-hidden="true" data-slot="icon"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>')
+        no-repeat center center;
+    vertical-align: middle;
+    transition:
+        transform 0.2s ease-out,
+        filter 0.2s ease-out;
+    position: absolute; /* Position absolutely */
+    right: 1rem; /* Move to the right */
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg); /* Center vertically and point down */
+    filter: brightness(1); /* Default brightness */
+}
+
+/* Rotate the Arrow When Checked */
+#page-content .toggle:checked + .lbl-toggle::after {
+    transform: translateY(-50%) rotate(180deg); /* Point up */
+}
+
+/* Lighten arrow color on hover */
+#page-content .lbl-toggle:hover::after {
+    filter: brightness(1.3); /* Slightly lighter */
+}
+
+/* Collapsible Content */
+#page-content .collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease-in-out;
+}
+
+#page-content .toggle:checked + .lbl-toggle + .collapsible-content {
+    max-height: 10000vh;
+}
+
+#page-content .toggle:checked + .lbl-toggle {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Content inside collapsible */
+#page-content .collapsible-content .content-inner {
+    background: var(--dark-navbar-color);
+    border-top: 1px var(--dark-border-separator-color) solid;
+    border-right: 1px var(--dark-border-color) solid;
+    border-left: 1px var(--dark-border-color) solid;
+    border-bottom: 1px var(--dark-border-color) solid;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    padding: 1rem 1rem;
+}
+
+/*
+#
+#
+#   notification box CSS
+#
+#
+*/
+
+/* Notification Box */
+.notification-box {
+    margin: 0;
+    border: 1px var(--dark-border-separator-color) solid;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: var(--dark-notification-box-background-color);
+    max-height: 120px;
+    min-height: 60px;
+    width: 95%;
+    display: grid;
+    align-items: center; /* Center items vertically */
+    justify-content: start;
+
+    grid-template-columns: 110px 65% 22%;
+    grid-template-rows: 30px 90px;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin-bottom: 10px;
+}
+
+.notification-box img {
+    grid-area: 1 / 1 / 3 / 2;
+    margin-left: 5px;
+    border-radius: 10px;
+}
+
+/* Notification Header */
+.notification-box h3 {
+    /* Set top margin to 4px */
+    margin: 10px 7px 2px;
+    padding: 0;
+    font-weight: bold;
+    grid-area: 1 / 2 / 2 / 3;
+    justify-content: end;
+}
+
+/* Notification Time */
+.notification-box h3 + h3 {
+    grid-area: 1 / 3 / 2 / 3;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 8px;
+    font-family: "Lato", sans-serif;
+    letter-spacing: 0;
+}
+
+/* Notification Text */
+.notification-box p {
+    color: aliceblue;
+    /* top right bottom left */
+    margin: 3px 7px 4px;
+    width: 100%;
+    grid-area: 2 / 2 / 2 / 4;
+    align-self: start;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    height: 80px;
+}
+
+.notification-box hr {
+    width: 99%;
+    border: 1px solid lightgray;
+    /* Center the line */
+    margin-top: 1px;
+}
+
+/*
+#
+#
+#   Number Box CSS
+#
+#
+*/
+
+.number-box {
+    border: 1px solid var(--dark-numberbox-border);
+    background-color: var(--dark-numberbox-background);
+    color: var(--dark-numberbox-color);
+    height: 24px;
+    width: 24px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border-radius: 7px;
+    font-size: 14px;
+    text-shadow: var(--dark-numberbox-border);
+    font-weight: bolder;
+    margin-left: auto; /* Align to the right */
+    margin-right: 10px; /* Add some space to the right */
+    justify-content: center;
+}
+
+.wrap-collapsible .number-box {
+    margin-top: -33px;
+    margin-right: 25px;
+}
+
+/*
+#
+#
+#   Table CSS
+#
+#
+*/
+
+table,
+th,
+td {
+    border-collapse: collapse;
+    /*border: 1px solid white;*/
+    padding: 15px;
+}
+
+th {
+    background-color: var(--dark-notification-box-background-color);
+    text-align: left;
+    border-spacing: 0;
+}
+
+tr,
+td {
+    background-color: var(--dark-navbar-color);
+}
+
+tr {
+    border-bottom: 1px solid var(--dark-border-separator-color);
+}
+
+tr:hover td {
+    background-color: var(--dark-notification-box-background-color);
+}
+
+table {
+    width: 100%;
+}
+
+.table-wrapper {
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+    height: fit-content;
+}
+
+.table-delete-button {
+    color: #e16868;
+    font-weight: bold;
+    text-align: end;
+    padding-right: 3%;
+    /*   TODO move it a bit up*/
+    cursor: pointer;
+}
+
+.table-delete-button svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle; /* Align the icon with the text */
+    /*display: inline;*/
+}
+
+.table-view-button {
+    color: var(--dark-numberbox-color);
+    font-weight: bold;
+    text-align: end;
+    padding-right: 3%;
+    /*   TODO move it a bit up*/
+    cursor: pointer;
+}
+
+.table-view-button svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle; /* Align the icon with the text */
+    /*display: inline;*/
+}
+
+
+tr:last-child {
+    border-bottom: 0px;
+}
+
+/*title*/
+#reminders-table tbody tr th {
+    width: 150px;
+}
+
+/*at*/
+#reminders-table tbody tr th + th {
+    width: 200px;
+}
+
+/*description*/
+#reminders-table tbody tr th + th + th {
+    width: 400px;
+}
+
+/*view button*/
+#reminders-table tbody tr th + th + th + th {
+    width: 75px;
+}
+
+/*delete button*/
+#reminders-table tbody tr th + th + th + th +th {
+    width: 75px;
+}
+
+
+
+
+
+/*title*/
+#emails-table tbody tr th {
+    width: 150px;
+}
+
+/*at*/
+#emails-table tbody tr th + th {
+    width: 125px;
+}
+
+/*description*/
+#emails-table tbody tr th + th + th {
+    width: 400px;
+    text-overflow: ellipsis;
+}
+
+/*view button*/
+#emails-table tbody tr th + th + th + th {
+    width: 50px;
+}
+
+
+
+
+
+/*
+#
+#
+#   Reminders Page
+#
+#
+*/
+
+#reminders-grid {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 60px 74vh;
+    grid-column-gap: 0px;
+    grid-row-gap: 20px;
+}
+
+#reminders-grid h1 {
+    margin-bottom: 10px;
+    align-self: center;
+
+}
+
+#reminders-grid #create-reminder-button {
+    grid-area: 1 / 2 / 2 / 3;
+    height: 36px;
+    width: 140px;
+    justify-self: right;
+    align-self: center;
+    font-weight: bold;
+    border: 0px;
+    color: var(--dark-secondary-color);
+    background-color: var(--dark-blue-button-color);
+    border-radius: 8px;
+}
+
+#reminders-grid #create-reminder-button:hover {
+    background-color: var(--dark-numberbox-color);
+}
+
+#reminders-grid p {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#reminders-grid h1 {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+#reminders-grid .table-wrapper {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#reminders-empty {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+
+
+/*
+#
+#
+#   Create Reminder Page
+#
+#
+ */
+
+.edit-reminder-box {
+    background-color: var(--dark-navbar-color);
+    padding: 24px;
+    display: block;
+    border-radius: 12px;
+    border: 1px var(--dark-border-color) solid;
+}
+
+.form-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 10% 35% 10% 45%;
+    grid-column-gap: 0px;
+    grid-row-gap: 5px;
+    display: grid;
+    margin-bottom: 30px;
+    /* height: 100%; */
+}
+
+.name-box {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.time-box {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.image-box {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.name-box,
+.time-box,
+.image-box,
+.description-box {
+    /* padding-bottom: 8px; */
+    align-self: center;
+    justify-items: center;
+}
+
+.description-input-box textarea {
+    height: 100px;
+    resize: none;
+}
+
+.name-input-box input,
+.time-input-box input,
+.image-input-box input,
+.description-input-box textarea {
+    color: white;
+    background-color: var(--dark-notification-box-background-color);
+    border-radius: 6px;
+    padding: 10px;
+    min-width: 260px;
+    border: 1px solid var(--dark-border-separator-color);
+    height: 16px;
+}
+
+.name-input-box input:focus,
+.time-input-box input:focus,
+.image-input-box input:focus,
+.description-input-box textarea:focus {
+    /*border: black;*/
+    border: 2px solid var(--dark-blue-button-color);
+    outline: none;
+    height: 14px;
+}
+
+.name-input-box p,
+.time-input-box p,
+.image-input-box p,
+.description-input-box p {
+    margin-top: 5px;
+    font-weight: normal;
+    color: grey;
+    letter-spacing: -0.025em;
+    font-size: 100px;
+    display: block;
+}
+
+.name-input-box {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.time-input-box {
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.image-input-box {
+    grid-area: 2 / 3 / 3 / 4;
+}
+
+.description-box {
+    grid-area: 3 / 1 / 4 / 2;
+    align-self: center;
+    justify-items: center;
+    width: 100%;
+    padding-top: 0px;
+}
+
+.description-input-box {
+    grid-area: 4 / 1 / 5 / 4;
+    padding-bottom: 15px;
+}
+.description-input-box textarea {
+    min-width: 98%;
+    min-height: 85%;
+}
+
+.name-box label::after,
+.time-box label::after {
+    content: "*";
+    color: red;
+    padding-left: 2px;
+}
+
+#create-reminder-submit-button {
+    height: 36px;
+    width: 67px;
+    justify-self: right;
+    align-self: center;
+    font-weight: bolder;
+    border: 0px;
+    color: var(--dark-secondary-color);
+    background-color: var(--dark-blue-button-color);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+#create-reminder-submit-button:hover {
+    background-color: var(--dark-numberbox-color);
+}
+
+#cancel-creating-reminder-button {
+    height: 36px;
+    width: 67px;
+    justify-self: right;
+    align-self: center;
+    font-weight: bolder;
+    color: var(--dark-secondary-color);
+    background-color: var(--dark-sidebar-hover-color);
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid #2e2e30;
+    margin-left: 6px;
+}
+
+#cancel-creating-reminder-button:hover {
+    background-color: #222224;
+}
+
+/*
+#
+#
+#   Notification History Page
+#
+#
+ */
+
+#\#notification-history .empty-category {
+    margin-top: 31px;
+}
+
+/*
+#
+#
+#   Empty Category Box
+#
+#
+*/
+
+
+
+.empty-category {
+    background-color: var(--dark-navbar-color);
+    border: 1px solid var(--dark-border-color);
+    border-radius: 10px;
+    height: 246px;
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 130px 100px;
+    grid-column-gap: 0px;
+    /*grid-row-gap: 10px;*/
+    font-size: 1.025em;
+}
+
+.empty-category-svg-box {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: end;
+    /*padding-bottom: 10px;*/
+    border-radius: 30px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    background-color: #2a2a2e;
+    left: 50%;
+    margin-bottom: 20px;
+}
+
+.empty-category-svg-box svg {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    color: gray;
+}
+
+.empty-category-text {
+    grid-area: 2 / 2 / 3 / 3;
+    align-self: start;
+    top: 100px;
+    font-weight: 600;
+}
+
+
+/*
+#
+#
+#   Settings Page
+#
+#
+*/
+
+.general-settings-box {
+    background-color: var(--dark-navbar-color);
+    border: 1px solid var(--dark-border-color);
+    border-radius: 10px;
+    height: 200px;
+    padding: 10px;
+    width: 80%;
+    display: grid;
+
+    font-size: 1.025em;
+}
+
+
+
+.general-settings-box-text {
+    grid-area: 1 / 1 / 1 / 1;
+    align-self: start;
+    top: 100px;
+    font-weight: 600;
+}
+
+.general-settings-box button {
+    /*grid-area: ;*/
+}
+
+
+/*
+#
+#
+#   VIEW EMAIL PAGE
+#
+#
+*/
+
+
+
+#email-box {
+    background-color: var(--dark-navbar-color);
+    border: 1px solid var(--dark-border-color);
+    border-radius: 10px;
+    height: fit-content;
+    min-height: 200px;
+    /*text-align: center;*/
+    /*justify-content: center;*/
+    padding: 24px;
+    padding-top: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 60px 40px 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 20px;
+
+    font-size: 1.025em;
+}
+
+#email-body {
+    grid-area: 3 / 1 / 4 / 4;
+    /*text-align: left;*/
+    margin-top: 20px;
+    text-justify: auto;
+    text-align: justify;
+
+}
+
+#email-title {
+     grid-area: 1 / 1 / 2 / 4;
+    align-self: center;
+    text-align: center;
+
+}
+
+#email-timestamp {
+    grid-area: 2 / 3 / 3 / 4;
+    text-align: right;
+}
+
+#email-sender {
+    grid-area: 2 / 1 / 3 / 2;
+    text-align: left;
+}
+
+#email-title h2 {
+    padding-top: 0px;
+    margin: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 25px;
+    width: 100%;
+    display: block;
+    white-space: nowrap;
+}
+
+
+#reminder-title h2 {
+    padding-top: 0px;
+    margin: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 25px;
+    width: 100%;
+    display: block;
+    white-space: nowrap;
+}
+
+#\#view-email h1 {
+    margin-bottom: 30px;
+}
+
+
+
+/*
+#
+#
+#   VIEW REMINDER PAGE
+#
+#
+ */
+
+#reminder-box {
+    background-color: var(--dark-navbar-color);
+    border: 1px solid var(--dark-border-color);
+    border-radius: 10px;
+    height: fit-content;
+    min-height: 200px;
+    /*text-align: center;*/
+    /*justify-content: center;*/
+    padding: 24px;
+    padding-top: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    grid-template-rows: 50px 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+
+    font-size: 1.025em;
+}
+
+#reminder-body {
+    grid-area: 2 / 1 / 3 / 3;
+    text-align: left;
+    margin-top: 10px;
+}
+
+#reminder-title {
+     grid-area: 1 / 1 / 2 / 2;
+    align-self: center;
+}
+
+#reminder-timestamp {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: center;
+    text-align: right;
+}
+
+#reminder-image {
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+#reminder-title h2 {
+    padding-top: 0px;
+}
+
+#\#view-reminder h1 {
+    margin-bottom: 30px;
+}
+
+
+
+/*
+#
+#
+#   Breadcrumb
+#
+#
+ */
+
+.breadcrumb {
+    display: flex;
+    margin-top: 35px;
+}
+
+.breadcrumb .breadcrumb-path,
+.breadcrumb .breadcrumb-subpath
+{
+    color: var(--dark-breadcrumb-color);
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.breadcrumb .breadcrumb-path:hover,
+.breadcrumb .breadcrumb-subpath:hover
+{
+    color: var(--dark-breadcrumb-hover-color),
+}
+
+.breadcrumb .breadcrumb-path {
+    padding-right: 10px;
+
+}
+
+.breadcrumb .breadcrumb-svg {
+    color: var(--dark-breadcrumb-arrow-color);
+}
+
+.breadcrumb .breadcrumb-subpath {
+padding-left: 10px;
+}
+
+
+
+/*
+#
+#
+#   Emails Page
+#
+#
+*/
+
+#emails-grid {
+    display: grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 60px 74vh;
+    grid-column-gap: 0px;
+    grid-row-gap: 20px;
+}
+
+#emails-grid h1 {
+    margin-bottom: 10px;
+    align-self: center;
+
+}
+
+
+#emails-grid p {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#emails-grid h1 {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+#emails-grid .table-wrapper {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+#emails-empty {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+
+
+
+
+#\# h1 {
+    margin-bottom: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    background-color: var(--dark-bg-color);
+    font-family: "Inter", sans-serif;
+    color: white;
+    overflow-y: hidden;
+
+    /* Prevent Selection */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    letter-spacing: -0.025em;
+    font-weight: 500;
+
+    width: 98.7vw;
+
+
+}
+
+h1 {
+    font-weight: 700;
+    margin-top: 10px;
+}
